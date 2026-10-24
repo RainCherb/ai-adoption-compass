@@ -8,6 +8,7 @@ import { useAsync } from "../../hooks/useAsync";
 import { labelOf, useMeta } from "../../hooks/useMeta";
 import { formatDate, formatNumber, formatRub, formatUsd } from "../../lib/format";
 import { RU_ACCESS_LABELS, TIER_LABELS } from "../../lib/labels";
+import { CatalogSources } from "./CatalogSources";
 
 function price(model: CatalogModel): string {
   const { currency, input_per_mtok: input, output_per_mtok: output } = model.pricing;
@@ -38,6 +39,7 @@ export function CatalogTable({ taskType }: { taskType: TaskType }) {
 
   return (
     <div className="stack">
+      <CatalogSources />
       {catalog.data.data_status === "illustrative" ? (
         <Banner tone="warning" title="Демонстрационные данные">
           {catalog.data.disclaimer}

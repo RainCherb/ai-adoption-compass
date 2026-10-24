@@ -1,0 +1,3137 @@
+{
+  "version": 1,
+  "kind": "measured",
+  "created_at": "2026-10-24T17:06:47.622865Z",
+  "task_id": "ticket-routing",
+  "dataset_sha256": "401e925d7025a7b29a70d4ae7899d00f0a03c102acf238c8803ae2e0026c21a1",
+  "prompt_sha256": "aa8fdddbb968d70ab4c73888d187e06dedd1d8bc7658ecef5842cacfd214a5c4",
+  "runtime": {
+    "engine": "llama.cpp b11854",
+    "runtime_sha256": "f7e53218347b61bdad1eb9c07fcd84f3bfea978d383a1692bac24471b7e19c57",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "cpu": "Intel64 Family 6 Model 167 Stepping 1, GenuineIntel",
+    "threads": 6,
+    "context": 2048,
+    "parallel": 1,
+    "prompt_cache": false,
+    "seed": "greedy (temperature=0)",
+    "protocol": "OpenAI-compatible Chat Completions on loopback"
+  },
+  "external_spend_rub": 0,
+  "limitations": [
+    "72 синтетических обращения на русском, 8 классов; один фиксированный набор, не независимый production benchmark.",
+    "Три компактные модели Q8_0 на CPU, один прогон, temperature=0, max_tokens=64; Qwen3 без thinking.",
+    "Задержки относятся только к указанной машине и включают HTTP; baseline имеет условную задержку 1 мс.",
+    "API-счёт равен 0 ₽. Электроэнергия, оборудование и стоимость владения не измерялись; cost_rub=null.",
+    "Эти результаты не переносятся на другие модели семейства и не заменяют экспертные оценки каталога."
+  ],
+  "runs": [
+    {
+      "provider": "local:Qwen2.5-0.5B-Instruct",
+      "model_source": "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF",
+      "revision": "9217f5db79a29953eb74d5343926648285ec7e67",
+      "weights_sha256": "ca59ca7f13d0e15a8cfa77bd17e65d24f6844b554a7b6c12e07a5f89ff76844e",
+      "quantization": "Q8_0",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 64,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "observations": [
+        {
+          "item_id": "t001",
+          "expected": "billing",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 455.6,
+          "tokens_in": 196,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t002",
+          "expected": "billing",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 421.2,
+          "tokens_in": 191,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t003",
+          "expected": "billing",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 468.2,
+          "tokens_in": 198,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t004",
+          "expected": "billing",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 433.3,
+          "tokens_in": 200,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t005",
+          "expected": "billing",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 447.5,
+          "tokens_in": 204,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t006",
+          "expected": "billing",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 489.7,
+          "tokens_in": 191,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t007",
+          "expected": "billing",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 454.5,
+          "tokens_in": 196,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t008",
+          "expected": "billing",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 417.1,
+          "tokens_in": 188,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t009",
+          "expected": "billing",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 485.0,
+          "tokens_in": 195,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t010",
+          "expected": "technical",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 452.8,
+          "tokens_in": 199,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t011",
+          "expected": "technical",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 470.9,
+          "tokens_in": 195,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t012",
+          "expected": "technical",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 432.4,
+          "tokens_in": 190,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t013",
+          "expected": "technical",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 424.9,
+          "tokens_in": 187,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t014",
+          "expected": "technical",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 470.1,
+          "tokens_in": 195,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t015",
+          "expected": "technical",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 443.0,
+          "tokens_in": 195,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t016",
+          "expected": "technical",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 438.8,
+          "tokens_in": 191,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t017",
+          "expected": "technical",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 473.0,
+          "tokens_in": 192,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t018",
+          "expected": "technical",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 451.4,
+          "tokens_in": 194,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t019",
+          "expected": "delivery",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 437.0,
+          "tokens_in": 200,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t020",
+          "expected": "delivery",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 450.0,
+          "tokens_in": 194,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t021",
+          "expected": "delivery",
+          "predicted": "delivery",
+          "raw_response": "{\"label\": \"delivery\"}",
+          "latency_ms": 412.4,
+          "tokens_in": 189,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t022",
+          "expected": "delivery",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 453.5,
+          "tokens_in": 193,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t023",
+          "expected": "delivery",
+          "predicted": "delivery",
+          "raw_response": "{\"label\": \"delivery\"}",
+          "latency_ms": 513.0,
+          "tokens_in": 195,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t024",
+          "expected": "delivery",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 464.8,
+          "tokens_in": 194,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t025",
+          "expected": "delivery",
+          "predicted": "delivery",
+          "raw_response": "{\"label\": \"delivery\"}",
+          "latency_ms": 504.5,
+          "tokens_in": 193,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t026",
+          "expected": "delivery",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 464.9,
+          "tokens_in": 195,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t027",
+          "expected": "delivery",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 437.5,
+          "tokens_in": 185,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t028",
+          "expected": "returns",
+          "predicted": "returns",
+          "raw_response": "{\"label\": \"returns\"}",
+          "latency_ms": 447.2,
+          "tokens_in": 195,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t029",
+          "expected": "returns",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 516.6,
+          "tokens_in": 191,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t030",
+          "expected": "returns",
+          "predicted": "returns",
+          "raw_response": "{\"label\": \"returns\"}",
+          "latency_ms": 533.3,
+          "tokens_in": 192,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t031",
+          "expected": "returns",
+          "predicted": "returns",
+          "raw_response": "{\"label\": \"returns\"}",
+          "latency_ms": 449.9,
+          "tokens_in": 189,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t032",
+          "expected": "returns",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 488.4,
+          "tokens_in": 192,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t033",
+          "expected": "returns",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 435.8,
+          "tokens_in": 195,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t034",
+          "expected": "returns",
+          "predicted": "returns",
+          "raw_response": "{\"label\": \"returns\"}",
+          "latency_ms": 438.3,
+          "tokens_in": 197,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t035",
+          "expected": "returns",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 461.3,
+          "tokens_in": 194,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t036",
+          "expected": "returns",
+          "predicted": "returns",
+          "raw_response": "{\"label\": \"returns\"}",
+          "latency_ms": 451.1,
+          "tokens_in": 188,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t037",
+          "expected": "account",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 591.8,
+          "tokens_in": 208,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t038",
+          "expected": "account",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 432.7,
+          "tokens_in": 186,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t039",
+          "expected": "account",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 431.6,
+          "tokens_in": 193,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t040",
+          "expected": "account",
+          "predicted": "account",
+          "raw_response": "{\"label\": \"account\"}",
+          "latency_ms": 449.5,
+          "tokens_in": 188,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t041",
+          "expected": "account",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 440.3,
+          "tokens_in": 194,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t042",
+          "expected": "account",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 513.4,
+          "tokens_in": 197,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t043",
+          "expected": "account",
+          "predicted": "other",
+          "raw_response": "{\"label\": \"other\"}",
+          "latency_ms": 447.7,
+          "tokens_in": 193,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t044",
+          "expected": "account",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 428.3,
+          "tokens_in": 190,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t045",
+          "expected": "account",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 449.4,
+          "tokens_in": 193,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t046",
+          "expected": "product_info",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 452.4,
+          "tokens_in": 193,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t047",
+          "expected": "product_info",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 410.5,
+          "tokens_in": 193,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t048",
+          "expected": "product_info",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 435.2,
+          "tokens_in": 195,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t049",
+          "expected": "product_info",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 452.8,
+          "tokens_in": 190,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t050",
+          "expected": "product_info",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 416.0,
+          "tokens_in": 188,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t051",
+          "expected": "product_info",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 475.1,
+          "tokens_in": 190,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t052",
+          "expected": "product_info",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 457.7,
+          "tokens_in": 192,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t053",
+          "expected": "product_info",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 451.8,
+          "tokens_in": 199,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t054",
+          "expected": "product_info",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 424.1,
+          "tokens_in": 186,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t055",
+          "expected": "complaint",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 501.0,
+          "tokens_in": 201,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t056",
+          "expected": "complaint",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 437.4,
+          "tokens_in": 195,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t057",
+          "expected": "complaint",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 431.7,
+          "tokens_in": 202,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t058",
+          "expected": "complaint",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 480.2,
+          "tokens_in": 202,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t059",
+          "expected": "complaint",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 418.6,
+          "tokens_in": 195,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t060",
+          "expected": "complaint",
+          "predicted": null,
+          "raw_response": "{\"label\": \"compliment\"}",
+          "latency_ms": 453.7,
+          "tokens_in": 201,
+          "tokens_out": 9,
+          "error": null
+        },
+        {
+          "item_id": "t061",
+          "expected": "complaint",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 430.9,
+          "tokens_in": 194,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t062",
+          "expected": "complaint",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 441.1,
+          "tokens_in": 195,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t063",
+          "expected": "complaint",
+          "predicted": "other",
+          "raw_response": "{\"label\": \"other\"}",
+          "latency_ms": 429.6,
+          "tokens_in": 199,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t064",
+          "expected": "other",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 453.7,
+          "tokens_in": 195,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t065",
+          "expected": "other",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 422.1,
+          "tokens_in": 188,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t066",
+          "expected": "other",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 443.0,
+          "tokens_in": 192,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t067",
+          "expected": "other",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 410.2,
+          "tokens_in": 193,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t068",
+          "expected": "other",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 465.2,
+          "tokens_in": 201,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t069",
+          "expected": "other",
+          "predicted": "other",
+          "raw_response": "{\"label\": \"other\"}",
+          "latency_ms": 421.5,
+          "tokens_in": 187,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t070",
+          "expected": "other",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 426.4,
+          "tokens_in": 194,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t071",
+          "expected": "other",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 441.1,
+          "tokens_in": 185,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t072",
+          "expected": "other",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 455.7,
+          "tokens_in": 193,
+          "tokens_out": 7,
+          "error": null
+        }
+      ]
+    },
+    {
+      "provider": "local:Qwen3-0.6B",
+      "model_source": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF",
+      "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+      "weights_sha256": "9465e63a22add5354d9bb4b99e90117043c7124007664907259bd16d043bb031",
+      "quantization": "Q8_0",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 64,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "observations": [
+        {
+          "item_id": "t001",
+          "expected": "billing",
+          "predicted": "returns",
+          "raw_response": "{\"label\": \"returns\"}",
+          "latency_ms": 696.9,
+          "tokens_in": 200,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t002",
+          "expected": "billing",
+          "predicted": "product_info",
+          "raw_response": "{\"label\": \"product_info\"}",
+          "latency_ms": 709.7,
+          "tokens_in": 195,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t003",
+          "expected": "billing",
+          "predicted": "complaint",
+          "raw_response": "{\"label\": \"complaint\"}",
+          "latency_ms": 766.3,
+          "tokens_in": 202,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t004",
+          "expected": "billing",
+          "predicted": "billing",
+          "raw_response": "{\"label\": \"billing\"}",
+          "latency_ms": 798.7,
+          "tokens_in": 204,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t005",
+          "expected": "billing",
+          "predicted": "product_info",
+          "raw_response": "{\"label\": \"product_info\"}",
+          "latency_ms": 818.7,
+          "tokens_in": 208,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t006",
+          "expected": "billing",
+          "predicted": "product_info",
+          "raw_response": "{\"label\": \"product_info\"}",
+          "latency_ms": 758.7,
+          "tokens_in": 195,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t007",
+          "expected": "billing",
+          "predicted": "other",
+          "raw_response": "{\"label\": \"other\"}",
+          "latency_ms": 1072.6,
+          "tokens_in": 200,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t008",
+          "expected": "billing",
+          "predicted": "account",
+          "raw_response": "{\"label\": \"account\"}",
+          "latency_ms": 881.2,
+          "tokens_in": 192,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t009",
+          "expected": "billing",
+          "predicted": "complaint",
+          "raw_response": "{\"label\": \"complaint\"}",
+          "latency_ms": 946.4,
+          "tokens_in": 199,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t010",
+          "expected": "technical",
+          "predicted": "other",
+          "raw_response": "{\"label\": \"other\"}",
+          "latency_ms": 700.2,
+          "tokens_in": 203,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t011",
+          "expected": "technical",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 709.7,
+          "tokens_in": 199,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t012",
+          "expected": "technical",
+          "predicted": "complaint",
+          "raw_response": "{\"label\": \"complaint\"}",
+          "latency_ms": 629.5,
+          "tokens_in": 194,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t013",
+          "expected": "technical",
+          "predicted": "other",
+          "raw_response": "{\"label\": \"other\"}",
+          "latency_ms": 604.3,
+          "tokens_in": 191,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t014",
+          "expected": "technical",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 623.6,
+          "tokens_in": 199,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t015",
+          "expected": "technical",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 659.6,
+          "tokens_in": 199,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t016",
+          "expected": "technical",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 605.1,
+          "tokens_in": 195,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t017",
+          "expected": "technical",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 627.6,
+          "tokens_in": 196,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t018",
+          "expected": "technical",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 749.2,
+          "tokens_in": 198,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t019",
+          "expected": "delivery",
+          "predicted": "delivery",
+          "raw_response": "{\"label\": \"delivery\"}",
+          "latency_ms": 729.9,
+          "tokens_in": 204,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t020",
+          "expected": "delivery",
+          "predicted": "delivery",
+          "raw_response": "{\"label\": \"delivery\"}",
+          "latency_ms": 799.4,
+          "tokens_in": 198,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t021",
+          "expected": "delivery",
+          "predicted": "delivery",
+          "raw_response": "{\"label\": \"delivery\"}",
+          "latency_ms": 743.2,
+          "tokens_in": 193,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t022",
+          "expected": "delivery",
+          "predicted": "delivery",
+          "raw_response": "{\"label\": \"delivery\"}",
+          "latency_ms": 698.9,
+          "tokens_in": 197,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t023",
+          "expected": "delivery",
+          "predicted": "delivery",
+          "raw_response": "{\"label\": \"delivery\"}",
+          "latency_ms": 740.2,
+          "tokens_in": 199,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t024",
+          "expected": "delivery",
+          "predicted": "other",
+          "raw_response": "{\"label\": \"other\"}",
+          "latency_ms": 820.2,
+          "tokens_in": 198,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t025",
+          "expected": "delivery",
+          "predicted": "delivery",
+          "raw_response": "{\"label\": \"delivery\"}",
+          "latency_ms": 637.2,
+          "tokens_in": 197,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t026",
+          "expected": "delivery",
+          "predicted": "delivery",
+          "raw_response": "{\"label\": \"delivery\"}",
+          "latency_ms": 602.3,
+          "tokens_in": 199,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t027",
+          "expected": "delivery",
+          "predicted": "other",
+          "raw_response": "{\"label\": \"other\"}",
+          "latency_ms": 544.8,
+          "tokens_in": 189,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t028",
+          "expected": "returns",
+          "predicted": "returns",
+          "raw_response": "{\"label\": \"returns\"}",
+          "latency_ms": 627.7,
+          "tokens_in": 199,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t029",
+          "expected": "returns",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 621.4,
+          "tokens_in": 195,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t030",
+          "expected": "returns",
+          "predicted": "complaint",
+          "raw_response": "{\"label\": \"complaint\"}",
+          "latency_ms": 627.0,
+          "tokens_in": 196,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t031",
+          "expected": "returns",
+          "predicted": "returns",
+          "raw_response": "{\"label\": \"returns\"}",
+          "latency_ms": 694.7,
+          "tokens_in": 193,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t032",
+          "expected": "returns",
+          "predicted": "complaint",
+          "raw_response": "{\"label\": \"complaint\"}",
+          "latency_ms": 791.5,
+          "tokens_in": 196,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t033",
+          "expected": "returns",
+          "predicted": "product_info",
+          "raw_response": "{\"label\": \"product_info\"}",
+          "latency_ms": 731.5,
+          "tokens_in": 199,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t034",
+          "expected": "returns",
+          "predicted": "returns",
+          "raw_response": "{\"label\": \"returns\"}",
+          "latency_ms": 678.1,
+          "tokens_in": 201,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t035",
+          "expected": "returns",
+          "predicted": "returns",
+          "raw_response": "{\"label\": \"returns\"}",
+          "latency_ms": 670.1,
+          "tokens_in": 198,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t036",
+          "expected": "returns",
+          "predicted": "returns",
+          "raw_response": "{\"label\": \"returns\"}",
+          "latency_ms": 538.9,
+          "tokens_in": 192,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t037",
+          "expected": "account",
+          "predicted": "complaint",
+          "raw_response": "{\"label\": \"complaint\"}",
+          "latency_ms": 688.8,
+          "tokens_in": 212,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t038",
+          "expected": "account",
+          "predicted": "product_info",
+          "raw_response": "{\"label\": \"product_info\"}",
+          "latency_ms": 687.0,
+          "tokens_in": 190,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t039",
+          "expected": "account",
+          "predicted": "product_info",
+          "raw_response": "{\"label\": \"product_info\"}",
+          "latency_ms": 776.0,
+          "tokens_in": 197,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t040",
+          "expected": "account",
+          "predicted": "complaint",
+          "raw_response": "{\"label\": \"complaint\"}",
+          "latency_ms": 794.1,
+          "tokens_in": 192,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t041",
+          "expected": "account",
+          "predicted": "account",
+          "raw_response": "{\"label\": \"account\"}",
+          "latency_ms": 777.5,
+          "tokens_in": 198,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t042",
+          "expected": "account",
+          "predicted": "other",
+          "raw_response": "{\"label\": \"other\"}",
+          "latency_ms": 692.2,
+          "tokens_in": 201,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t043",
+          "expected": "account",
+          "predicted": "other",
+          "raw_response": "{\"label\": \"other\"}",
+          "latency_ms": 600.6,
+          "tokens_in": 197,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t044",
+          "expected": "account",
+          "predicted": "product_info",
+          "raw_response": "{\"label\": \"product_info\"}",
+          "latency_ms": 626.2,
+          "tokens_in": 194,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t045",
+          "expected": "account",
+          "predicted": "account",
+          "raw_response": "{\"label\": \"account\"}",
+          "latency_ms": 581.7,
+          "tokens_in": 197,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t046",
+          "expected": "product_info",
+          "predicted": "product_info",
+          "raw_response": "{\"label\": \"product_info\"}",
+          "latency_ms": 593.9,
+          "tokens_in": 197,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t047",
+          "expected": "product_info",
+          "predicted": "product_info",
+          "raw_response": "{\"label\": \"product_info\"}",
+          "latency_ms": 578.7,
+          "tokens_in": 197,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t048",
+          "expected": "product_info",
+          "predicted": "product_info",
+          "raw_response": "{\"label\": \"product_info\"}",
+          "latency_ms": 563.7,
+          "tokens_in": 199,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t049",
+          "expected": "product_info",
+          "predicted": "product_info",
+          "raw_response": "{\"label\": \"product_info\"}",
+          "latency_ms": 588.4,
+          "tokens_in": 194,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t050",
+          "expected": "product_info",
+          "predicted": "product_info",
+          "raw_response": "{\"label\": \"product_info\"}",
+          "latency_ms": 629.6,
+          "tokens_in": 192,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t051",
+          "expected": "product_info",
+          "predicted": "product_info",
+          "raw_response": "{\"label\": \"product_info\"}",
+          "latency_ms": 558.3,
+          "tokens_in": 194,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t052",
+          "expected": "product_info",
+          "predicted": "product_info",
+          "raw_response": "{\"label\": \"product_info\"}",
+          "latency_ms": 590.2,
+          "tokens_in": 196,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t053",
+          "expected": "product_info",
+          "predicted": "product_info",
+          "raw_response": "{\"label\": \"product_info\"}",
+          "latency_ms": 566.2,
+          "tokens_in": 203,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t054",
+          "expected": "product_info",
+          "predicted": "product_info",
+          "raw_response": "{\"label\": \"product_info\"}",
+          "latency_ms": 539.7,
+          "tokens_in": 190,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t055",
+          "expected": "complaint",
+          "predicted": "other",
+          "raw_response": "{\"label\": \"other\"}",
+          "latency_ms": 569.1,
+          "tokens_in": 205,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t056",
+          "expected": "complaint",
+          "predicted": "complaint",
+          "raw_response": "{\"label\": \"complaint\"}",
+          "latency_ms": 587.3,
+          "tokens_in": 199,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t057",
+          "expected": "complaint",
+          "predicted": "complaint",
+          "raw_response": "{\"label\": \"complaint\"}",
+          "latency_ms": 566.3,
+          "tokens_in": 206,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t058",
+          "expected": "complaint",
+          "predicted": "complaint",
+          "raw_response": "{\"label\": \"complaint\"}",
+          "latency_ms": 582.4,
+          "tokens_in": 206,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t059",
+          "expected": "complaint",
+          "predicted": "other",
+          "raw_response": "{\"label\": \"other\"}",
+          "latency_ms": 550.0,
+          "tokens_in": 199,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t060",
+          "expected": "complaint",
+          "predicted": "complaint",
+          "raw_response": "{\"label\": \"complaint\"}",
+          "latency_ms": 588.6,
+          "tokens_in": 205,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t061",
+          "expected": "complaint",
+          "predicted": "technical",
+          "raw_response": "{\"label\": \"technical\"}",
+          "latency_ms": 598.6,
+          "tokens_in": 198,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t062",
+          "expected": "complaint",
+          "predicted": "complaint",
+          "raw_response": "{\"label\": \"complaint\"}",
+          "latency_ms": 623.8,
+          "tokens_in": 199,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t063",
+          "expected": "complaint",
+          "predicted": "complaint",
+          "raw_response": "{\"label\": \"complaint\"}",
+          "latency_ms": 618.3,
+          "tokens_in": 203,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t064",
+          "expected": "other",
+          "predicted": "product_info",
+          "raw_response": "{\"label\": \"product_info\"}",
+          "latency_ms": 623.4,
+          "tokens_in": 199,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t065",
+          "expected": "other",
+          "predicted": "other",
+          "raw_response": "{\"label\": \"other\"}",
+          "latency_ms": 549.9,
+          "tokens_in": 192,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t066",
+          "expected": "other",
+          "predicted": "product_info",
+          "raw_response": "{\"label\": \"product_info\"}",
+          "latency_ms": 543.9,
+          "tokens_in": 196,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t067",
+          "expected": "other",
+          "predicted": "product_info",
+          "raw_response": "{\"label\": \"product_info\"}",
+          "latency_ms": 569.2,
+          "tokens_in": 197,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t068",
+          "expected": "other",
+          "predicted": "other",
+          "raw_response": "{\"label\": \"other\"}",
+          "latency_ms": 579.6,
+          "tokens_in": 205,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t069",
+          "expected": "other",
+          "predicted": "other",
+          "raw_response": "{\"label\": \"other\"}",
+          "latency_ms": 544.4,
+          "tokens_in": 191,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t070",
+          "expected": "other",
+          "predicted": "product_info",
+          "raw_response": "{\"label\": \"product_info\"}",
+          "latency_ms": 591.4,
+          "tokens_in": 198,
+          "tokens_out": 8,
+          "error": null
+        },
+        {
+          "item_id": "t071",
+          "expected": "other",
+          "predicted": "other",
+          "raw_response": "{\"label\": \"other\"}",
+          "latency_ms": 507.0,
+          "tokens_in": 189,
+          "tokens_out": 7,
+          "error": null
+        },
+        {
+          "item_id": "t072",
+          "expected": "other",
+          "predicted": "other",
+          "raw_response": "{\"label\": \"other\"}",
+          "latency_ms": 557.5,
+          "tokens_in": 197,
+          "tokens_out": 7,
+          "error": null
+        }
+      ]
+    },
+    {
+      "provider": "local:SmolLM2-360M-Instruct",
+      "model_source": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M-Instruct-GGUF",
+      "revision": "593b5a2e04c8f3e4ee880263f93e0bd2901ad47f",
+      "weights_sha256": "48ab3034d0dd401fbc721eb1df3217902fee7dab9078992d66431f09b7750201",
+      "quantization": "Q8_0",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 64,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "observations": [
+        {
+          "item_id": "t001",
+          "expected": "billing",
+          "predicted": null,
+          "raw_response": "<ticket>\n<ticket_info>\n<ticket_info_label>ticket_info</ticket_info_label>\n<ticket_info_label>ticket_info_label</ticket_info_label>\n<ticket_info_label>",
+          "latency_ms": 1469.9,
+          "tokens_in": 364,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t002",
+          "expected": "billing",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Не могу найти счёт-фактуру за март, где его скачать?</label>\n<ticket>\n<label>",
+          "latency_ms": 1424.4,
+          "tokens_in": 357,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t003",
+          "expected": "billing",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>ожидает оплаты</label>\n<ticket>\n<label>ожидает оплаты</label>\n<ticket>\n<label>ожидает оплат",
+          "latency_ms": 1595.5,
+          "tokens_in": 358,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t004",
+          "expected": "billing",
+          "predicted": null,
+          "raw_response": "<ticket>\nВыставьте, пожалуйста, счёт на юрлицо, реквизиты прилагаю\n</ticket>",
+          "latency_ms": 1553.7,
+          "tokens_in": 359,
+          "tokens_out": 57,
+          "error": null
+        },
+        {
+          "item_id": "t005",
+          "expected": "billing",
+          "predicted": null,
+          "raw_response": "<ticket>\nПочему в личном кабинете сумма к оплате больше, чем в коммерческом предложении?",
+          "latency_ms": 1664.1,
+          "tokens_in": 372,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t006",
+          "expected": "billing",
+          "predicted": null,
+          "raw_response": "<ticket>\nКак перейти на безналичный расчет со следующего месяца?\n</ticket>",
+          "latency_ms": 1367.0,
+          "tokens_in": 358,
+          "tokens_out": 54,
+          "error": null
+        },
+        {
+          "item_id": "t007",
+          "expected": "billing",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Пришло напоминание о задолженности, хотя подписку я продлил неделю назад</label>",
+          "latency_ms": 1619.6,
+          "tokens_in": 363,
+          "tokens_out": 62,
+          "error": null
+        },
+        {
+          "item_id": "t008",
+          "expected": "billing",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Нужена акт сверки за второй квартал</label>\n</ticket>",
+          "latency_ms": 1110.9,
+          "tokens_in": 339,
+          "tokens_out": 44,
+          "error": null
+        },
+        {
+          "item_id": "t009",
+          "expected": "billing",
+          "predicted": null,
+          "raw_response": "<ticket>\nПлатёж через СБП не прошёл, но деньги с карты списались\n</ticket>",
+          "latency_ms": 1475.3,
+          "tokens_in": 361,
+          "tokens_out": 59,
+          "error": null
+        },
+        {
+          "item_id": "t010",
+          "expected": "technical",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Приложение вылетает при открытии раздела «Отчёты» после последнего о",
+          "latency_ms": 1429.3,
+          "tokens_in": 375,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t011",
+          "expected": "technical",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Страница оформления заказа</label>\n<title>Страница оформления заказа</title>\n<body>\n<form action",
+          "latency_ms": 1448.5,
+          "tokens_in": 366,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t012",
+          "expected": "technical",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Не приходят push-уведомления на телефон с Android 14</label>\n</ticket>",
+          "latency_ms": 1190.2,
+          "tokens_in": 344,
+          "tokens_out": 48,
+          "error": null
+        },
+        {
+          "item_id": "t013",
+          "expected": "technical",
+          "predicted": null,
+          "raw_response": "<ticket>\nПри выгрузке в Excel файл получается пустым\n</ticket>",
+          "latency_ms": 1093.1,
+          "tokens_in": 344,
+          "tokens_out": 42,
+          "error": null
+        },
+        {
+          "item_id": "t014",
+          "expected": "technical",
+          "predicted": null,
+          "raw_response": "<ticket>\n<error>502</error>\n<message>Ошибка 502 при попытке загрузить документы больше 10 М",
+          "latency_ms": 1376.0,
+          "tokens_in": 360,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t015",
+          "expected": "technical",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Интеграция с CRM перестала синхронизировать контакты со вторника</label>\n</ticket>",
+          "latency_ms": 1512.9,
+          "tokens_in": 359,
+          "tokens_out": 63,
+          "error": null
+        },
+        {
+          "item_id": "t016",
+          "expected": "technical",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Не работает сканер штрихкодов в мобильной версии</label>\n</ticket>",
+          "latency_ms": 1223.0,
+          "tokens_in": 348,
+          "tokens_out": 52,
+          "error": null
+        },
+        {
+          "item_id": "t017",
+          "expected": "technical",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Сервис очень медленно открывается из офиса, из дома всё в порядке</label>",
+          "latency_ms": 1496.7,
+          "tokens_in": 363,
+          "tokens_out": 62,
+          "error": null
+        },
+        {
+          "item_id": "t018",
+          "expected": "technical",
+          "predicted": null,
+          "raw_response": "<ticket>\nAPI возвращает 429, хотя мы не превышаем лимит запросов\n</ticket>",
+          "latency_ms": 1613.4,
+          "tokens_in": 354,
+          "tokens_out": 52,
+          "error": null
+        },
+        {
+          "item_id": "t019",
+          "expected": "delivery",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>48213</label>\n<status>pending</status>\n<description>Заказ №48213 должен был приехать вчера, курьер",
+          "latency_ms": 2003.7,
+          "tokens_in": 362,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t020",
+          "expected": "delivery",
+          "predicted": null,
+          "raw_response": "<ticket>\nГде сейчас моя посылка? Трек-номер не отслеживается\n</ticket>",
+          "latency_ms": 1414.0,
+          "tokens_in": 355,
+          "tokens_out": 53,
+          "error": null
+        },
+        {
+          "item_id": "t021",
+          "expected": "delivery",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Хочу изменить адрес доставки, заказ ещё не отправлен</label>",
+          "latency_ms": 1277.2,
+          "tokens_in": 354,
+          "tokens_out": 53,
+          "error": null
+        },
+        {
+          "item_id": "t022",
+          "expected": "delivery",
+          "predicted": null,
+          "raw_response": "<ticket>\n<customer>\n<name>Курьер</name>\n<address>\n<street>123 Main St</street>\n<city>New York</city>\n<state>NY</state>\n<zip>12345</",
+          "latency_ms": 1419.3,
+          "tokens_in": 357,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t023",
+          "expected": "delivery",
+          "predicted": null,
+          "raw_response": "<ticket>\nМожно ли перенести доставку на субботу после 18:00?\n</ticket>",
+          "latency_ms": 1244.9,
+          "tokens_in": 353,
+          "tokens_out": 51,
+          "error": null
+        },
+        {
+          "item_id": "t024",
+          "expected": "delivery",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Коробка пришла сильно помятой, содержимое плохо упаковано</label>",
+          "latency_ms": 1258.9,
+          "tokens_in": 355,
+          "tokens_out": 54,
+          "error": null
+        },
+        {
+          "item_id": "t025",
+          "expected": "delivery",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Сколько стоит доставка в Новосибирск и в какие сроки?</label>\n<value>1</value>\n</ticket>",
+          "latency_ms": 1445.7,
+          "tokens_in": 353,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t026",
+          "expected": "delivery",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Пункт выдачи закрыт</label>\n<ticket>\n<label>Пункт выдачи закрыт</label>\n<ticket>",
+          "latency_ms": 1392.5,
+          "tokens_in": 361,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t027",
+          "expected": "delivery",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Не пришло SMS с кодом для получения заказа</label>\n</ticket>",
+          "latency_ms": 1086.7,
+          "tokens_in": 340,
+          "tokens_out": 44,
+          "error": null
+        },
+        {
+          "item_id": "t028",
+          "expected": "returns",
+          "predicted": null,
+          "raw_response": "<response>\n<ticket>\nХочу вернуть товар, не подошёл размер. Как оформить возврат?\n</ticket>\n</",
+          "latency_ms": 1393.6,
+          "tokens_in": 361,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t029",
+          "expected": "returns",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Запрос за чайник: у него течёт крышка</label>\n<ticket>\n<label>Верните деньги з",
+          "latency_ms": 1405.7,
+          "tokens_in": 349,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t030",
+          "expected": "returns",
+          "predicted": null,
+          "raw_response": "<ticket>\nКакие сроки возврата средств на карту после отказа от заказа?\n</ticket>",
+          "latency_ms": 1422.0,
+          "tokens_in": 359,
+          "tokens_out": 57,
+          "error": null
+        },
+        {
+          "item_id": "t031",
+          "expected": "returns",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Нужно обменять модель на другой цвет, чек сохранился</label>",
+          "latency_ms": 1308.5,
+          "tokens_in": 352,
+          "tokens_out": 51,
+          "error": null
+        },
+        {
+          "item_id": "t032",
+          "expected": "returns",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Сдал телефон по гарантии две недели назад, ответа до сих пор нет</label>",
+          "latency_ms": 1339.2,
+          "tokens_in": 361,
+          "tokens_out": 60,
+          "error": null
+        },
+        {
+          "item_id": "t033",
+          "expected": "returns",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Могу ли я отказаться от подписки и получить деньги за неиспользованный период?",
+          "latency_ms": 1465.3,
+          "tokens_in": 369,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t034",
+          "expected": "returns",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Отправил посылку с возвратом Почтой России, жду подтверждения получения",
+          "latency_ms": 1430.8,
+          "tokens_in": 369,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t035",
+          "expected": "returns",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>товар пришёл с браком, прошу заменить на исправный</label>\n</ticket>",
+          "latency_ms": 1415.4,
+          "tokens_in": 349,
+          "tokens_out": 52,
+          "error": null
+        },
+        {
+          "item_id": "t036",
+          "expected": "returns",
+          "predicted": null,
+          "raw_response": "<ticket>\nГде распечатать этикетку для возврата?\n</ticket>",
+          "latency_ms": 1286.0,
+          "tokens_in": 346,
+          "tokens_out": 44,
+          "error": null
+        },
+        {
+          "item_id": "t037",
+          "expected": "account",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Не могу войти в личный кабинет, пишет неверный пароль, а письмо для сброса",
+          "latency_ms": 2166.2,
+          "tokens_in": 376,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t038",
+          "expected": "account",
+          "predicted": null,
+          "raw_response": "<ticket>\nКак сменить номер телефона в профиле?\n</ticket>",
+          "latency_ms": 1385.2,
+          "tokens_in": 340,
+          "tokens_out": 38,
+          "error": null
+        },
+        {
+          "item_id": "t039",
+          "expected": "account",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Подскажите, как включить двухфакторную аутентификацию</label>\n</ticket>",
+          "latency_ms": 1826.3,
+          "tokens_in": 356,
+          "tokens_out": 60,
+          "error": null
+        },
+        {
+          "item_id": "t040",
+          "expected": "account",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Мой аккаунт заблокирован</label>\n</ticket>",
+          "latency_ms": 1406.9,
+          "tokens_in": 349,
+          "tokens_out": 36,
+          "error": null
+        },
+        {
+          "item_id": "t041",
+          "expected": "account",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Нужно добавить нового сотрудника в организацию и выдать ему права администрат",
+          "latency_ms": 2349.6,
+          "tokens_in": 371,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t042",
+          "expected": "account",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Удалите</label>\n<ticket>\n<label>Удалите</label>\n<ticket>\n<label>пожалуйста</label>\n<ticket>\n",
+          "latency_ms": 1857.2,
+          "tokens_in": 364,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t043",
+          "expected": "account",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Письмо с подтверждением адреса не приходит, спам проверил</label>",
+          "latency_ms": 1323.6,
+          "tokens_in": 354,
+          "tokens_out": 53,
+          "error": null
+        },
+        {
+          "item_id": "t044",
+          "expected": "account",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Как объединить два профиля, оформленных на разные почты?</label>\n<ticket>\n<label",
+          "latency_ms": 1465.9,
+          "tokens_in": 358,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t045",
+          "expected": "account",
+          "predicted": null,
+          "raw_response": "<ticket>\nСотрудник уволился, хотим отозвать его доступ ко всем проектам\n</ticket>",
+          "latency_ms": 1512.8,
+          "tokens_in": 364,
+          "tokens_out": 62,
+          "error": null
+        },
+        {
+          "item_id": "t046",
+          "expected": "product_info",
+          "predicted": null,
+          "raw_response": "<ticket>\nЧем тариф «Бизнес» отличается от «Стандарта»?\n</ticket>",
+          "latency_ms": 1247.5,
+          "tokens_in": 351,
+          "tokens_out": 49,
+          "error": null
+        },
+        {
+          "item_id": "t047",
+          "expected": "product_info",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>X200</label>\n<ticket>\n<label>Billing</label>\n<ticket>\n<label>Technical</label>\n<ticket>\n<label>Delivery</label>\n<ticket>\n<label>",
+          "latency_ms": 1454.8,
+          "tokens_in": 353,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t048",
+          "expected": "product_info",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Работает ли ваш сервис с 1С:Предприятие 8.3?</label>\n</ticket>",
+          "latency_ms": 1251.9,
+          "tokens_in": 351,
+          "tokens_out": 55,
+          "error": null
+        },
+        {
+          "item_id": "t049",
+          "expected": "product_info",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Когда ожидается поступление модели в чёрном цвете?</label>\n<ticket>\n<label>Когда",
+          "latency_ms": 1321.5,
+          "tokens_in": 352,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t050",
+          "expected": "product_info",
+          "predicted": null,
+          "raw_response": "<ticket>\nКакие документы нужны для заключения договора на обслуживание?\n</ticket>",
+          "latency_ms": 1263.5,
+          "tokens_in": 358,
+          "tokens_out": 56,
+          "error": null
+        },
+        {
+          "item_id": "t051",
+          "expected": "product_info",
+          "predicted": null,
+          "raw_response": "<ticket>\nСколько пользователей можно подключить на одной лицензии?\n</ticket>",
+          "latency_ms": 1262.1,
+          "tokens_in": 355,
+          "tokens_out": 53,
+          "error": null
+        },
+        {
+          "item_id": "t052",
+          "expected": "product_info",
+          "predicted": null,
+          "raw_response": "<ticket>\nЕсть ли скидки для некоммерческих организаций?\n</ticket>",
+          "latency_ms": 1232.0,
+          "tokens_in": 351,
+          "tokens_out": 49,
+          "error": null
+        },
+        {
+          "item_id": "t053",
+          "expected": "product_info",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Нужна консультация по подбору оборудования для склада 500 кв. метров</label>\n</tick",
+          "latency_ms": 1514.6,
+          "tokens_in": 363,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t054",
+          "expected": "product_info",
+          "predicted": null,
+          "raw_response": "<ticket>\nКакой максимальный размер вложения принимает форма заявки?\n</ticket>",
+          "latency_ms": 1281.5,
+          "tokens_in": 358,
+          "tokens_out": 56,
+          "error": null
+        },
+        {
+          "item_id": "t055",
+          "expected": "complaint",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>третий раз</label>\n<ticket>\n<label>третий раз обращаюсь по одному вопросу, никто",
+          "latency_ms": 1449.4,
+          "tokens_in": 376,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t056",
+          "expected": "complaint",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Оператор нахамил по телефону, требую разобраться и принести извинения</label>\n",
+          "latency_ms": 1412.3,
+          "tokens_in": 365,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t057",
+          "expected": "complaint",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Ужасное обслуживание в вашем салоне: ждал сорок минут, никто не подош",
+          "latency_ms": 1465.8,
+          "tokens_in": 371,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t058",
+          "expected": "complaint",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Обещали решить проблему за сутки, прошла неделя.</label>\n<label>Буду писать в",
+          "latency_ms": 1411.7,
+          "tokens_in": 374,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t059",
+          "expected": "complaint",
+          "predicted": null,
+          "raw_response": "<ticket>\n<customer>\n<name>Курьер</name>\n<address>\n<street>123 Main St</street>\n<city>New York</city>\n<state>NY</state>\n<zip>12345</",
+          "latency_ms": 1584.1,
+          "tokens_in": 352,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t060",
+          "expected": "complaint",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>требование компенсации</label>\n<ticket>\n<label>деньги</label>\n<ticket>\n<label>потерял деньги</label",
+          "latency_ms": 1608.9,
+          "tokens_in": 379,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t061",
+          "expected": "complaint",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>тип отдела</label>\n<label>кол-во раз</label>\n<label>переключать между отделами пять ",
+          "latency_ms": 1408.6,
+          "tokens_in": 361,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t062",
+          "expected": "complaint",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Очень разочарован качеством поддержки, оставлю отзыв на всех площадок</label>",
+          "latency_ms": 1548.2,
+          "tokens_in": 366,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t063",
+          "expected": "complaint",
+          "predicted": null,
+          "raw_response": "<ticket>\nВаш чат-бот не понимает вопросы и не соединяет с человеком, это издевательств",
+          "latency_ms": 1649.7,
+          "tokens_in": 373,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t064",
+          "expected": "other",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Здравствуйте! Хотим предложить вам сотрудничество по размещению рекламы",
+          "latency_ms": 1742.8,
+          "tokens_in": 369,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t065",
+          "expected": "other",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Спасибо за быструю помощь, всё получилось</label>\n</ticket>",
+          "latency_ms": 1483.8,
+          "tokens_in": 348,
+          "tokens_out": 52,
+          "error": null
+        },
+        {
+          "item_id": "t066",
+          "expected": "other",
+          "predicted": null,
+          "raw_response": "<ticket>\nИщу вакансии в вашей компании, куда направить резюме?\n</ticket>",
+          "latency_ms": 1578.8,
+          "tokens_in": 354,
+          "tokens_out": 52,
+          "error": null
+        },
+        {
+          "item_id": "t067",
+          "expected": "other",
+          "predicted": null,
+          "raw_response": "<ticket>\nВыиграйте смартфон! Переходите по ссылке и получите приз\n</ticket>",
+          "latency_ms": 1395.1,
+          "tokens_in": 356,
+          "tokens_out": 54,
+          "error": null
+        },
+        {
+          "item_id": "t068",
+          "expected": "other",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Просим прислать пресс-кит и логотипы для публикации в СМИ</label>\n<ticket>\n<label",
+          "latency_ms": 1579.9,
+          "tokens_in": 358,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t069",
+          "expected": "other",
+          "predicted": null,
+          "raw_response": "<ticket>\n<ticket_type>\n<ticket_type>\n<ticket_type>\n<ticket_type>\n<ticket_type>\n<ticket_type>\n<ticket_type>\n<ticket_type>\n<ticket",
+          "latency_ms": 1660.7,
+          "tokens_in": 344,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t070",
+          "expected": "other",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Предлагаем услуги SEO-продвижения вашего сайта, гарантия топ-3</label>\n</ticket",
+          "latency_ms": 1500.6,
+          "tokens_in": 362,
+          "tokens_out": 64,
+          "error": null
+        },
+        {
+          "item_id": "t071",
+          "expected": "other",
+          "predicted": null,
+          "raw_response": "<ticket>\nГде находится ваш головной офис и как проехать?\n</ticket>",
+          "latency_ms": 1198.7,
+          "tokens_in": 348,
+          "tokens_out": 46,
+          "error": null
+        },
+        {
+          "item_id": "t072",
+          "expected": "other",
+          "predicted": null,
+          "raw_response": "<ticket>\n<label>Добрый день, это не по вашему профилю, ошиблись адресом</label>",
+          "latency_ms": 1273.5,
+          "tokens_in": 358,
+          "tokens_out": 57,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "reports": [
+    {
+      "provider": "baseline:keywords",
+      "task_id": "ticket-routing",
+      "is_baseline": true,
+      "n": 72,
+      "metrics": {
+        "n": 72,
+        "accuracy": 0.8472,
+        "macro_f1": 0.8536,
+        "invalid": 0,
+        "labels": [
+          "billing",
+          "technical",
+          "delivery",
+          "returns",
+          "account",
+          "product_info",
+          "complaint",
+          "other"
+        ],
+        "per_class": [
+          {
+            "label": "billing",
+            "precision": 0.9,
+            "recall": 1.0,
+            "f1": 0.9474,
+            "support": 9
+          },
+          {
+            "label": "technical",
+            "precision": 0.8889,
+            "recall": 0.8889,
+            "f1": 0.8889,
+            "support": 9
+          },
+          {
+            "label": "delivery",
+            "precision": 0.8,
+            "recall": 0.8889,
+            "f1": 0.8421,
+            "support": 9
+          },
+          {
+            "label": "returns",
+            "precision": 1.0,
+            "recall": 0.7778,
+            "f1": 0.875,
+            "support": 9
+          },
+          {
+            "label": "account",
+            "precision": 0.8889,
+            "recall": 0.8889,
+            "f1": 0.8889,
+            "support": 9
+          },
+          {
+            "label": "product_info",
+            "precision": 1.0,
+            "recall": 0.7778,
+            "f1": 0.875,
+            "support": 9
+          },
+          {
+            "label": "complaint",
+            "precision": 1.0,
+            "recall": 0.7778,
+            "f1": 0.875,
+            "support": 9
+          },
+          {
+            "label": "other",
+            "precision": 0.5385,
+            "recall": 0.7778,
+            "f1": 0.6364,
+            "support": 9
+          }
+        ],
+        "confusion": [
+          [
+            9,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            8,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            8,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            1,
+            7,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            8,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            7,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            7,
+            1
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+            7
+          ]
+        ]
+      },
+      "latency": {
+        "mean_ms": 1.0,
+        "p50_ms": 1.0,
+        "p95_ms": 1.0
+      },
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_rub": 0.0,
+      "cost_per_1k_rub": 0.0,
+      "cost_per_correct_rub": 0.0,
+      "errors": 0,
+      "failures": [
+        {
+          "id": "t017",
+          "expected": "technical",
+          "got": "other",
+          "text": "Сервис очень медленно открывается из офиса, из дома всё в порядке"
+        },
+        {
+          "id": "t024",
+          "expected": "delivery",
+          "got": "other",
+          "text": "Коробка пришла сильно помятой, содержимое плохо упаковано"
+        },
+        {
+          "id": "t033",
+          "expected": "returns",
+          "got": "billing",
+          "text": "Могу ли я отказаться от подписки и получить деньги за неиспользованный период?"
+        },
+        {
+          "id": "t034",
+          "expected": "returns",
+          "got": "delivery",
+          "text": "Отправил посылку с возвратом Почтой России, жду подтверждения получения"
+        },
+        {
+          "id": "t043",
+          "expected": "account",
+          "got": "other",
+          "text": "Письмо с подтверждением адреса не приходит, спам проверил"
+        },
+        {
+          "id": "t050",
+          "expected": "product_info",
+          "got": "other",
+          "text": "Какие документы нужны для заключения договора на обслуживание?"
+        },
+        {
+          "id": "t054",
+          "expected": "product_info",
+          "got": "other",
+          "text": "Какой максимальный размер вложения принимает форма заявки?"
+        },
+        {
+          "id": "t059",
+          "expected": "complaint",
+          "got": "delivery",
+          "text": "Курьер вёл себя грубо и бросил коробку у двери"
+        }
+      ],
+      "accuracy_lift": 0.0
+    },
+    {
+      "provider": "local:Qwen2.5-0.5B-Instruct",
+      "task_id": "ticket-routing",
+      "is_baseline": false,
+      "n": 72,
+      "metrics": {
+        "n": 72,
+        "accuracy": 0.3611,
+        "macro_f1": 0.3083,
+        "invalid": 1,
+        "labels": [
+          "billing",
+          "technical",
+          "delivery",
+          "returns",
+          "account",
+          "product_info",
+          "complaint",
+          "other"
+        ],
+        "per_class": [
+          {
+            "label": "billing",
+            "precision": 0.4,
+            "recall": 0.8889,
+            "f1": 0.5517,
+            "support": 9
+          },
+          {
+            "label": "technical",
+            "precision": 0.2051,
+            "recall": 0.8889,
+            "f1": 0.3333,
+            "support": 9
+          },
+          {
+            "label": "delivery",
+            "precision": 1.0,
+            "recall": 0.3333,
+            "f1": 0.5,
+            "support": 9
+          },
+          {
+            "label": "returns",
+            "precision": 1.0,
+            "recall": 0.5556,
+            "f1": 0.7143,
+            "support": 9
+          },
+          {
+            "label": "account",
+            "precision": 1.0,
+            "recall": 0.1111,
+            "f1": 0.2,
+            "support": 9
+          },
+          {
+            "label": "product_info",
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 9
+          },
+          {
+            "label": "complaint",
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 9
+          },
+          {
+            "label": "other",
+            "precision": 0.3333,
+            "recall": 0.1111,
+            "f1": 0.1667,
+            "support": 9
+          }
+        ],
+        "confusion": [
+          [
+            8,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            8,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            3,
+            3,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            3,
+            0,
+            5,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            7,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1
+          ],
+          [
+            3,
+            6,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            5,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            2,
+            6,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      },
+      "latency": {
+        "mean_ms": 452.9,
+        "p50_ms": 449.4,
+        "p95_ms": 513.4
+      },
+      "tokens_in": 13948,
+      "tokens_out": 506,
+      "cost_rub": null,
+      "cost_per_1k_rub": null,
+      "cost_per_correct_rub": null,
+      "errors": 0,
+      "failures": [
+        {
+          "id": "t008",
+          "expected": "billing",
+          "got": "technical",
+          "text": "Нужен акт сверки за второй квартал"
+        },
+        {
+          "id": "t018",
+          "expected": "technical",
+          "got": "billing",
+          "text": "API возвращает 429, хотя мы не превышаем лимит запросов"
+        },
+        {
+          "id": "t019",
+          "expected": "delivery",
+          "got": "billing",
+          "text": "Заказ №48213 должен был приехать вчера, курьер не выходит на связь"
+        },
+        {
+          "id": "t020",
+          "expected": "delivery",
+          "got": "billing",
+          "text": "Где сейчас моя посылка? Трек-номер не отслеживается"
+        },
+        {
+          "id": "t022",
+          "expected": "delivery",
+          "got": "technical",
+          "text": "Курьер привёз заказ по старому адресу, хотя я его менял"
+        },
+        {
+          "id": "t024",
+          "expected": "delivery",
+          "got": "technical",
+          "text": "Коробка пришла сильно помятой, содержимое плохо упаковано"
+        },
+        {
+          "id": "t026",
+          "expected": "delivery",
+          "got": "technical",
+          "text": "Пункт выдачи закрыт, хотя по трекингу заказ ждёт меня там"
+        },
+        {
+          "id": "t027",
+          "expected": "delivery",
+          "got": "billing",
+          "text": "Не пришло SMS с кодом для получения заказа"
+        }
+      ],
+      "accuracy_lift": -0.4861
+    },
+    {
+      "provider": "local:Qwen3-0.6B",
+      "task_id": "ticket-routing",
+      "is_baseline": false,
+      "n": 72,
+      "metrics": {
+        "n": 72,
+        "accuracy": 0.5694,
+        "macro_f1": 0.5477,
+        "invalid": 0,
+        "labels": [
+          "billing",
+          "technical",
+          "delivery",
+          "returns",
+          "account",
+          "product_info",
+          "complaint",
+          "other"
+        ],
+        "per_class": [
+          {
+            "label": "billing",
+            "precision": 1.0,
+            "recall": 0.1111,
+            "f1": 0.2,
+            "support": 9
+          },
+          {
+            "label": "technical",
+            "precision": 0.75,
+            "recall": 0.6667,
+            "f1": 0.7059,
+            "support": 9
+          },
+          {
+            "label": "delivery",
+            "precision": 1.0,
+            "recall": 0.7778,
+            "f1": 0.875,
+            "support": 9
+          },
+          {
+            "label": "returns",
+            "precision": 0.8333,
+            "recall": 0.5556,
+            "f1": 0.6667,
+            "support": 9
+          },
+          {
+            "label": "account",
+            "precision": 0.6667,
+            "recall": 0.2222,
+            "f1": 0.3333,
+            "support": 9
+          },
+          {
+            "label": "product_info",
+            "precision": 0.45,
+            "recall": 1.0,
+            "f1": 0.6207,
+            "support": 9
+          },
+          {
+            "label": "complaint",
+            "precision": 0.4615,
+            "recall": 0.6667,
+            "f1": 0.5455,
+            "support": 9
+          },
+          {
+            "label": "other",
+            "precision": 0.3571,
+            "recall": 0.5556,
+            "f1": 0.4348,
+            "support": 9
+          }
+        ],
+        "confusion": [
+          [
+            1,
+            0,
+            0,
+            1,
+            1,
+            3,
+            2,
+            1
+          ],
+          [
+            0,
+            6,
+            0,
+            0,
+            0,
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            0,
+            7,
+            0,
+            0,
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            1,
+            0,
+            5,
+            0,
+            1,
+            2,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            2,
+            3,
+            2,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            9,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            6,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            5
+          ]
+        ]
+      },
+      "latency": {
+        "mean_ms": 658.9,
+        "p50_ms": 626.2,
+        "p95_ms": 820.2
+      },
+      "tokens_in": 14236,
+      "tokens_out": 537,
+      "cost_rub": null,
+      "cost_per_1k_rub": null,
+      "cost_per_correct_rub": null,
+      "errors": 0,
+      "failures": [
+        {
+          "id": "t001",
+          "expected": "billing",
+          "got": "returns",
+          "text": "Списали деньги дважды за один заказ, верните лишнее, пожалуйста"
+        },
+        {
+          "id": "t002",
+          "expected": "billing",
+          "got": "product_info",
+          "text": "Не могу найти счёт-фактуру за март, где его скачать?"
+        },
+        {
+          "id": "t003",
+          "expected": "billing",
+          "got": "complaint",
+          "text": "Оплатил картой, но заказ остался в статусе «ожидает оплаты»"
+        },
+        {
+          "id": "t005",
+          "expected": "billing",
+          "got": "product_info",
+          "text": "Почему в личном кабинете сумма к оплате больше, чем в коммерческом предложении?"
+        },
+        {
+          "id": "t006",
+          "expected": "billing",
+          "got": "product_info",
+          "text": "Как перейти на безналичный расчёт со следующего месяца?"
+        },
+        {
+          "id": "t007",
+          "expected": "billing",
+          "got": "other",
+          "text": "Пришло напоминание о задолженности, хотя подписку я продлил неделю назад"
+        },
+        {
+          "id": "t008",
+          "expected": "billing",
+          "got": "account",
+          "text": "Нужен акт сверки за второй квартал"
+        },
+        {
+          "id": "t009",
+          "expected": "billing",
+          "got": "complaint",
+          "text": "Платёж через СБП не прошёл, но деньги с карты списались"
+        }
+      ],
+      "accuracy_lift": -0.2778
+    },
+    {
+      "provider": "local:SmolLM2-360M-Instruct",
+      "task_id": "ticket-routing",
+      "is_baseline": false,
+      "n": 72,
+      "metrics": {
+        "n": 72,
+        "accuracy": 0.0,
+        "macro_f1": 0.0,
+        "invalid": 72,
+        "labels": [
+          "billing",
+          "technical",
+          "delivery",
+          "returns",
+          "account",
+          "product_info",
+          "complaint",
+          "other"
+        ],
+        "per_class": [
+          {
+            "label": "billing",
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 9
+          },
+          {
+            "label": "technical",
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 9
+          },
+          {
+            "label": "delivery",
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 9
+          },
+          {
+            "label": "returns",
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 9
+          },
+          {
+            "label": "account",
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 9
+          },
+          {
+            "label": "product_info",
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 9
+          },
+          {
+            "label": "complaint",
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 9
+          },
+          {
+            "label": "other",
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 9
+          }
+        ],
+        "confusion": [
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "latency": {
+        "mean_ms": 1454.8,
+        "p50_ms": 1422.0,
+        "p95_ms": 1857.2
+      },
+      "tokens_in": 25787,
+      "tokens_out": 4182,
+      "cost_rub": null,
+      "cost_per_1k_rub": null,
+      "cost_per_correct_rub": null,
+      "errors": 0,
+      "failures": [
+        {
+          "id": "t001",
+          "expected": "billing",
+          "got": null,
+          "text": "Списали деньги дважды за один заказ, верните лишнее, пожалуйста"
+        },
+        {
+          "id": "t002",
+          "expected": "billing",
+          "got": null,
+          "text": "Не могу найти счёт-фактуру за март, где его скачать?"
+        },
+        {
+          "id": "t003",
+          "expected": "billing",
+          "got": null,
+          "text": "Оплатил картой, но заказ остался в статусе «ожидает оплаты»"
+        },
+        {
+          "id": "t004",
+          "expected": "billing",
+          "got": null,
+          "text": "Выставьте, пожалуйста, счёт на юрлицо, реквизиты прилагаю"
+        },
+        {
+          "id": "t005",
+          "expected": "billing",
+          "got": null,
+          "text": "Почему в личном кабинете сумма к оплате больше, чем в коммерческом предложении?"
+        },
+        {
+          "id": "t006",
+          "expected": "billing",
+          "got": null,
+          "text": "Как перейти на безналичный расчёт со следующего месяца?"
+        },
+        {
+          "id": "t007",
+          "expected": "billing",
+          "got": null,
+          "text": "Пришло напоминание о задолженности, хотя подписку я продлил неделю назад"
+        },
+        {
+          "id": "t008",
+          "expected": "billing",
+          "got": null,
+          "text": "Нужен акт сверки за второй квартал"
+        }
+      ],
+      "accuracy_lift": -0.8472
+    }
+  ],
+  "markdown": "# Оценка качества: Маршрутизация обращений клиентов\n\nРазмер набора: 72. Метрики: точность и macro-F1; стоимость — по ценам из настроек провайдера.\n\n| Модель | Точность | macro-F1 | Невалидных | p50, мс | p95, мс | Стоимость, ₽ | ₽ за верный ответ | Прирост к baseline |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| baseline:keywords | 84.7% | 0.854 | 0 | 1 | 1 | 0.00 | 0.0000 | +0.0 п.п. |\n| local:Qwen3-0.6B | 56.9% | 0.548 | 0 | 626 | 820 | — | — | -27.8 п.п. |\n| local:Qwen2.5-0.5B-Instruct | 36.1% | 0.308 | 1 | 449 | 513 | — | — | -48.6 п.п. |\n| local:SmolLM2-360M-Instruct | 0.0% | 0.000 | 72 | 1422 | 1857 | — | — | -84.7 п.п. |"
+}

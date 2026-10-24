@@ -35,6 +35,7 @@ export const defaultAssumptions: Assumptions = {
 };
 
 export const meta: Meta = {
+  demo_mode: false,
   version: "1.0.0",
   task_types: [
     { value: "classification", label: "Классификация и маршрутизация", tokens_in: 700, tokens_out: 60, min_quality: 3, base_automation: 0.7, implementation_days: 6 },
@@ -81,6 +82,7 @@ export const meta: Meta = {
 };
 
 export const health: Health = {
+  demo_mode: false,
   status: "ok",
   version: "1.0.0",
   database: true,
@@ -519,6 +521,7 @@ function evalReport(provider: string, accuracy: number, cost: number | null, bas
 }
 
 export const evalDemo: EvalDemo = {
+  kind: "simulated",
   task: {
     id: "ticket-routing",
     title: "Маршрутизация обращений клиентов",

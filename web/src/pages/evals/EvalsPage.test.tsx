@@ -9,7 +9,7 @@ import { CLI_SNIPPET, EvalsPage } from "./EvalsPage";
 
 function setup() {
   const api = mockFetch([{ path: "/api/evals/demo", reply: evalDemo }]);
-  renderWithMeta(<EvalsPage />);
+  renderWithMeta(<EvalsPage initialMode="simulated" />);
   return api;
 }
 

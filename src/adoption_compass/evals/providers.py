@@ -142,12 +142,14 @@ class OpenAICompatibleProvider:
         max_retries: int = 2,
         transport: httpx.BaseTransport | None = None,
         sleep: Callable[[float], None] = time.sleep,
+        extra_body: Mapping[str, object] | None = None,
     ) -> None:
         self.name = name or f"api:{model}"
         self.pricing = pricing
         self._model = model
         self._max_retries = max_retries
         self._sleep = sleep
+        self._extra_body = dict(extra_body or {})
         headers = {"Authorization": f"Bearer {api_key}"} if api_key else {}
         self._client = httpx.Client(
             base_url=base_url.rstrip("/") + "/",
@@ -157,7 +159,7 @@ class OpenAICompatibleProvider:
         )
 
     def complete(self, system: str, user: str) -> Completion:
-        payload = {
+        payload: dict[str, object] = {
             "model": self._model,
             "messages": [
                 {"role": "system", "content": system},
@@ -166,6 +168,7 @@ class OpenAICompatibleProvider:
             "temperature": 0,
             "max_tokens": 64,
         }
+        payload.update(self._extra_body)
         last_error = "неизвестная ошибка"
         for attempt in range(self._max_retries + 1):
             started = time.perf_counter()
@@ -183,6 +186,9 @@ class OpenAICompatibleProvider:
                 self._sleep(0.5 * (2**attempt))
         raise ProviderError(last_error)
 
+    def close(self) -> None:
+        self._client.close()
+
     @staticmethod
     def _parse(response: httpx.Response, user: str, system: str, started: float) -> Completion:
         latency = (time.perf_counter() - started) * 1000
@@ -191,10 +197,23 @@ class OpenAICompatibleProvider:
             text = body["choices"][0]["message"]["content"] or ""
         except (ValueError, KeyError, IndexError, TypeError) as exc:
             raise ProviderError("неожиданный формат ответа") from exc
+        if not isinstance(text, str):
+            raise ProviderError("неожиданный формат текста ответа")
         usage = body.get("usage") or {}
+        if not isinstance(usage, dict):
+            raise ProviderError("неожиданный формат usage")
+
+        def token_count(key: str, fallback: str) -> int:
+            value = usage.get(key)
+            if value is None:
+                return estimate_tokens(fallback)
+            if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+                raise ProviderError("неожиданный счётчик токенов")
+            return value
+
         return Completion(
             text=text,
             latency_ms=round(latency, 1),
-            tokens_in=int(usage.get("prompt_tokens") or estimate_tokens(system + user)),
-            tokens_out=int(usage.get("completion_tokens") or estimate_tokens(text)),
+            tokens_in=token_count("prompt_tokens", system + user),
+            tokens_out=token_count("completion_tokens", text),
         )

@@ -140,10 +140,11 @@ def reports_markdown(reports: Sequence[EvalReport], task: EvalTask) -> str:
             f"{r.metrics.invalid} | {r.latency.p50_ms:.0f} | {r.latency.p95_ms:.0f} | "
             f"{cost} | {per_correct} | {lift} |"
         )
-    lines += [
-        "",
-        "> Профили `sim:*` — детерминированный симулятор: цифры иллюстрируют работу харнесса "
-        "и не отражают качество реальных моделей.",
-        "",
-    ]
+    if any(r.provider.startswith("sim:") for r in reports):
+        lines += [
+            "",
+            "> Профили `sim:*` — детерминированный симулятор: цифры иллюстрируют работу харнесса "
+            "и не отражают качество реальных моделей.",
+            "",
+        ]
     return "\n".join(lines)

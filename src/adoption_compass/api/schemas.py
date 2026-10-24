@@ -1,7 +1,7 @@
 """Схемы запросов и ответов REST API."""
 
 from datetime import date
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -18,12 +18,12 @@ class AssumptionsOverride(BaseModel):
     """Любое допущение расчёта можно переопределить; незаданные берутся из scoring.yaml."""
 
     horizon_months: int | None = Field(None, ge=1, le=60)
-    implementation_day_rub: float | None = Field(None, ge=0)
+    implementation_day_rub: float | None = Field(None, ge=0, le=1_000_000_000)
     support_share_per_month: float | None = Field(None, ge=0, le=0.5)
     llm_overhead: float | None = Field(None, ge=1, le=5)
     error_reduction: float | None = Field(None, ge=0, le=1)
-    usd_rub: float | None = Field(None, gt=0)
-    default_hourly_cost_rub: float | None = Field(None, gt=0)
+    usd_rub: float | None = Field(None, gt=0, le=1_000_000)
+    default_hourly_cost_rub: float | None = Field(None, gt=0, le=1_000_000_000)
     impact_scale_rub: float | None = Field(None, gt=0)
     allow_workarounds: bool | None = None
     share_infrastructure: bool | None = None
@@ -88,6 +88,7 @@ class CatalogStatus(BaseModel):
 
 
 class HealthResponse(BaseModel):
+    demo_mode: bool = False
     status: str
     version: str
     database: bool
@@ -118,6 +119,7 @@ class SensitivityOut(BaseModel):
 
 
 class MetaResponse(BaseModel):
+    demo_mode: bool = False
     version: str
     task_types: list[TaskTypeOut]
     sensitivities: list[SensitivityOut]
@@ -158,6 +160,8 @@ class EvalTaskOut(BaseModel):
 
 
 class EvalDemoResponse(BaseModel):
+    kind: Literal["simulated", "measured"] = "simulated"
+    provenance: dict[str, Any] | None = None
     task: EvalTaskOut
     reports: list[EvalReport]
     markdown: str

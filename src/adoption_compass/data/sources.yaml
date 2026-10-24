@@ -1,0 +1,26 @@
+version: 1
+sources:
+  - id: openrouter-models
+    title: OpenRouter — тарифы агрегатора (не прямые тарифы разработчиков)
+    url: https://openrouter.ai/api/v1/models
+    kind: openrouter
+    max_age_days: 7
+    model_ids: [openai/gpt-5-mini, google/gemini-2.5-flash, deepseek/deepseek-v3.2]
+  - id: google-access
+    title: Google Gemini API — поддерживаемые регионы
+    url: https://ai.google.dev/gemini-api/docs/available-regions
+    kind: manual
+    max_age_days: 30
+    model_ids: []
+  - id: google-pricing
+    title: Google Gemini API — прямые тарифы и условия free tier
+    url: https://ai.google.dev/gemini-api/docs/pricing
+    kind: manual
+    max_age_days: 7
+    model_ids: []
+  - id: yandex-pricing
+    title: Yandex Cloud AI Studio — прямые тарифы
+    url: https://aistudio.yandex.ru/ru/docs/ai-studio/pricing
+    kind: manual
+    max_age_days: 7
+    model_ids: []

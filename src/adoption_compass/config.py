@@ -19,6 +19,7 @@ class Settings:
     today: date | None = None
     max_text_chars: int = 200_000
     max_upload_bytes: int = 2_000_000
+    demo_mode: bool = False
 
     @property
     def current_date(self) -> date:
@@ -40,4 +41,5 @@ class Settings:
             mcp_root=Path(source.get("COMPASS_MCP_ROOT") or Path.cwd()),
             usd_rub=float(usd_rub) if usd_rub else None,
             today=date.fromisoformat(today) if today else None,
+            demo_mode=source.get("COMPASS_DEMO_MODE", "").lower() in {"1", "true", "yes"},
         )

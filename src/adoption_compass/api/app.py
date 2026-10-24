@@ -16,15 +16,18 @@ from fastapi import (
     Request,
     UploadFile,
 )
-from fastapi.responses import FileResponse, HTMLResponse, Response
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import ValidationError
 
 from .. import __version__
 from ..advisor import AdviceResult, Preference, Workload
 from ..assessment import AssessmentResult, Process
+from ..catalog_sources import source_status
 from ..config import Settings
 from ..csv_io import CsvFormatError, parse_processes_csv
+from ..demo import DemoGuard
 from ..domain import (
     ACTION_LABELS,
     DEPLOYMENT_LABELS,
@@ -38,6 +41,7 @@ from ..domain import (
     TaskType,
 )
 from ..evals import reports_markdown, run_demo
+from ..evals.benchmark import load_benchmark
 from ..prompts import LintResult, PromptRenderError, PromptTemplate, RenderedPrompt, scaffold_prompt
 from ..reports import assessment_csv, assessment_markdown
 from ..resources import read_data_text
@@ -108,6 +112,7 @@ def _storage(svc: Services):  # type: ignore[no-untyped-def]
 @router.get("/health", response_model=HealthResponse, tags=["service"])
 def health(svc: ServicesDep) -> HealthResponse:
     return HealthResponse(
+        demo_mode=svc.settings.demo_mode,
         status="ok",
         version=__version__,
         database=_storage(svc).ping(),
@@ -135,6 +140,7 @@ def meta(svc: ServicesDep) -> MetaResponse:
     ]
     classes = svc.policy.document.classes
     return MetaResponse(
+        demo_mode=svc.settings.demo_mode,
         version=__version__,
         task_types=task_types,
         sensitivities=[
@@ -192,6 +198,12 @@ def catalog(svc: ServicesDep) -> dict[str, Any]:
 # --- подбор моделей ------------------------------------------------------------------------
 
 
+@router.get("/catalog/sources", tags=["catalog"])
+def catalog_sources(svc: ServicesDep) -> dict[str, Any]:
+    """Сохранённые снимки; сетевых запросов в обработчике нет."""
+    return source_status(svc.settings.current_date, svc.settings.data_dir)
+
+
 @router.post("/advice", response_model=AdviceResult, tags=["advisor"])
 def advice(
     workload: Workload, svc: ServicesDep, top: Annotated[int, Query(ge=1, le=20)] = 5
@@ -209,6 +221,8 @@ def _overrides(value: AssumptionsOverride | None) -> dict[str, Any] | None:
 def _compute(
     svc: Services, processes: list[Process], overrides: dict[str, Any] | None
 ) -> AssessmentResult:
+    if svc.settings.demo_mode and len(processes) > 50:
+        raise HTTPException(422, "В публичном демо доступно не более 50 процессов за запрос")
     try:
         return svc.engine.assess(processes, overrides)
     except ValueError as exc:
@@ -218,6 +232,8 @@ def _compute(
 def _persist(
     svc: Services, name: str, processes: list[Process], overrides: dict[str, Any] | None
 ) -> StoredAssessmentOut:
+    if svc.settings.demo_mode:
+        raise HTTPException(403, "В публичном демо сохранение отключено")
     result = _compute(svc, processes, overrides)
     storage = _storage(svc)
     request_payload = {
@@ -303,6 +319,9 @@ async def upload_assessment(
 )
 def demo_assessment(svc: ServicesDep) -> UploadResponse:
     """Оценка на демо-данных вымышленной компании."""
+    if svc.settings.demo_mode:
+        stored, _ = _stored_result(svc, "demo")
+        return UploadResponse(assessment=stored, parse_errors=[])
     parsed = parse_processes_csv(read_data_text("samples/processes.csv"))
     stored = _persist(svc, "Демо: ООО «Ромашка-Сервис»", parsed.processes, None)
     return UploadResponse(assessment=stored, parse_errors=parsed.errors)
@@ -527,6 +546,39 @@ def evals_demo(svc: ServicesDep) -> EvalDemoResponse:
 # --- журнал --------------------------------------------------------------------------------
 
 
+@router.get("/evals/measured", response_model=EvalDemoResponse, tags=["evals"])
+def evals_measured(svc: ServicesDep) -> EvalDemoResponse:
+    """Сохранённые реальные измерения. Запрос не запускает LLM и ничего не оплачивает."""
+    try:
+        artifact = load_benchmark(svc.settings.data_dir)
+    except (ValueError, FileNotFoundError) as exc:
+        raise HTTPException(
+            503, "Реальные измерения отсутствуют или устарели; требуется новый прогон"
+        ) from exc
+    task = svc.eval_task
+    return EvalDemoResponse(
+        kind="measured",
+        reports=artifact.reports,
+        markdown=artifact.markdown,
+        task=EvalTaskOut(
+            id=task.id,
+            title=task.title,
+            description=task.description.strip(),
+            labels=[EvalLabelOut(name=n, title=s.title) for n, s in task.labels.items()],
+            items=len(svc.eval_items),
+        ),
+        provenance={
+            "created_at": artifact.created_at.isoformat(),
+            "dataset_sha256": artifact.dataset_sha256,
+            "prompt_sha256": artifact.prompt_sha256,
+            "runtime": artifact.runtime,
+            "limitations": artifact.limitations,
+            "models": [r.model_dump(exclude={"observations"}) for r in artifact.runs],
+            "artifact_url": "https://github.com/RainCherb/ai-adoption-compass/blob/main/src/adoption_compass/data/evals/measured.json",
+        },
+    )
+
+
 @router.get("/audit", response_model=EventsResponse, tags=["service"])
 def audit(
     svc: ServicesDep,
@@ -576,6 +628,22 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         openapi_url="/api/openapi.json",
     )
     app.state.services = build_services(settings)
+
+    @app.exception_handler(RequestValidationError)
+    async def validation_error(request: Request, exc: RequestValidationError) -> JSONResponse:
+        # Не возвращаем исходные тексты/ключи и не сериализуем Infinity из ошибочного JSON.
+        return JSONResponse(
+            status_code=422,
+            content={
+                "detail": [
+                    {"loc": list(error["loc"]), "msg": error["msg"], "type": error["type"]}
+                    for error in exc.errors()
+                ]
+            },
+        )
+
+    if settings.demo_mode:
+        app.add_middleware(DemoGuard)
 
     @app.middleware("http")
     async def security_headers(

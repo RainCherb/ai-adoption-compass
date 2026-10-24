@@ -68,7 +68,7 @@ class Workload(BaseModel):
     tokens_in: int = Field(gt=0, le=2_000_000, description="среднее число входных токенов")
     tokens_out: int = Field(ge=0, le=2_000_000, description="среднее число выходных токенов")
     min_quality: int = Field(3, ge=1, le=5)
-    monthly_budget_rub: float | None = Field(None, gt=0)
+    monthly_budget_rub: float | None = Field(None, gt=0, le=1_000_000_000_000_000)
     needs_vision: bool = False
     needs_tool_calling: bool = False
     min_context_tokens: int | None = Field(None, gt=0)

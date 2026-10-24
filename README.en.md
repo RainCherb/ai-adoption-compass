@@ -24,6 +24,15 @@ dashboard, a CLI, a REST API and an MCP server for coding agents.
 > The product UI, templates, policy and documentation are in Russian (the target audience is Russian-speaking
 > companies); code identifiers and API fields are in English. The methodology itself is language-independent.
 
+## New in 1.1
+
+* A public demo mode with a preloaded 18-process assessment, what-if calculations and no shared visitor data storage.
+  Docker deployment on Render Free is described in [public demo operations](docs/PUBLIC_DEMO.md).
+* Real, free local runs of Qwen2.5-0.5B, Qwen3-0.6B and SmolLM2-360M on the same 72 tickets. The keyword baseline
+  outperformed all three; see the [measured report and reproduction guide](docs/REAL_EVALS.md).
+* Managed pricing/access sources with dated snapshots, SHA-256, expiry, manual review and a weekly review artifact.
+  [Source governance](docs/CATALOG_SOURCES.md) keeps aggregator offers separate from illustrative expert scores.
+
 ## What it answers
 
 | Question | What the toolkit does |

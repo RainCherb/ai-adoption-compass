@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "snapshots": [
+    {
+      "source_id": "openrouter-models",
+      "url": "https://openrouter.ai/api/v1/models",
+      "fetched_at": "2026-10-24T17:04:17.060751Z",
+      "content_sha256": "73a0e24eeffee220f87e26ae68b6e758a65623bd567b05a7e8fa05263cb4997b",
+      "status": "machine_checked",
+      "offers": [
+        {
+          "model_id": "openai/gpt-5-mini",
+          "name": "OpenAI: GPT-5 Mini",
+          "currency": "USD",
+          "input_per_mtok": 0.25,
+          "output_per_mtok": 2.0,
+          "context_window": 400000
+        },
+        {
+          "model_id": "google/gemini-2.5-flash",
+          "name": "Google: Gemini 2.5 Flash",
+          "currency": "USD",
+          "input_per_mtok": 0.3,
+          "output_per_mtok": 2.5,
+          "context_window": 1048576
+        },
+        {
+          "model_id": "deepseek/deepseek-v3.2",
+          "name": "DeepSeek: DeepSeek V3.2",
+          "currency": "USD",
+          "input_per_mtok": 0.28,
+          "output_per_mtok": 0.42,
+          "context_window": 163840
+        }
+      ],
+      "review_note": "Тарифы за 1 млн токенов, USD, стандартный вход/выход без кеша, налогов и дополнительных услуг."
+    },
+    {
+      "source_id": "google-access",
+      "url": "https://ai.google.dev/gemini-api/docs/available-regions",
+      "fetched_at": "2026-10-24T17:04:18.074179Z",
+      "content_sha256": "a9f84bc24a77b41e378f1454fda6f77b1565140fd9ce251bee21d8befb846a1d",
+      "status": "review_required",
+      "offers": [],
+      "review_note": "Страница получена. Содержание и доступность из региона требуют ручного ревью; получение HTTP 200 не подтверждает доступ из РФ."
+    },
+    {
+      "source_id": "google-pricing",
+      "url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "fetched_at": "2026-10-24T17:04:18.626656Z",
+      "content_sha256": "addef5b28c26db94b8f81d30b1577ba26f53db5b7620f9b7a346830d80534d2a",
+      "status": "review_required",
+      "offers": [],
+      "review_note": "Страница получена. Содержание и доступность из региона требуют ручного ревью; получение HTTP 200 не подтверждает доступ из РФ."
+    },
+    {
+      "source_id": "yandex-pricing",
+      "url": "https://aistudio.yandex.ru/ru/docs/ai-studio/pricing",
+      "fetched_at": "2026-10-24T17:04:18.800349Z",
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": "unavailable",
+      "offers": [],
+      "review_note": "Источник недоступен или формат изменился. Не использовать для решений; требуется ручная проверка."
+    }
+  ]
+}
