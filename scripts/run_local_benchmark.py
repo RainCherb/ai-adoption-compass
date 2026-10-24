@@ -8,6 +8,7 @@ import argparse
 import hashlib
 import json
 import platform
+import socket
 import subprocess
 import time
 from pathlib import Path
@@ -36,6 +37,9 @@ def main() -> None:
     runs, reports = [], []
     args.out.parent.mkdir(parents=True, exist_ok=True)
     for spec in [entry for entry in manifest if "repo" in entry]:
+        # Не подключаться к чужому серверу на том же порту под именем другой модели.
+        with socket.socket() as probe:
+            probe.bind(("127.0.0.1", args.port))
         weights = (args.models_dir / spec["file"]).resolve(strict=True)
         with weights.open("rb") as source:
             if hashlib.file_digest(source, "sha256").hexdigest() != spec["sha256"]:
