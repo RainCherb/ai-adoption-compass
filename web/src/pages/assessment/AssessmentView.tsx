@@ -92,7 +92,7 @@ export function AssessmentView({ stored, onSaved }: AssessmentViewProps) {
           }
           actions={
             <>
-              <Button size="sm" variant="primary" icon="check" loading={saveCopy.pending} onClick={() => void onSaveCopy()}>
+              <Button size="sm" variant="primary" icon="check" disabled={meta.demo_mode} loading={saveCopy.pending} onClick={() => void onSaveCopy()}>
                 Сохранить как новую оценку
               </Button>
               <Button size="sm" variant="ghost" onClick={() => setWhatIf(null)}>

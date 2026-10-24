@@ -7,6 +7,7 @@ import { formatLatency, formatPercent, formatPointsDelta, formatRub, formatRubPr
 export function providerKind(provider: string): { label: string; tone: "neutral" | "info" | "accent" } {
   if (provider.startsWith("baseline")) return { label: "правила", tone: "neutral" };
   if (provider.startsWith("sim:")) return { label: "симуляция", tone: "info" };
+  if (provider.startsWith("local:")) return { label: "локальная LLM", tone: "accent" };
   return { label: "API", tone: "accent" };
 }
 

@@ -4,6 +4,7 @@ import type { AsyncState } from "../../hooks/useAsync";
 import type { Theme } from "../../hooks/useTheme";
 import { ROUTES, type RouteId } from "../../lib/routes";
 import { Icon } from "../ui/Icon";
+import { Banner } from "../ui/Banner";
 import { Logo } from "./Logo";
 import { NavList } from "./NavList";
 import { StatusChip } from "./StatusChip";
@@ -55,7 +56,7 @@ export function AppShell({ route, theme, onToggleTheme, health, children }: AppS
         </nav>
         <p className="sidebar__note">
           <Icon name="lock" size={14} />
-          Тексты обрабатываются локально и не уходят во внешние сервисы.
+          Данные не передаются провайдерам LLM. В публичном демо используйте только вымышленные примеры.
         </p>
       </aside>
 
@@ -86,6 +87,13 @@ export function AppShell({ route, theme, onToggleTheme, health, children }: AppS
         ) : null}
 
         <main id="main" ref={mainRef} className="content" tabIndex={-1}>
+          {health.data?.demo_mode ? (
+            <Banner tone="info" title="Публичное интерактивное демо">
+              Начните с готовой оценки 18 процессов, измените допущения и сравните результат. Подбор моделей,
+              обезличивание и промпты работают на сервере демо. Используйте вымышленные данные: ввод передаётся
+              этому серверу, но не сохраняется. Загрузка CSV и сохранение оценок отключены.
+            </Banner>
+          ) : null}
           {children}
         </main>
 

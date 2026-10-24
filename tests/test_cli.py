@@ -7,7 +7,7 @@ import httpx
 import pytest
 from typer.testing import CliRunner
 
-from adoption_compass import cli
+from adoption_compass import __version__, cli
 from adoption_compass.evals import OpenAICompatibleProvider
 from adoption_compass.resources import read_data_text
 from adoption_compass.safety import Policy
@@ -29,7 +29,7 @@ def sample_csv(tmp_path: Path) -> Path:
 
 
 def test_version_and_help():
-    assert run("--version").stdout.strip() == "compass 1.0.0"
+    assert run("--version").stdout.strip() == f"compass {__version__}"
     result = run("--help")
     assert result.exit_code == 0
     for command in (

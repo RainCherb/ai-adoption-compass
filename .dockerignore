@@ -1,6 +1,8 @@
 .git
 .github
 .venv
+.local
+.serena
 .hoplite
 .env
 .env.*

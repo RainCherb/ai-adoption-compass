@@ -263,6 +263,7 @@
           "default_hourly_cost_rub": {
             "default": 800,
             "exclusiveMinimum": 0.0,
+            "maximum": 1000000000.0,
             "title": "Default Hourly Cost Rub",
             "type": "number"
           },
@@ -288,6 +289,7 @@
           },
           "implementation_day_rub": {
             "default": 25000,
+            "maximum": 1000000000.0,
             "minimum": 0.0,
             "title": "Implementation Day Rub",
             "type": "number"
@@ -314,6 +316,7 @@
           "usd_rub": {
             "default": 90.0,
             "exclusiveMinimum": 0.0,
+            "maximum": 1000000.0,
             "title": "Usd Rub",
             "type": "number"
           }
@@ -339,6 +342,7 @@
             "anyOf": [
               {
                 "exclusiveMinimum": 0.0,
+                "maximum": 1000000000.0,
                 "type": "number"
               },
               {
@@ -388,6 +392,7 @@
           "implementation_day_rub": {
             "anyOf": [
               {
+                "maximum": 1000000000.0,
                 "minimum": 0.0,
                 "type": "number"
               },
@@ -438,6 +443,7 @@
             "anyOf": [
               {
                 "exclusiveMinimum": 0.0,
+                "maximum": 1000000.0,
                 "type": "number"
               },
               {
@@ -609,9 +615,30 @@
       },
       "EvalDemoResponse": {
         "properties": {
+          "kind": {
+            "default": "simulated",
+            "enum": [
+              "simulated",
+              "measured"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
           "markdown": {
             "title": "Markdown",
             "type": "string"
+          },
+          "provenance": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provenance"
           },
           "reports": {
             "items": {
@@ -1007,6 +1034,11 @@
             "title": "Database",
             "type": "boolean"
           },
+          "demo_mode": {
+            "default": false,
+            "title": "Demo Mode",
+            "type": "boolean"
+          },
           "status": {
             "title": "Status",
             "type": "string"
@@ -1208,6 +1240,11 @@
             "additionalProperties": true,
             "title": "Default Assumptions",
             "type": "object"
+          },
+          "demo_mode": {
+            "default": false,
+            "title": "Demo Mode",
+            "type": "boolean"
           },
           "deployments": {
             "items": {
@@ -1623,6 +1660,7 @@
           },
           "error_cost_rub": {
             "default": 0,
+            "maximum": 1000000000000.0,
             "minimum": 0.0,
             "title": "Error Cost Rub",
             "type": "number"
@@ -1638,6 +1676,7 @@
             "anyOf": [
               {
                 "exclusiveMinimum": 0.0,
+                "maximum": 1000000000.0,
                 "type": "number"
               },
               {
@@ -1696,6 +1735,7 @@
             "anyOf": [
               {
                 "exclusiveMinimum": 0.0,
+                "maximum": 2000000.0,
                 "type": "integer"
               },
               {
@@ -1707,6 +1747,7 @@
           "tokens_out": {
             "anyOf": [
               {
+                "maximum": 2000000.0,
                 "minimum": 0.0,
                 "type": "integer"
               },
@@ -2685,6 +2726,7 @@
             "anyOf": [
               {
                 "exclusiveMinimum": 0.0,
+                "maximum": 1000000000000000.0,
                 "type": "number"
               },
               {
@@ -2750,7 +2792,7 @@
   "info": {
     "summary": "Оценка процессов и ROI, подбор моделей, защита данных, шаблоны промптов.",
     "title": "AI Adoption Compass API",
-    "version": "1.0.0"
+    "version": "1.1.0"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -3242,6 +3284,30 @@
         ]
       }
     },
+    "/api/catalog/sources": {
+      "get": {
+        "description": "Сохранённые снимки; сетевых запросов в обработчике нет.",
+        "operationId": "catalog_sources_api_catalog_sources_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Catalog Sources Api Catalog Sources Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Catalog Sources",
+        "tags": [
+          "catalog"
+        ]
+      }
+    },
     "/api/evals/demo": {
       "get": {
         "description": "Офлайн-сравнение baseline и симулируемых моделей на встроенном наборе обращений.",
@@ -3259,6 +3325,28 @@
           }
         },
         "summary": "Evals Demo",
+        "tags": [
+          "evals"
+        ]
+      }
+    },
+    "/api/evals/measured": {
+      "get": {
+        "description": "Сохранённые реальные измерения. Запрос не запускает LLM и ничего не оплачивает.",
+        "operationId": "evals_measured_api_evals_measured_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvalDemoResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Evals Measured",
         "tags": [
           "evals"
         ]

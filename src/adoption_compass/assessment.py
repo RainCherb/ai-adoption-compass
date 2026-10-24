@@ -38,16 +38,16 @@ class Process(BaseModel):
     task_type: TaskType
     runs_per_month: int = Field(gt=0, le=100_000_000)
     minutes_per_run: float = Field(gt=0, le=100_000)
-    hourly_cost_rub: float | None = Field(None, gt=0)
+    hourly_cost_rub: float | None = Field(None, gt=0, le=1_000_000_000)
     error_rate: float = Field(0.05, ge=0, le=1)
-    error_cost_rub: float = Field(0, ge=0)
+    error_cost_rub: float = Field(0, ge=0, le=1_000_000_000_000)
     standardization: int = Field(3, ge=1, le=5)
     digital_readiness: int = Field(3, ge=1, le=5)
     risk_level: int = Field(2, ge=1, le=5)
     data_sensitivity: Sensitivity = Sensitivity.INTERNAL
     must_self_host: bool = False
-    tokens_in: int | None = Field(None, gt=0)
-    tokens_out: int | None = Field(None, ge=0)
+    tokens_in: int | None = Field(None, gt=0, le=2_000_000)
+    tokens_out: int | None = Field(None, ge=0, le=2_000_000)
 
 
 class ModelPick(BaseModel):

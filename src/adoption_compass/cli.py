@@ -666,6 +666,55 @@ def eval_run(
 # --- каталог --------------------------------------------------------------------------------
 
 
+@catalog_app.command("sources")
+def catalog_sources() -> None:
+    """Снимки управляемых источников тарифов и условий доступа (без сети)."""
+    from .catalog_sources import source_status
+
+    settings = Settings.from_env()
+    typer.echo(
+        json.dumps(
+            source_status(settings.current_date, settings.data_dir), ensure_ascii=False, indent=2
+        )
+    )
+
+
+@catalog_app.command("refresh-sources")
+def catalog_refresh_sources(
+    out: Annotated[Path, typer.Option("--out", "-o", help="Новый JSON-снимок для ревью.")],
+) -> None:
+    """Получить источники из реестра. Не меняет основной каталог и оценки качества."""
+    import httpx
+
+    from .catalog_sources import load_registry, refresh_sources, write_bundle
+
+    with httpx.Client(timeout=30) as client:
+        bundle = refresh_sources(load_registry(Settings.from_env().data_dir), client)
+    write_bundle(bundle, out)
+    typer.echo(str(out))
+    if any(snapshot.status == "unavailable" for snapshot in bundle.snapshots):
+        raise typer.Exit(1)
+
+
+@catalog_app.command("review-source")
+def catalog_review_source(
+    snapshot: Annotated[Path, typer.Argument(help="JSON-снимок для ревью.")],
+    source_id: Annotated[str, typer.Option(help="ID источника в реестре.")],
+    sha256: Annotated[str, typer.Option(help="Проверенный SHA-256 содержимого источника.")],
+    reviewer: Annotated[str, typer.Option(help="Автор ревью.")],
+    note: Annotated[str, typer.Option(help="Заключение, включая ограничения доступа.")],
+) -> None:
+    """Подтвердить точный снимок после ручной проверки; основной каталог не меняется."""
+    from .catalog_sources import SourceBundle, review_snapshot, write_bundle
+
+    try:
+        bundle = SourceBundle.model_validate_json(snapshot.read_text(encoding="utf-8"))
+        write_bundle(review_snapshot(bundle, source_id, sha256, reviewer, note), snapshot)
+    except (ValueError, OSError) as exc:
+        raise typer.BadParameter(str(exc)) from exc
+    typer.echo(f"Ревью сохранено: {source_id}")
+
+
 @catalog_app.command("check")
 def catalog_check(
     max_age_days: Annotated[

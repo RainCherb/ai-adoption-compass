@@ -6,11 +6,14 @@ from .advisor import Advisor
 from .assessment import AssessmentEngine
 from .catalog import Catalog, load_catalog
 from .config import Settings
+from .csv_io import parse_processes_csv
+from .demo import DemoStorage
 from .evals import EvalItem, EvalTask, load_items, load_task
 from .prompts import PromptLibrary, PromptLinter
+from .resources import read_data_text
 from .safety import Policy, SafetyGuard
 from .scoring import ScoringConfig, load_scoring
-from .storage import Storage
+from .storage import Storage, StoredAssessment
 
 
 @dataclass
@@ -51,7 +54,7 @@ def build_services(settings: Settings | None = None, *, with_storage: bool = Tru
         today=settings.current_date,
     )
     task = load_task(data_dir)
-    return Services(
+    services = Services(
         settings=settings,
         catalog=catalog,
         policy=policy,
@@ -63,5 +66,22 @@ def build_services(settings: Settings | None = None, *, with_storage: bool = Tru
         engine=AssessmentEngine(scoring, advisor),
         eval_task=task,
         eval_items=load_items(task, data_dir),
-        storage=Storage(settings.db_path) if with_storage else None,
+        storage=Storage(settings.db_path) if with_storage and not settings.demo_mode else None,
     )
+    if with_storage and settings.demo_mode:
+        processes = parse_processes_csv(read_data_text("samples/processes.csv")).processes
+        result = services.engine.assess(processes)
+        services.storage = DemoStorage(
+            StoredAssessment(
+                id="demo",
+                name="Демо: ООО «Ромашка-Сервис»",
+                created_at="2026-10-24T00:00:00+00:00",
+                processes_count=len(processes),
+                recommended_count=result.summary.recommended_count,
+                hours_saved_month=result.summary.hours_saved_month,
+                net_horizon_rub=result.summary.net_horizon_rub,
+                request={"processes": [p.model_dump(mode="json") for p in processes]},
+                result=result.model_dump(mode="json"),
+            )
+        )
+    return services

@@ -1574,3 +1574,6 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+.fingerprint { overflow-wrap: anywhere; word-break: break-all; }
+.content > .banner { margin-bottom: 1.25rem; }
+.button-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.25rem; }

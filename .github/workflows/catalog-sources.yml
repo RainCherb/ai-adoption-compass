@@ -1,0 +1,29 @@
+name: Catalog source review
+
+on:
+  schedule:
+    - cron: "23 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip install .
+      - name: Получить снимки для ревью
+        # Недоступный источник остаётся явно помеченным в артефакте; каталог не меняется.
+        run: compass catalog refresh-sources --out candidate/source-snapshots.json
+        continue-on-error: true
+      - uses: actions/upload-artifact@v7
+        with:
+          name: catalog-source-candidate
+          path: candidate/source-snapshots.json
+          if-no-files-found: error
+          retention-days: 30

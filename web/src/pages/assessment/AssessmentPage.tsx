@@ -32,6 +32,7 @@ export function AssessmentPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [removedIds, setRemovedIds] = useState<readonly string[]>([]);
   const [report, setReport] = useState<ImportReport | null>(null);
+  const [demoReset, setDemoReset] = useState(0);
 
   const saved = useAsync((signal) => listAssessments(50, signal), "assessments");
   const items = useMemo(() => (saved.data ?? []).filter((item) => !removedIds.includes(item.id)), [saved.data, removedIds]);
@@ -54,7 +55,10 @@ export function AssessmentPage() {
   const onDemo = async () => {
     setReport(null);
     const created = await demo.run();
-    if (created) show(created.assessment);
+    if (created) {
+      setDemoReset((version) => version + 1);
+      show(created.assessment);
+    }
   };
 
   const onFile = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -84,25 +88,25 @@ export function AssessmentPage() {
     <>
       <PageHeader
         title="Оценка процессов"
-        lead="Загрузите список процессов компании и получите экономию времени, окупаемость, подходящие модели и очередность внедрения."
+        lead={meta.demo_mode ? "Изучите 18 процессов вымышленной компании: экономию времени, окупаемость, подходящие модели и очередность внедрения." : "Загрузите список процессов компании и получите экономию времени, окупаемость, подходящие модели и очередность внедрения."}
       />
 
       <section className="card intro" aria-label="Загрузка данных">
         <div className="intro__text">
           <p>
-            Не знаете, с чего начать? Откройте демо-данные вымышленной компании: 18 процессов поддержки, продаж, HR и
+            {meta.demo_mode ? "Оценка уже готова. Откройте «Допущения», измените горизонт или стоимость внедрения и нажмите «Пересчитать». Нажмите на процесс, чтобы увидеть экономику и риски. Кнопка ниже вернёт исходный расчёт." : <>Не знаете, с чего начать? Откройте демо-данные вымышленной компании: 18 процессов поддержки, продаж, HR и
             бухгалтерии. Свои данные загрузите в CSV — обязательны столбцы <code>name</code>, <code>task_type</code>,{" "}
-            <code>runs_per_month</code>, <code>minutes_per_run</code>, остальные подставятся по умолчанию.
+            <code>runs_per_month</code>, <code>minutes_per_run</code>, остальные подставятся по умолчанию.</>}
           </p>
           <p className="muted small">
-            Файл до {formatBytes(meta.limits["max_upload_bytes"])}. Данные остаются на этом сервере и никуда не передаются.
+            {meta.demo_mode ? "Публичное демо: готовая оценка доступна сразу. Можно менять допущения; загрузка и сохранение отключены." : `Файл до ${formatBytes(meta.limits["max_upload_bytes"])}. Данные остаются на этом сервере и никуда не передаются.`}
           </p>
         </div>
         <div className="intro__actions">
           <Button variant="primary" icon="sparkles" loading={demo.pending} disabled={busy} onClick={() => void onDemo()}>
-            Загрузить демо-данные
+            {meta.demo_mode ? "Вернуть исходный расчёт" : "Загрузить демо-данные"}
           </Button>
-          <Button icon="upload" loading={upload.pending} disabled={busy} onClick={() => fileInput.current?.click()}>
+          <Button icon="upload" loading={upload.pending} disabled={busy || meta.demo_mode} onClick={() => fileInput.current?.click()}>
             Загрузить CSV
           </Button>
           <input
@@ -145,7 +149,7 @@ export function AssessmentPage() {
         </Banner>
       ) : null}
 
-      <section className="section" aria-labelledby="saved-title">
+      {!meta.demo_mode ? <section className="section" aria-labelledby="saved-title">
         <h2 id="saved-title" className="section__title">
           Сохранённые оценки
         </h2>
@@ -169,7 +173,7 @@ export function AssessmentPage() {
             onDelete={(id) => void onDelete(id)}
           />
         ) : null}
-      </section>
+      </section> : null}
 
       {detail.error ? <ErrorBanner error={detail.error} onRetry={detail.reload} title="Не удалось открыть оценку" /> : null}
       {detail.loading ? (
@@ -179,7 +183,7 @@ export function AssessmentPage() {
         </LoadingRegion>
       ) : null}
       {!detail.loading && detail.data && !detail.error ? (
-        <AssessmentView key={detail.data.id} stored={detail.data} onSaved={(id) => { setSelectedId(id); saved.reload(); }} />
+        <AssessmentView key={`${detail.data.id}:${demoReset}`} stored={detail.data} onSaved={(id) => { setSelectedId(id); saved.reload(); }} />
       ) : null}
     </>
   );

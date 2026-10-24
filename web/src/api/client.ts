@@ -171,3 +171,18 @@ export const scaffoldPrompt = (task: string, role?: string, signal?: AbortSignal
 // --- качество моделей --------------------------------------------------------------------------
 
 export const getEvalDemo = (signal?: AbortSignal) => request<EvalDemo>("/api/evals/demo", { signal });
+export const getMeasuredEvals = (signal?: AbortSignal) => request<EvalDemo>("/api/evals/measured", { signal });
+
+export interface CatalogSources {
+  disclaimer: string;
+  sources: {
+    id: string; title: string; url: string; stale: boolean; age_days: number | null;
+    snapshot: null | {
+      fetched_at: string; content_sha256: string;
+      status: "machine_checked" | "review_required" | "unavailable" | "reviewed";
+      review_note: string;
+      offers: { model_id: string; name: string; input_per_mtok: number; output_per_mtok: number; currency: string }[];
+    };
+  }[];
+}
+export const getCatalogSources = (signal?: AbortSignal) => request<CatalogSources>("/api/catalog/sources", { signal });

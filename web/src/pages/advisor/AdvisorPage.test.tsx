@@ -11,6 +11,7 @@ function setup(adviceReply: unknown = advice) {
   const api = mockFetch([
     { method: "POST", path: "/api/advice", reply: adviceReply },
     { path: "/api/catalog", reply: catalog },
+    { path: "/api/catalog/sources", reply: { sources: [], disclaimer: "Проверяемые источники" } },
   ]);
   renderWithMeta(<AdvisorPage />);
   const adviceCalls = () => api.callsTo("POST", "/api/advice");

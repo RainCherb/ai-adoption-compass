@@ -182,6 +182,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/catalog/sources": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Catalog Sources
+         * @description Сохранённые снимки; сетевых запросов в обработчике нет.
+         */
+        get: operations["catalog_sources_api_catalog_sources_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/evals/demo": {
         parameters: {
             query?: never;
@@ -194,6 +214,26 @@ export interface paths {
          * @description Офлайн-сравнение baseline и симулируемых моделей на встроенном наборе обращений.
          */
         get: operations["evals_demo_api_evals_demo_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/evals/measured": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Evals Measured
+         * @description Сохранённые реальные измерения. Запрос не запускает LLM и ничего не оплачивает.
+         */
+        get: operations["evals_measured_api_evals_measured_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -634,8 +674,18 @@ export interface components {
         Deployment: "ru_cloud" | "foreign_cloud" | "self_hosted";
         /** EvalDemoResponse */
         EvalDemoResponse: {
+            /**
+             * Kind
+             * @default simulated
+             * @enum {string}
+             */
+            kind: "simulated" | "measured";
             /** Markdown */
             markdown: string;
+            /** Provenance */
+            provenance?: {
+                [key: string]: unknown;
+            } | null;
             /** Reports */
             reports: components["schemas"]["EvalReport"][];
             task: components["schemas"]["EvalTaskOut"];
@@ -771,6 +821,11 @@ export interface components {
             catalog: components["schemas"]["CatalogStatus"];
             /** Database */
             database: boolean;
+            /**
+             * Demo Mode
+             * @default false
+             */
+            demo_mode: boolean;
             /** Status */
             status: string;
             /** Version */
@@ -847,6 +902,11 @@ export interface components {
             default_assumptions: {
                 [key: string]: unknown;
             };
+            /**
+             * Demo Mode
+             * @default false
+             */
+            demo_mode: boolean;
             /** Deployments */
             deployments: components["schemas"]["OptionOut"][];
             /** Limits */
@@ -1796,7 +1856,49 @@ export interface operations {
             };
         };
     };
+    catalog_sources_api_catalog_sources_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+        };
+    };
     evals_demo_api_evals_demo_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EvalDemoResponse"];
+                };
+            };
+        };
+    };
+    evals_measured_api_evals_measured_get: {
         parameters: {
             query?: never;
             header?: never;
