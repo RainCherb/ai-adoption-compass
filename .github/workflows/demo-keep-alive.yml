@@ -1,0 +1,43 @@
+name: Demo keep-alive
+
+on:
+  schedule:
+    # Смещение от начала часа уменьшает вероятность очереди GitHub Actions.
+    - cron: "7,17,27,37,47,57 * * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: demo-keep-alive
+  cancel-in-progress: false
+
+jobs:
+  ping:
+    name: Проверить публичное демо
+    if: github.repository == 'RainCherb/ai-adoption-compass' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    env:
+      DEMO_HEALTH_URL: https://ai-adoption-compass-demo.onrender.com/api/health
+    steps:
+      - name: Запросить healthcheck с ожиданием холодного старта
+        shell: bash
+        run: |
+          curl --fail --silent --show-error \
+            --proto '=https' --connect-timeout 10 --max-time 75 \
+            --retry 1 --retry-delay 5 --retry-max-time 90 --retry-all-errors \
+            --output "$RUNNER_TEMP/demo-health.json" "$DEMO_HEALTH_URL"
+      - name: Подтвердить готовность и публичный режим
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          payload = json.loads((Path(os.environ["RUNNER_TEMP"]) / "demo-health.json").read_text())
+          if payload.get("status") != "ok" or payload.get("demo_mode") is not True:
+              raise SystemExit("Демо не готово или публичный режим отключён")
+          print(f"Демо доступно: версия {payload.get('version', 'unknown')}, demo_mode=true")
+          PY
