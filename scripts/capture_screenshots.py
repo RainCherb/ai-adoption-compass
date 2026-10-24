@@ -55,7 +55,8 @@ def shot(page: Page, name: str, height: int = 900) -> None:
     page.set_viewport_size({"width": WIDTH, "height": height})
     page.evaluate("window.scrollTo(0, 0)")
     settle(page)
-    path = OUT / f"{name}.png"
+    extension = "jpg" if name in {"advisor", "evals", "cashflow"} else "png"
+    path = OUT / f"{name}.{extension}"
     page.screenshot(path=str(path))
     print(f"Записано: {path.relative_to(ROOT)}")
 
