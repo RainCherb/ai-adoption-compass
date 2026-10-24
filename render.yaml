@@ -1,11 +1,13 @@
 services:
   - type: web
     name: ai-adoption-compass-demo
+    repo: https://github.com/RainCherb/ai-adoption-compass
+    branch: main
+    region: frankfurt
     runtime: docker
     plan: free
     dockerfilePath: ./Dockerfile
     healthCheckPath: /api/health
-    dockerCommand: sh -c 'uvicorn adoption_compass.api.app:create_app --factory --host 0.0.0.0 --port ${PORT:-8000} --limit-concurrency 32 --no-access-log'
     envVars:
       - key: COMPASS_DEMO_MODE
         value: "1"

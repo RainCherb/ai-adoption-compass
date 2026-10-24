@@ -9,12 +9,13 @@ permissions:
   contents: read
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: workflow-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   backend:
     name: Backend (Python ${{ matrix.python }})
+    timeout-minutes: 15
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -54,6 +55,7 @@ jobs:
 
   frontend:
     name: Frontend (Node 24)
+    timeout-minutes: 15
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -73,6 +75,7 @@ jobs:
 
   docker:
     name: Docker-образ
+    timeout-minutes: 15
     runs-on: ubuntu-latest
     needs: [backend, frontend]
     steps:
@@ -89,3 +92,10 @@ jobs:
       - name: Журнал контейнера
         if: always()
         run: docker logs compass || true
+      - name: Публичный demo mode — HTTP smoke
+        run: |
+          docker run -d --name compass-demo -e COMPASS_DEMO_MODE=1 -e PORT=8010 -p 8001:8010 ai-adoption-compass:ci
+          python3 scripts/smoke_demo.py --base-url http://127.0.0.1:8001
+      - name: Журнал demo-контейнера
+        if: always()
+        run: docker logs compass-demo || true
