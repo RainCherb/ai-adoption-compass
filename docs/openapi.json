@@ -1,0 +1,3675 @@
+{
+  "components": {
+    "schemas": {
+      "Action": {
+        "description": "Решение политики для пары «категория данных — размещение модели».",
+        "enum": [
+          "allow",
+          "mask",
+          "deny"
+        ],
+        "title": "Action",
+        "type": "string"
+      },
+      "AdviceResult": {
+        "properties": {
+          "catalog_as_of": {
+            "format": "date",
+            "title": "Catalog As Of",
+            "type": "string"
+          },
+          "data_status": {
+            "title": "Data Status",
+            "type": "string"
+          },
+          "excluded": {
+            "items": {
+              "$ref": "#/components/schemas/Exclusion"
+            },
+            "title": "Excluded",
+            "type": "array"
+          },
+          "notes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Notes",
+            "type": "array"
+          },
+          "recommendations": {
+            "items": {
+              "$ref": "#/components/schemas/Recommendation"
+            },
+            "title": "Recommendations",
+            "type": "array"
+          },
+          "usd_rub": {
+            "title": "Usd Rub",
+            "type": "number"
+          },
+          "workload": {
+            "$ref": "#/components/schemas/Workload"
+          }
+        },
+        "required": [
+          "workload",
+          "recommendations",
+          "excluded",
+          "notes",
+          "catalog_as_of",
+          "data_status",
+          "usd_rub"
+        ],
+        "title": "AdviceResult",
+        "type": "object"
+      },
+      "AnalyzeRequest": {
+        "properties": {
+          "declared_sensitivity": {
+            "$ref": "#/components/schemas/Sensitivity",
+            "default": "internal"
+          },
+          "include_mapping": {
+            "default": false,
+            "title": "Include Mapping",
+            "type": "boolean"
+          },
+          "text": {
+            "maxLength": 200000,
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "title": "AnalyzeRequest",
+        "type": "object"
+      },
+      "AnalyzeResponse": {
+        "properties": {
+          "chars": {
+            "title": "Chars",
+            "type": "integer"
+          },
+          "counts": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Counts",
+            "type": "object"
+          },
+          "decisions": {
+            "items": {
+              "$ref": "#/components/schemas/Decision"
+            },
+            "title": "Decisions",
+            "type": "array"
+          },
+          "declared_sensitivity": {
+            "$ref": "#/components/schemas/Sensitivity"
+          },
+          "detected_sensitivity": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Sensitivity"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "effective_sensitivity": {
+            "$ref": "#/components/schemas/Sensitivity"
+          },
+          "findings": {
+            "items": {
+              "$ref": "#/components/schemas/FindingOut"
+            },
+            "title": "Findings",
+            "type": "array"
+          },
+          "has_secrets": {
+            "title": "Has Secrets",
+            "type": "boolean"
+          },
+          "mapping": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mapping"
+          },
+          "masked_text": {
+            "title": "Masked Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "chars",
+          "findings",
+          "counts",
+          "declared_sensitivity",
+          "detected_sensitivity",
+          "effective_sensitivity",
+          "has_secrets",
+          "decisions",
+          "masked_text"
+        ],
+        "title": "AnalyzeResponse",
+        "type": "object"
+      },
+      "AssessmentRequest": {
+        "properties": {
+          "assumptions": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AssumptionsOverride"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "name": {
+            "default": "Без названия",
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "processes": {
+            "items": {
+              "$ref": "#/components/schemas/Process"
+            },
+            "maxItems": 2000,
+            "minItems": 1,
+            "title": "Processes",
+            "type": "array"
+          }
+        },
+        "required": [
+          "processes"
+        ],
+        "title": "AssessmentRequest",
+        "type": "object"
+      },
+      "AssessmentResult": {
+        "properties": {
+          "assumptions": {
+            "$ref": "#/components/schemas/Assumptions"
+          },
+          "catalog_as_of": {
+            "format": "date",
+            "title": "Catalog As Of",
+            "type": "string"
+          },
+          "data_status": {
+            "title": "Data Status",
+            "type": "string"
+          },
+          "processes": {
+            "items": {
+              "$ref": "#/components/schemas/ProcessResult"
+            },
+            "title": "Processes",
+            "type": "array"
+          },
+          "roadmap": {
+            "items": {
+              "$ref": "#/components/schemas/RoadmapWave"
+            },
+            "title": "Roadmap",
+            "type": "array"
+          },
+          "summary": {
+            "$ref": "#/components/schemas/PortfolioSummary"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "assumptions",
+          "processes",
+          "summary",
+          "roadmap",
+          "warnings",
+          "catalog_as_of",
+          "data_status"
+        ],
+        "title": "AssessmentResult",
+        "type": "object"
+      },
+      "Assumptions": {
+        "description": "Допущения расчёта. Любое поле можно переопределить в запросе.",
+        "properties": {
+          "allow_workarounds": {
+            "default": false,
+            "title": "Allow Workarounds",
+            "type": "boolean"
+          },
+          "default_hourly_cost_rub": {
+            "default": 800,
+            "exclusiveMinimum": 0.0,
+            "title": "Default Hourly Cost Rub",
+            "type": "number"
+          },
+          "error_reduction": {
+            "default": 0.25,
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Error Reduction",
+            "type": "number"
+          },
+          "horizon_months": {
+            "default": 12,
+            "maximum": 60.0,
+            "minimum": 1.0,
+            "title": "Horizon Months",
+            "type": "integer"
+          },
+          "impact_scale_rub": {
+            "default": 500000,
+            "exclusiveMinimum": 0.0,
+            "title": "Impact Scale Rub",
+            "type": "number"
+          },
+          "implementation_day_rub": {
+            "default": 25000,
+            "minimum": 0.0,
+            "title": "Implementation Day Rub",
+            "type": "number"
+          },
+          "llm_overhead": {
+            "default": 1.3,
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Llm Overhead",
+            "type": "number"
+          },
+          "share_infrastructure": {
+            "default": true,
+            "title": "Share Infrastructure",
+            "type": "boolean"
+          },
+          "support_share_per_month": {
+            "default": 0.02,
+            "maximum": 0.5,
+            "minimum": 0.0,
+            "title": "Support Share Per Month",
+            "type": "number"
+          },
+          "usd_rub": {
+            "default": 90.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Usd Rub",
+            "type": "number"
+          }
+        },
+        "title": "Assumptions",
+        "type": "object"
+      },
+      "AssumptionsOverride": {
+        "description": "Любое допущение расчёта можно переопределить; незаданные берутся из scoring.yaml.",
+        "properties": {
+          "allow_workarounds": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Allow Workarounds"
+          },
+          "default_hourly_cost_rub": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Default Hourly Cost Rub"
+          },
+          "error_reduction": {
+            "anyOf": [
+              {
+                "maximum": 1.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Reduction"
+          },
+          "horizon_months": {
+            "anyOf": [
+              {
+                "maximum": 60.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Horizon Months"
+          },
+          "impact_scale_rub": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Impact Scale Rub"
+          },
+          "implementation_day_rub": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Implementation Day Rub"
+          },
+          "llm_overhead": {
+            "anyOf": [
+              {
+                "maximum": 5.0,
+                "minimum": 1.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Llm Overhead"
+          },
+          "share_infrastructure": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Share Infrastructure"
+          },
+          "support_share_per_month": {
+            "anyOf": [
+              {
+                "maximum": 0.5,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Support Share Per Month"
+          },
+          "usd_rub": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Usd Rub"
+          }
+        },
+        "title": "AssumptionsOverride",
+        "type": "object"
+      },
+      "Body_upload_assessment_api_assessments_upload_post": {
+        "properties": {
+          "assumptions": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "JSON с переопределением допущений",
+            "title": "Assumptions"
+          },
+          "file": {
+            "contentMediaType": "application/octet-stream",
+            "description": "CSV со списком процессов",
+            "title": "File",
+            "type": "string"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          }
+        },
+        "required": [
+          "file"
+        ],
+        "title": "Body_upload_assessment_api_assessments_upload_post",
+        "type": "object"
+      },
+      "CatalogStatus": {
+        "properties": {
+          "as_of": {
+            "format": "date",
+            "title": "As Of",
+            "type": "string"
+          },
+          "data_status": {
+            "title": "Data Status",
+            "type": "string"
+          },
+          "stale": {
+            "title": "Stale",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "as_of",
+          "data_status",
+          "stale"
+        ],
+        "title": "CatalogStatus",
+        "type": "object"
+      },
+      "ClassStats": {
+        "properties": {
+          "f1": {
+            "title": "F1",
+            "type": "number"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "precision": {
+            "title": "Precision",
+            "type": "number"
+          },
+          "recall": {
+            "title": "Recall",
+            "type": "number"
+          },
+          "support": {
+            "title": "Support",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "label",
+          "precision",
+          "recall",
+          "f1",
+          "support"
+        ],
+        "title": "ClassStats",
+        "type": "object"
+      },
+      "CostBreakdown": {
+        "properties": {
+          "fixed_rub": {
+            "title": "Fixed Rub",
+            "type": "number"
+          },
+          "total_rub": {
+            "title": "Total Rub",
+            "type": "number"
+          },
+          "units": {
+            "default": 1,
+            "title": "Units",
+            "type": "integer"
+          },
+          "variable_rub": {
+            "title": "Variable Rub",
+            "type": "number"
+          }
+        },
+        "required": [
+          "variable_rub",
+          "fixed_rub",
+          "total_rub"
+        ],
+        "title": "CostBreakdown",
+        "type": "object"
+      },
+      "Decision": {
+        "properties": {
+          "action": {
+            "$ref": "#/components/schemas/Action"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Reasons",
+            "type": "array"
+          },
+          "target": {
+            "$ref": "#/components/schemas/Deployment"
+          }
+        },
+        "required": [
+          "target",
+          "action",
+          "reasons"
+        ],
+        "title": "Decision",
+        "type": "object"
+      },
+      "Deployment": {
+        "description": "Где физически работает модель.",
+        "enum": [
+          "ru_cloud",
+          "foreign_cloud",
+          "self_hosted"
+        ],
+        "title": "Deployment",
+        "type": "string"
+      },
+      "EvalDemoResponse": {
+        "properties": {
+          "markdown": {
+            "title": "Markdown",
+            "type": "string"
+          },
+          "reports": {
+            "items": {
+              "$ref": "#/components/schemas/EvalReport"
+            },
+            "title": "Reports",
+            "type": "array"
+          },
+          "task": {
+            "$ref": "#/components/schemas/EvalTaskOut"
+          }
+        },
+        "required": [
+          "task",
+          "reports",
+          "markdown"
+        ],
+        "title": "EvalDemoResponse",
+        "type": "object"
+      },
+      "EvalLabelOut": {
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "title"
+        ],
+        "title": "EvalLabelOut",
+        "type": "object"
+      },
+      "EvalReport": {
+        "properties": {
+          "accuracy_lift": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accuracy Lift"
+          },
+          "cost_per_1k_rub": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Per 1K Rub"
+          },
+          "cost_per_correct_rub": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Per Correct Rub"
+          },
+          "cost_rub": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Rub"
+          },
+          "errors": {
+            "title": "Errors",
+            "type": "integer"
+          },
+          "failures": {
+            "items": {
+              "$ref": "#/components/schemas/Failure"
+            },
+            "title": "Failures",
+            "type": "array"
+          },
+          "is_baseline": {
+            "title": "Is Baseline",
+            "type": "boolean"
+          },
+          "latency": {
+            "$ref": "#/components/schemas/LatencyStats"
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/Metrics"
+          },
+          "n": {
+            "title": "N",
+            "type": "integer"
+          },
+          "provider": {
+            "title": "Provider",
+            "type": "string"
+          },
+          "task_id": {
+            "title": "Task Id",
+            "type": "string"
+          },
+          "tokens_in": {
+            "title": "Tokens In",
+            "type": "integer"
+          },
+          "tokens_out": {
+            "title": "Tokens Out",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "provider",
+          "task_id",
+          "is_baseline",
+          "n",
+          "metrics",
+          "latency",
+          "tokens_in",
+          "tokens_out",
+          "cost_rub",
+          "cost_per_1k_rub",
+          "cost_per_correct_rub",
+          "errors",
+          "failures"
+        ],
+        "title": "EvalReport",
+        "type": "object"
+      },
+      "EvalTaskOut": {
+        "properties": {
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "items": {
+            "title": "Items",
+            "type": "integer"
+          },
+          "labels": {
+            "items": {
+              "$ref": "#/components/schemas/EvalLabelOut"
+            },
+            "title": "Labels",
+            "type": "array"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "description",
+          "labels",
+          "items"
+        ],
+        "title": "EvalTaskOut",
+        "type": "object"
+      },
+      "EventOut": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "title": "Payload",
+            "type": "object"
+          },
+          "ts": {
+            "title": "Ts",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "ts",
+          "kind",
+          "payload"
+        ],
+        "title": "EventOut",
+        "type": "object"
+      },
+      "EventsResponse": {
+        "properties": {
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/EventOut"
+            },
+            "title": "Events",
+            "type": "array"
+          }
+        },
+        "required": [
+          "events"
+        ],
+        "title": "EventsResponse",
+        "type": "object"
+      },
+      "Exclusion": {
+        "properties": {
+          "deployment": {
+            "$ref": "#/components/schemas/Deployment"
+          },
+          "kinds": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Kinds",
+            "type": "array"
+          },
+          "model_id": {
+            "title": "Model Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Reasons",
+            "type": "array"
+          }
+        },
+        "required": [
+          "model_id",
+          "name",
+          "deployment",
+          "reasons",
+          "kinds"
+        ],
+        "title": "Exclusion",
+        "type": "object"
+      },
+      "Failure": {
+        "properties": {
+          "expected": {
+            "title": "Expected",
+            "type": "string"
+          },
+          "got": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Got"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "expected",
+          "got",
+          "text"
+        ],
+        "title": "Failure",
+        "type": "object"
+      },
+      "FindingOut": {
+        "description": "Находка для API и отчётов: без исходного значения, только безопасный превью.",
+        "properties": {
+          "confidence": {
+            "title": "Confidence",
+            "type": "string"
+          },
+          "end": {
+            "title": "End",
+            "type": "integer"
+          },
+          "implied_sensitivity": {
+            "$ref": "#/components/schemas/Sensitivity"
+          },
+          "is_secret": {
+            "title": "Is Secret",
+            "type": "boolean"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "preview": {
+            "title": "Preview",
+            "type": "string"
+          },
+          "start": {
+            "title": "Start",
+            "type": "integer"
+          },
+          "tag": {
+            "title": "Tag",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "label",
+          "tag",
+          "start",
+          "end",
+          "preview",
+          "implied_sensitivity",
+          "is_secret",
+          "confidence"
+        ],
+        "title": "FindingOut",
+        "type": "object"
+      },
+      "Flag": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "severity": {
+            "$ref": "#/components/schemas/Severity"
+          }
+        },
+        "required": [
+          "code",
+          "severity",
+          "message"
+        ],
+        "title": "Flag",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "HealthResponse": {
+        "properties": {
+          "catalog": {
+            "$ref": "#/components/schemas/CatalogStatus"
+          },
+          "database": {
+            "title": "Database",
+            "type": "boolean"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "version",
+          "database",
+          "catalog"
+        ],
+        "title": "HealthResponse",
+        "type": "object"
+      },
+      "InfraLine": {
+        "properties": {
+          "fixed_rub_month": {
+            "title": "Fixed Rub Month",
+            "type": "number"
+          },
+          "model_id": {
+            "title": "Model Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "process_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Process Ids",
+            "type": "array"
+          },
+          "units": {
+            "title": "Units",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "model_id",
+          "name",
+          "process_ids",
+          "units",
+          "fixed_rub_month"
+        ],
+        "title": "InfraLine",
+        "type": "object"
+      },
+      "LatencyStats": {
+        "properties": {
+          "mean_ms": {
+            "title": "Mean Ms",
+            "type": "number"
+          },
+          "p50_ms": {
+            "title": "P50 Ms",
+            "type": "number"
+          },
+          "p95_ms": {
+            "title": "P95 Ms",
+            "type": "number"
+          }
+        },
+        "required": [
+          "mean_ms",
+          "p50_ms",
+          "p95_ms"
+        ],
+        "title": "LatencyStats",
+        "type": "object"
+      },
+      "LintCheck": {
+        "properties": {
+          "hint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hint"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "passed": {
+            "title": "Passed",
+            "type": "boolean"
+          },
+          "weight": {
+            "title": "Weight",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "passed",
+          "weight",
+          "hint"
+        ],
+        "title": "LintCheck",
+        "type": "object"
+      },
+      "LintRequest": {
+        "properties": {
+          "text": {
+            "maxLength": 200000,
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "title": "LintRequest",
+        "type": "object"
+      },
+      "LintResult": {
+        "properties": {
+          "capped": {
+            "title": "Capped",
+            "type": "boolean"
+          },
+          "checks": {
+            "items": {
+              "$ref": "#/components/schemas/LintCheck"
+            },
+            "title": "Checks",
+            "type": "array"
+          },
+          "grade": {
+            "title": "Grade",
+            "type": "string"
+          },
+          "score": {
+            "title": "Score",
+            "type": "integer"
+          },
+          "sensitive": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Sensitive",
+            "type": "object"
+          },
+          "suggestions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Suggestions",
+            "type": "array"
+          },
+          "words": {
+            "title": "Words",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "score",
+          "grade",
+          "words",
+          "checks",
+          "suggestions",
+          "sensitive",
+          "capped"
+        ],
+        "title": "LintResult",
+        "type": "object"
+      },
+      "MetaResponse": {
+        "properties": {
+          "actions": {
+            "items": {
+              "$ref": "#/components/schemas/OptionOut"
+            },
+            "title": "Actions",
+            "type": "array"
+          },
+          "catalog": {
+            "additionalProperties": true,
+            "title": "Catalog",
+            "type": "object"
+          },
+          "default_assumptions": {
+            "additionalProperties": true,
+            "title": "Default Assumptions",
+            "type": "object"
+          },
+          "deployments": {
+            "items": {
+              "$ref": "#/components/schemas/OptionOut"
+            },
+            "title": "Deployments",
+            "type": "array"
+          },
+          "limits": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Limits",
+            "type": "object"
+          },
+          "preferences": {
+            "items": {
+              "$ref": "#/components/schemas/OptionOut"
+            },
+            "title": "Preferences",
+            "type": "array"
+          },
+          "quadrants": {
+            "items": {
+              "$ref": "#/components/schemas/OptionOut"
+            },
+            "title": "Quadrants",
+            "type": "array"
+          },
+          "sensitivities": {
+            "items": {
+              "$ref": "#/components/schemas/SensitivityOut"
+            },
+            "title": "Sensitivities",
+            "type": "array"
+          },
+          "task_types": {
+            "items": {
+              "$ref": "#/components/schemas/TaskTypeOut"
+            },
+            "title": "Task Types",
+            "type": "array"
+          },
+          "thresholds": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Thresholds",
+            "type": "object"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "version",
+          "task_types",
+          "sensitivities",
+          "deployments",
+          "preferences",
+          "quadrants",
+          "actions",
+          "default_assumptions",
+          "thresholds",
+          "limits",
+          "catalog"
+        ],
+        "title": "MetaResponse",
+        "type": "object"
+      },
+      "Metrics": {
+        "properties": {
+          "accuracy": {
+            "title": "Accuracy",
+            "type": "number"
+          },
+          "confusion": {
+            "items": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "title": "Confusion",
+            "type": "array"
+          },
+          "invalid": {
+            "title": "Invalid",
+            "type": "integer"
+          },
+          "labels": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Labels",
+            "type": "array"
+          },
+          "macro_f1": {
+            "title": "Macro F1",
+            "type": "number"
+          },
+          "n": {
+            "title": "N",
+            "type": "integer"
+          },
+          "per_class": {
+            "items": {
+              "$ref": "#/components/schemas/ClassStats"
+            },
+            "title": "Per Class",
+            "type": "array"
+          }
+        },
+        "required": [
+          "n",
+          "accuracy",
+          "macro_f1",
+          "invalid",
+          "labels",
+          "per_class",
+          "confusion"
+        ],
+        "title": "Metrics",
+        "type": "object"
+      },
+      "ModelPick": {
+        "properties": {
+          "cost": {
+            "$ref": "#/components/schemas/CostBreakdown"
+          },
+          "deployment": {
+            "$ref": "#/components/schemas/Deployment"
+          },
+          "model_id": {
+            "title": "Model Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "quality": {
+            "title": "Quality",
+            "type": "integer"
+          },
+          "requires_masking": {
+            "title": "Requires Masking",
+            "type": "boolean"
+          },
+          "score": {
+            "title": "Score",
+            "type": "number"
+          }
+        },
+        "required": [
+          "model_id",
+          "name",
+          "deployment",
+          "requires_masking",
+          "quality",
+          "score",
+          "cost"
+        ],
+        "title": "ModelPick",
+        "type": "object"
+      },
+      "OptionOut": {
+        "properties": {
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "value",
+          "label"
+        ],
+        "title": "OptionOut",
+        "type": "object"
+      },
+      "PolicyOut": {
+        "properties": {
+          "actions": {
+            "items": {
+              "$ref": "#/components/schemas/OptionOut"
+            },
+            "title": "Actions",
+            "type": "array"
+          },
+          "classes": {
+            "items": {
+              "$ref": "#/components/schemas/SensitivityOut"
+            },
+            "title": "Classes",
+            "type": "array"
+          },
+          "deployments": {
+            "items": {
+              "$ref": "#/components/schemas/OptionOut"
+            },
+            "title": "Deployments",
+            "type": "array"
+          },
+          "disclaimer": {
+            "title": "Disclaimer",
+            "type": "string"
+          },
+          "do": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Do",
+            "type": "array"
+          },
+          "dont": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Dont",
+            "type": "array"
+          },
+          "handout_markdown": {
+            "title": "Handout Markdown",
+            "type": "string"
+          },
+          "matrix": {
+            "additionalProperties": {
+              "additionalProperties": {
+                "$ref": "#/components/schemas/Action"
+              },
+              "propertyNames": {
+                "$ref": "#/components/schemas/Deployment"
+              },
+              "type": "object"
+            },
+            "propertyNames": {
+              "$ref": "#/components/schemas/Sensitivity"
+            },
+            "title": "Matrix",
+            "type": "object"
+          },
+          "secrets_message": {
+            "title": "Secrets Message",
+            "type": "string"
+          },
+          "updated": {
+            "format": "date",
+            "title": "Updated",
+            "type": "string"
+          }
+        },
+        "required": [
+          "updated",
+          "disclaimer",
+          "classes",
+          "deployments",
+          "actions",
+          "matrix",
+          "do",
+          "dont",
+          "secrets_message",
+          "handout_markdown"
+        ],
+        "title": "PolicyOut",
+        "type": "object"
+      },
+      "PortfolioSummary": {
+        "properties": {
+          "benefit_month_rub": {
+            "title": "Benefit Month Rub",
+            "type": "number"
+          },
+          "cost_month_rub": {
+            "title": "Cost Month Rub",
+            "type": "number"
+          },
+          "fte_equivalent": {
+            "title": "Fte Equivalent",
+            "type": "number"
+          },
+          "hours_saved_month": {
+            "title": "Hours Saved Month",
+            "type": "number"
+          },
+          "implementation_rub": {
+            "title": "Implementation Rub",
+            "type": "number"
+          },
+          "infrastructure": {
+            "items": {
+              "$ref": "#/components/schemas/InfraLine"
+            },
+            "title": "Infrastructure",
+            "type": "array"
+          },
+          "manual_cost_month_rub": {
+            "title": "Manual Cost Month Rub",
+            "type": "number"
+          },
+          "net_horizon_rub": {
+            "title": "Net Horizon Rub",
+            "type": "number"
+          },
+          "net_month_rub": {
+            "title": "Net Month Rub",
+            "type": "number"
+          },
+          "payback_months": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Payback Months"
+          },
+          "processes_blocked": {
+            "title": "Processes Blocked",
+            "type": "integer"
+          },
+          "processes_total": {
+            "title": "Processes Total",
+            "type": "integer"
+          },
+          "quadrant_counts": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Quadrant Counts",
+            "type": "object"
+          },
+          "recommended_count": {
+            "title": "Recommended Count",
+            "type": "integer"
+          },
+          "roi_pct": {
+            "title": "Roi Pct",
+            "type": "number"
+          },
+          "total_hours_month": {
+            "title": "Total Hours Month",
+            "type": "number"
+          }
+        },
+        "required": [
+          "processes_total",
+          "processes_blocked",
+          "recommended_count",
+          "total_hours_month",
+          "manual_cost_month_rub",
+          "hours_saved_month",
+          "fte_equivalent",
+          "benefit_month_rub",
+          "cost_month_rub",
+          "net_month_rub",
+          "implementation_rub",
+          "payback_months",
+          "net_horizon_rub",
+          "roi_pct",
+          "quadrant_counts",
+          "infrastructure"
+        ],
+        "title": "PortfolioSummary",
+        "type": "object"
+      },
+      "Preference": {
+        "enum": [
+          "balanced",
+          "cost",
+          "quality",
+          "safety"
+        ],
+        "title": "Preference",
+        "type": "string"
+      },
+      "Process": {
+        "description": "Один бизнес-процесс, который рассматривается как кандидат на автоматизацию.",
+        "properties": {
+          "data_sensitivity": {
+            "$ref": "#/components/schemas/Sensitivity",
+            "default": "internal"
+          },
+          "department": {
+            "default": "—",
+            "maxLength": 100,
+            "title": "Department",
+            "type": "string"
+          },
+          "digital_readiness": {
+            "default": 3,
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Digital Readiness",
+            "type": "integer"
+          },
+          "error_cost_rub": {
+            "default": 0,
+            "minimum": 0.0,
+            "title": "Error Cost Rub",
+            "type": "number"
+          },
+          "error_rate": {
+            "default": 0.05,
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Error Rate",
+            "type": "number"
+          },
+          "hourly_cost_rub": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hourly Cost Rub"
+          },
+          "id": {
+            "maxLength": 40,
+            "minLength": 1,
+            "title": "Id",
+            "type": "string"
+          },
+          "minutes_per_run": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 100000.0,
+            "title": "Minutes Per Run",
+            "type": "number"
+          },
+          "must_self_host": {
+            "default": false,
+            "title": "Must Self Host",
+            "type": "boolean"
+          },
+          "name": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "risk_level": {
+            "default": 2,
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Risk Level",
+            "type": "integer"
+          },
+          "runs_per_month": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 100000000.0,
+            "title": "Runs Per Month",
+            "type": "integer"
+          },
+          "standardization": {
+            "default": 3,
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Standardization",
+            "type": "integer"
+          },
+          "task_type": {
+            "$ref": "#/components/schemas/TaskType"
+          },
+          "tokens_in": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tokens In"
+          },
+          "tokens_out": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tokens Out"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "task_type",
+          "runs_per_month",
+          "minutes_per_run"
+        ],
+        "title": "Process",
+        "type": "object"
+      },
+      "ProcessResult": {
+        "properties": {
+          "automation_share": {
+            "title": "Automation Share",
+            "type": "number"
+          },
+          "data_sensitivity": {
+            "$ref": "#/components/schemas/Sensitivity"
+          },
+          "department": {
+            "title": "Department",
+            "type": "string"
+          },
+          "ease": {
+            "title": "Ease",
+            "type": "number"
+          },
+          "error_savings_month_rub": {
+            "title": "Error Savings Month Rub",
+            "type": "number"
+          },
+          "feasible": {
+            "title": "Feasible",
+            "type": "boolean"
+          },
+          "fit": {
+            "title": "Fit",
+            "type": "number"
+          },
+          "flags": {
+            "items": {
+              "$ref": "#/components/schemas/Flag"
+            },
+            "title": "Flags",
+            "type": "array"
+          },
+          "hours_per_month": {
+            "title": "Hours Per Month",
+            "type": "number"
+          },
+          "hours_saved_month": {
+            "title": "Hours Saved Month",
+            "type": "number"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "impact": {
+            "title": "Impact",
+            "type": "number"
+          },
+          "implementation_days": {
+            "title": "Implementation Days",
+            "type": "number"
+          },
+          "implementation_rub": {
+            "title": "Implementation Rub",
+            "type": "number"
+          },
+          "llm_cost_month_rub": {
+            "title": "Llm Cost Month Rub",
+            "type": "number"
+          },
+          "manual_cost_month_rub": {
+            "title": "Manual Cost Month Rub",
+            "type": "number"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelPick"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "net_horizon_rub": {
+            "title": "Net Horizon Rub",
+            "type": "number"
+          },
+          "net_month_rub": {
+            "title": "Net Month Rub",
+            "type": "number"
+          },
+          "net_share": {
+            "title": "Net Share",
+            "type": "number"
+          },
+          "payback_months": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Payback Months"
+          },
+          "priority": {
+            "title": "Priority",
+            "type": "number"
+          },
+          "quadrant": {
+            "$ref": "#/components/schemas/Quadrant"
+          },
+          "rank": {
+            "title": "Rank",
+            "type": "integer"
+          },
+          "roi_pct": {
+            "title": "Roi Pct",
+            "type": "number"
+          },
+          "savings_month_rub": {
+            "title": "Savings Month Rub",
+            "type": "number"
+          },
+          "scenarios": {
+            "items": {
+              "$ref": "#/components/schemas/ScenarioResult"
+            },
+            "title": "Scenarios",
+            "type": "array"
+          },
+          "support_month_rub": {
+            "title": "Support Month Rub",
+            "type": "number"
+          },
+          "task_type": {
+            "$ref": "#/components/schemas/TaskType"
+          },
+          "wave": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wave"
+          }
+        },
+        "required": [
+          "rank",
+          "id",
+          "name",
+          "department",
+          "task_type",
+          "data_sensitivity",
+          "feasible",
+          "hours_per_month",
+          "manual_cost_month_rub",
+          "automation_share",
+          "net_share",
+          "hours_saved_month",
+          "savings_month_rub",
+          "error_savings_month_rub",
+          "llm_cost_month_rub",
+          "support_month_rub",
+          "implementation_days",
+          "implementation_rub",
+          "net_month_rub",
+          "payback_months",
+          "net_horizon_rub",
+          "roi_pct",
+          "scenarios",
+          "fit",
+          "impact",
+          "ease",
+          "priority",
+          "quadrant",
+          "wave",
+          "model",
+          "flags"
+        ],
+        "title": "ProcessResult",
+        "type": "object"
+      },
+      "PromptTemplate": {
+        "properties": {
+          "body": {
+            "title": "Body",
+            "type": "string"
+          },
+          "checklist": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Checklist",
+            "type": "array"
+          },
+          "department": {
+            "title": "Department",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "id": {
+            "pattern": "^[a-z0-9][a-z0-9-]*$",
+            "title": "Id",
+            "type": "string"
+          },
+          "safety_notes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Safety Notes",
+            "type": "array"
+          },
+          "sensitivity": {
+            "$ref": "#/components/schemas/Sensitivity"
+          },
+          "task_type": {
+            "$ref": "#/components/schemas/TaskType"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "variables": {
+            "items": {
+              "$ref": "#/components/schemas/PromptVariable"
+            },
+            "title": "Variables",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "department",
+          "task_type",
+          "sensitivity",
+          "description",
+          "variables",
+          "body"
+        ],
+        "title": "PromptTemplate",
+        "type": "object"
+      },
+      "PromptVariable": {
+        "properties": {
+          "choices": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Choices"
+          },
+          "default": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Default"
+          },
+          "example": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Example"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "name": {
+            "pattern": "^[a-z][a-z0-9_]*$",
+            "title": "Name",
+            "type": "string"
+          },
+          "required": {
+            "default": true,
+            "title": "Required",
+            "type": "boolean"
+          },
+          "type": {
+            "default": "string",
+            "enum": [
+              "string",
+              "text",
+              "choice"
+            ],
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "label"
+        ],
+        "title": "PromptVariable",
+        "type": "object"
+      },
+      "Quadrant": {
+        "description": "Квадрант матрицы «эффект — простота внедрения».",
+        "enum": [
+          "quick_win",
+          "strategic",
+          "fill_in",
+          "postpone",
+          "blocked"
+        ],
+        "title": "Quadrant",
+        "type": "string"
+      },
+      "Recommendation": {
+        "properties": {
+          "breakdown": {
+            "$ref": "#/components/schemas/ScoreBreakdown"
+          },
+          "cons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Cons",
+            "type": "array"
+          },
+          "cost": {
+            "$ref": "#/components/schemas/CostBreakdown"
+          },
+          "deployment": {
+            "$ref": "#/components/schemas/Deployment"
+          },
+          "model_id": {
+            "title": "Model Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "pros": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Pros",
+            "type": "array"
+          },
+          "quality": {
+            "title": "Quality",
+            "type": "integer"
+          },
+          "rank": {
+            "title": "Rank",
+            "type": "integer"
+          },
+          "requires_masking": {
+            "title": "Requires Masking",
+            "type": "boolean"
+          },
+          "ru_access": {
+            "$ref": "#/components/schemas/RuAccess"
+          },
+          "score": {
+            "title": "Score",
+            "type": "number"
+          },
+          "tier": {
+            "$ref": "#/components/schemas/Tier"
+          },
+          "vendor": {
+            "title": "Vendor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "rank",
+          "model_id",
+          "name",
+          "vendor",
+          "tier",
+          "deployment",
+          "ru_access",
+          "score",
+          "quality",
+          "cost",
+          "breakdown",
+          "requires_masking",
+          "pros",
+          "cons"
+        ],
+        "title": "Recommendation",
+        "type": "object"
+      },
+      "RenderRequest": {
+        "properties": {
+          "values": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Values",
+            "type": "object"
+          }
+        },
+        "title": "RenderRequest",
+        "type": "object"
+      },
+      "RenderedPrompt": {
+        "properties": {
+          "checklist": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Checklist",
+            "type": "array"
+          },
+          "lint_score": {
+            "title": "Lint Score",
+            "type": "integer"
+          },
+          "recommended_sensitivity": {
+            "$ref": "#/components/schemas/Sensitivity"
+          },
+          "safety_notes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Safety Notes",
+            "type": "array"
+          },
+          "sensitive": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Sensitive",
+            "type": "object"
+          },
+          "template_id": {
+            "title": "Template Id",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "template_id",
+          "title",
+          "text",
+          "warnings",
+          "sensitive",
+          "lint_score",
+          "recommended_sensitivity",
+          "checklist",
+          "safety_notes"
+        ],
+        "title": "RenderedPrompt",
+        "type": "object"
+      },
+      "RoadmapWave": {
+        "properties": {
+          "hours_saved_month": {
+            "title": "Hours Saved Month",
+            "type": "number"
+          },
+          "implementation_rub": {
+            "title": "Implementation Rub",
+            "type": "number"
+          },
+          "net_horizon_rub": {
+            "title": "Net Horizon Rub",
+            "type": "number"
+          },
+          "process_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Process Ids",
+            "type": "array"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "wave": {
+            "title": "Wave",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "wave",
+          "title",
+          "process_ids",
+          "hours_saved_month",
+          "implementation_rub",
+          "net_horizon_rub"
+        ],
+        "title": "RoadmapWave",
+        "type": "object"
+      },
+      "RowError": {
+        "properties": {
+          "line": {
+            "title": "Line",
+            "type": "integer"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "line",
+          "message"
+        ],
+        "title": "RowError",
+        "type": "object"
+      },
+      "RuAccess": {
+        "description": "Доступность сервиса из РФ.",
+        "enum": [
+          "direct",
+          "workaround"
+        ],
+        "title": "RuAccess",
+        "type": "string"
+      },
+      "ScaffoldRequest": {
+        "properties": {
+          "role": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Role"
+          },
+          "task": {
+            "maxLength": 500,
+            "minLength": 3,
+            "title": "Task",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task"
+        ],
+        "title": "ScaffoldRequest",
+        "type": "object"
+      },
+      "ScenarioResult": {
+        "properties": {
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "net_horizon_rub": {
+            "title": "Net Horizon Rub",
+            "type": "number"
+          },
+          "net_rub_month": {
+            "title": "Net Rub Month",
+            "type": "number"
+          },
+          "payback_months": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Payback Months"
+          },
+          "roi_pct": {
+            "title": "Roi Pct",
+            "type": "number"
+          }
+        },
+        "required": [
+          "key",
+          "label",
+          "net_rub_month",
+          "payback_months",
+          "net_horizon_rub",
+          "roi_pct"
+        ],
+        "title": "ScenarioResult",
+        "type": "object"
+      },
+      "ScoreBreakdown": {
+        "properties": {
+          "access": {
+            "title": "Access",
+            "type": "number"
+          },
+          "cost": {
+            "title": "Cost",
+            "type": "number"
+          },
+          "quality": {
+            "title": "Quality",
+            "type": "number"
+          },
+          "safety": {
+            "title": "Safety",
+            "type": "number"
+          }
+        },
+        "required": [
+          "quality",
+          "cost",
+          "safety",
+          "access"
+        ],
+        "title": "ScoreBreakdown",
+        "type": "object"
+      },
+      "Sensitivity": {
+        "description": "Категория данных по чувствительности (по возрастанию).",
+        "enum": [
+          "public",
+          "internal",
+          "confidential",
+          "personal"
+        ],
+        "title": "Sensitivity",
+        "type": "string"
+      },
+      "SensitivityOut": {
+        "properties": {
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "examples": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Examples",
+            "type": "array"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "value",
+          "label",
+          "description",
+          "examples"
+        ],
+        "title": "SensitivityOut",
+        "type": "object"
+      },
+      "Severity": {
+        "enum": [
+          "info",
+          "warning",
+          "critical"
+        ],
+        "title": "Severity",
+        "type": "string"
+      },
+      "StoredAssessmentOut": {
+        "properties": {
+          "assumptions": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assumptions"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "processes": {
+            "items": {
+              "$ref": "#/components/schemas/Process"
+            },
+            "title": "Processes",
+            "type": "array"
+          },
+          "result": {
+            "$ref": "#/components/schemas/AssessmentResult"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "created_at",
+          "processes",
+          "result"
+        ],
+        "title": "StoredAssessmentOut",
+        "type": "object"
+      },
+      "TaskType": {
+        "description": "Тип задачи, которую передают нейросети.",
+        "enum": [
+          "classification",
+          "extraction",
+          "summarization",
+          "drafting",
+          "qa_search",
+          "translation",
+          "analysis",
+          "code",
+          "decision_support"
+        ],
+        "title": "TaskType",
+        "type": "string"
+      },
+      "TaskTypeOut": {
+        "properties": {
+          "base_automation": {
+            "title": "Base Automation",
+            "type": "number"
+          },
+          "implementation_days": {
+            "title": "Implementation Days",
+            "type": "number"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "min_quality": {
+            "title": "Min Quality",
+            "type": "integer"
+          },
+          "tokens_in": {
+            "title": "Tokens In",
+            "type": "integer"
+          },
+          "tokens_out": {
+            "title": "Tokens Out",
+            "type": "integer"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "value",
+          "label",
+          "tokens_in",
+          "tokens_out",
+          "min_quality",
+          "base_automation",
+          "implementation_days"
+        ],
+        "title": "TaskTypeOut",
+        "type": "object"
+      },
+      "TextResponse": {
+        "properties": {
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "title": "TextResponse",
+        "type": "object"
+      },
+      "Tier": {
+        "description": "Класс модели по возможностям и цене.",
+        "enum": [
+          "flagship",
+          "balanced",
+          "economy"
+        ],
+        "title": "Tier",
+        "type": "string"
+      },
+      "UnmaskRequest": {
+        "properties": {
+          "mapping": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Mapping",
+            "type": "object"
+          },
+          "text": {
+            "maxLength": 200000,
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text",
+          "mapping"
+        ],
+        "title": "UnmaskRequest",
+        "type": "object"
+      },
+      "UploadResponse": {
+        "properties": {
+          "assessment": {
+            "$ref": "#/components/schemas/StoredAssessmentOut"
+          },
+          "parse_errors": {
+            "items": {
+              "$ref": "#/components/schemas/RowError"
+            },
+            "title": "Parse Errors",
+            "type": "array"
+          }
+        },
+        "required": [
+          "assessment",
+          "parse_errors"
+        ],
+        "title": "UploadResponse",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      },
+      "Workload": {
+        "description": "Описание нагрузки, под которую подбирается модель.",
+        "properties": {
+          "allow_foreign_cloud": {
+            "default": true,
+            "title": "Allow Foreign Cloud",
+            "type": "boolean"
+          },
+          "allow_workarounds": {
+            "default": false,
+            "title": "Allow Workarounds",
+            "type": "boolean"
+          },
+          "data_sensitivity": {
+            "$ref": "#/components/schemas/Sensitivity",
+            "default": "internal"
+          },
+          "min_context_tokens": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min Context Tokens"
+          },
+          "min_quality": {
+            "default": 3,
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Min Quality",
+            "type": "integer"
+          },
+          "monthly_budget_rub": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Monthly Budget Rub"
+          },
+          "must_self_host": {
+            "default": false,
+            "title": "Must Self Host",
+            "type": "boolean"
+          },
+          "needs_tool_calling": {
+            "default": false,
+            "title": "Needs Tool Calling",
+            "type": "boolean"
+          },
+          "needs_vision": {
+            "default": false,
+            "title": "Needs Vision",
+            "type": "boolean"
+          },
+          "prefer": {
+            "$ref": "#/components/schemas/Preference",
+            "default": "balanced"
+          },
+          "requests_per_month": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 1000000000.0,
+            "title": "Requests Per Month",
+            "type": "integer"
+          },
+          "task_type": {
+            "$ref": "#/components/schemas/TaskType"
+          },
+          "tokens_in": {
+            "description": "среднее число входных токенов",
+            "exclusiveMinimum": 0.0,
+            "maximum": 2000000.0,
+            "title": "Tokens In",
+            "type": "integer"
+          },
+          "tokens_out": {
+            "description": "среднее число выходных токенов",
+            "maximum": 2000000.0,
+            "minimum": 0.0,
+            "title": "Tokens Out",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "task_type",
+          "requests_per_month",
+          "tokens_in",
+          "tokens_out"
+        ],
+        "title": "Workload",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "summary": "Оценка процессов и ROI, подбор моделей, защита данных, шаблоны промптов.",
+    "title": "AI Adoption Compass API",
+    "version": "1.0.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/api/advice": {
+      "post": {
+        "operationId": "advice_api_advice_post",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "top",
+            "required": false,
+            "schema": {
+              "default": 5,
+              "maximum": 20,
+              "minimum": 1,
+              "title": "Top",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Workload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdviceResult"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Advice",
+        "tags": [
+          "advisor"
+        ]
+      }
+    },
+    "/api/assess": {
+      "post": {
+        "description": "Расчёт без сохранения.",
+        "operationId": "assess_api_assess_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssessmentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssessmentResult"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Assess",
+        "tags": [
+          "assessments"
+        ]
+      }
+    },
+    "/api/assessments": {
+      "get": {
+        "operationId": "list_assessments_api_assessments_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  "title": "Response List Assessments Api Assessments Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Assessments",
+        "tags": [
+          "assessments"
+        ]
+      },
+      "post": {
+        "operationId": "create_assessment_api_assessments_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssessmentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredAssessmentOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Assessment",
+        "tags": [
+          "assessments"
+        ]
+      }
+    },
+    "/api/assessments/demo": {
+      "post": {
+        "description": "Оценка на демо-данных вымышленной компании.",
+        "operationId": "demo_assessment_api_assessments_demo_post",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Demo Assessment",
+        "tags": [
+          "assessments"
+        ]
+      }
+    },
+    "/api/assessments/upload": {
+      "post": {
+        "operationId": "upload_assessment_api_assessments_upload_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_assessment_api_assessments_upload_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Upload Assessment",
+        "tags": [
+          "assessments"
+        ]
+      }
+    },
+    "/api/assessments/{assessment_id}": {
+      "delete": {
+        "operationId": "delete_assessment_api_assessments__assessment_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assessment_id",
+            "required": true,
+            "schema": {
+              "title": "Assessment Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Delete Assessment",
+        "tags": [
+          "assessments"
+        ]
+      },
+      "get": {
+        "operationId": "get_assessment_api_assessments__assessment_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assessment_id",
+            "required": true,
+            "schema": {
+              "title": "Assessment Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredAssessmentOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Assessment",
+        "tags": [
+          "assessments"
+        ]
+      }
+    },
+    "/api/assessments/{assessment_id}/export.csv": {
+      "get": {
+        "operationId": "assessment_export_api_assessments__assessment_id__export_csv_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assessment_id",
+            "required": true,
+            "schema": {
+              "title": "Assessment Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Assessment Export",
+        "tags": [
+          "assessments"
+        ]
+      }
+    },
+    "/api/assessments/{assessment_id}/report.md": {
+      "get": {
+        "operationId": "assessment_report_api_assessments__assessment_id__report_md_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assessment_id",
+            "required": true,
+            "schema": {
+              "title": "Assessment Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Assessment Report",
+        "tags": [
+          "assessments"
+        ]
+      }
+    },
+    "/api/audit": {
+      "get": {
+        "operationId": "audit_api_audit_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 500,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "kind",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Kind"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventsResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Audit",
+        "tags": [
+          "service"
+        ]
+      }
+    },
+    "/api/catalog": {
+      "get": {
+        "operationId": "catalog_api_catalog_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Catalog Api Catalog Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Catalog",
+        "tags": [
+          "catalog"
+        ]
+      }
+    },
+    "/api/evals/demo": {
+      "get": {
+        "description": "Офлайн-сравнение baseline и симулируемых моделей на встроенном наборе обращений.",
+        "operationId": "evals_demo_api_evals_demo_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvalDemoResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Evals Demo",
+        "tags": [
+          "evals"
+        ]
+      }
+    },
+    "/api/health": {
+      "get": {
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health",
+        "tags": [
+          "service"
+        ]
+      }
+    },
+    "/api/meta": {
+      "get": {
+        "operationId": "meta_api_meta_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetaResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Meta",
+        "tags": [
+          "service"
+        ]
+      }
+    },
+    "/api/prompts": {
+      "get": {
+        "operationId": "list_prompts_api_prompts_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "department",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Department"
+            }
+          },
+          {
+            "in": "query",
+            "name": "task_type",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/TaskType"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Task Type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response List Prompts Api Prompts Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Prompts",
+        "tags": [
+          "prompts"
+        ]
+      }
+    },
+    "/api/prompts/lint": {
+      "post": {
+        "operationId": "lint_prompt_api_prompts_lint_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LintRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LintResult"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Lint Prompt",
+        "tags": [
+          "prompts"
+        ]
+      }
+    },
+    "/api/prompts/scaffold": {
+      "post": {
+        "operationId": "scaffold_api_prompts_scaffold_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScaffoldRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Scaffold",
+        "tags": [
+          "prompts"
+        ]
+      }
+    },
+    "/api/prompts/{template_id}": {
+      "get": {
+        "operationId": "get_prompt_api_prompts__template_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "template_id",
+            "required": true,
+            "schema": {
+              "title": "Template Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PromptTemplate"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Prompt",
+        "tags": [
+          "prompts"
+        ]
+      }
+    },
+    "/api/prompts/{template_id}/render": {
+      "post": {
+        "operationId": "render_prompt_api_prompts__template_id__render_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "template_id",
+            "required": true,
+            "schema": {
+              "title": "Template Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RenderRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RenderedPrompt"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Render Prompt",
+        "tags": [
+          "prompts"
+        ]
+      }
+    },
+    "/api/safety/analyze": {
+      "post": {
+        "operationId": "safety_analyze_api_safety_analyze_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnalyzeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalyzeResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Safety Analyze",
+        "tags": [
+          "safety"
+        ]
+      }
+    },
+    "/api/safety/policy": {
+      "get": {
+        "operationId": "safety_policy_api_safety_policy_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Safety Policy",
+        "tags": [
+          "safety"
+        ]
+      }
+    },
+    "/api/safety/unmask": {
+      "post": {
+        "operationId": "safety_unmask_api_safety_unmask_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnmaskRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Safety Unmask",
+        "tags": [
+          "safety"
+        ]
+      }
+    },
+    "/api/samples/processes.csv": {
+      "get": {
+        "operationId": "sample_processes_api_samples_processes_csv_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Sample Processes",
+        "tags": [
+          "assessments"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+services:
+  compass:
+    build: .
+    image: ai-adoption-compass:latest
+    ports:
+      # Приложение без авторизации: публикуем только на localhost.
+      # Для доступа из сети поставьте reverse proxy с аутентификацией.
+      - "127.0.0.1:8000:8000"
+    environment:
+      COMPASS_DB: /data/compass.db
+    volumes:
+      - compass-data:/data
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  compass-data:

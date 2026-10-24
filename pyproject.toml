@@ -1,0 +1,106 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ai-adoption-compass"
+version = "1.0.0"
+description = "Практический набор инструментов внедрения ИИ в компании: оценка процессов и ROI, подбор моделей, защита данных, шаблоны промптов, REST API и MCP-сервер."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "RainCherb" }]
+keywords = ["ai", "llm", "mcp", "fastapi", "roi", "data-privacy", "152-fz", "prompt-engineering"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: FastAPI",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: Russian",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Typing :: Typed",
+]
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn>=0.30",
+    "pydantic>=2.8",
+    "pyyaml>=6.0",
+    "jinja2>=3.1",
+    "httpx>=0.27",
+    "typer>=0.12",
+    "rich>=13.7",
+    "python-multipart>=0.0.9",
+    "mcp>=2.3,<3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-cov>=5",
+    "hypothesis>=6.100",
+    "ruff>=0.6",
+    "mypy>=1.11",
+    "types-PyYAML",
+]
+docs = ["playwright>=1.45"]
+
+[project.scripts]
+compass = "adoption_compass.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/RainCherb/ai-adoption-compass"
+Issues = "https://github.com/RainCherb/ai-adoption-compass/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/adoption_compass"]
+artifacts = ["src/adoption_compass/static/**"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/adoption_compass", "README.md", "LICENSE", "pyproject.toml"]
+artifacts = ["src/adoption_compass/static/**"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "C4", "RUF", "PT", "N", "S"]
+ignore = [
+    "E501",   # длинные кириллические строки не переносятся форматтером
+    "RUF001", # кириллица в строках — осознанный выбор
+    "RUF002",
+    "RUF003",
+    "S608",   # SQL собирается только из констант, значения — параметрами
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106", "S311"]
+"scripts/**" = ["S310", "S603"]  # локальные служебные скрипты: свой сервер и http://127.0.0.1
+"src/adoption_compass/evals/providers.py" = ["S311"]
+"src/adoption_compass/cli.py" = ["B008"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+plugins = ["pydantic.mypy"]
+files = ["src"]
+
+[[tool.mypy.overrides]]
+module = ["mcp.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --cov=adoption_compass --cov-report=term-missing:skip-covered"
+filterwarnings = ["error::DeprecationWarning:adoption_compass.*"]
+
+[tool.coverage.run]
+branch = true
+source = ["adoption_compass"]
+
+[tool.coverage.report]
+fail_under = 85
+exclude_lines = ["pragma: no cover", "if __name__ == .__main__.:", "raise NotImplementedError"]

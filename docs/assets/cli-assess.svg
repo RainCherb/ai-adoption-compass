@@ -1,0 +1,246 @@
+<svg class="rich-terminal" viewBox="0 0 1458 1172.3999999999999" xmlns="http://www.w3.org/2000/svg">
+    <!-- Generated with Rich https://www.textualize.io -->
+    <style>
+
+    @font-face {
+        font-family: "Fira Code";
+        src: local("FiraCode-Regular"),
+                url("https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/woff2/FiraCode-Regular.woff2") format("woff2"),
+                url("https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/woff/FiraCode-Regular.woff") format("woff");
+        font-style: normal;
+        font-weight: 400;
+    }
+    @font-face {
+        font-family: "Fira Code";
+        src: local("FiraCode-Bold"),
+                url("https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/woff2/FiraCode-Bold.woff2") format("woff2"),
+                url("https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/woff/FiraCode-Bold.woff") format("woff");
+        font-style: bold;
+        font-weight: 700;
+    }
+
+    .terminal-1241864989-matrix {
+        font-family: Fira Code, monospace;
+        font-size: 20px;
+        line-height: 24.4px;
+        font-variant-east-asian: full-width;
+    }
+
+    .terminal-1241864989-title {
+        font-size: 18px;
+        font-weight: bold;
+        font-family: arial;
+    }
+
+    .terminal-1241864989-r1 { fill: #98a84b }
+.terminal-1241864989-r2 { fill: #c5c8c6 }
+.terminal-1241864989-r3 { fill: #c5c8c6;font-weight: bold }
+.terminal-1241864989-r4 { fill: #cc555a }
+.terminal-1241864989-r5 { fill: #98a84b;font-weight: bold }
+.terminal-1241864989-r6 { fill: #608ab1;font-weight: bold }
+.terminal-1241864989-r7 { fill: #68a0b3 }
+.terminal-1241864989-r8 { fill: #d0b344 }
+.terminal-1241864989-r9 { fill: #cc555a;font-weight: bold }
+    </style>
+
+    <defs>
+    <clipPath id="terminal-1241864989-clip-terminal">
+      <rect x="0" y="0" width="1438.6" height="1121.3999999999999" />
+    </clipPath>
+    <clipPath id="terminal-1241864989-line-0">
+    <rect x="0" y="1.5" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-1">
+    <rect x="0" y="25.9" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-2">
+    <rect x="0" y="50.3" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-3">
+    <rect x="0" y="74.7" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-4">
+    <rect x="0" y="99.1" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-5">
+    <rect x="0" y="123.5" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-6">
+    <rect x="0" y="147.9" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-7">
+    <rect x="0" y="172.3" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-8">
+    <rect x="0" y="196.7" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-9">
+    <rect x="0" y="221.1" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-10">
+    <rect x="0" y="245.5" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-11">
+    <rect x="0" y="269.9" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-12">
+    <rect x="0" y="294.3" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-13">
+    <rect x="0" y="318.7" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-14">
+    <rect x="0" y="343.1" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-15">
+    <rect x="0" y="367.5" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-16">
+    <rect x="0" y="391.9" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-17">
+    <rect x="0" y="416.3" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-18">
+    <rect x="0" y="440.7" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-19">
+    <rect x="0" y="465.1" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-20">
+    <rect x="0" y="489.5" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-21">
+    <rect x="0" y="513.9" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-22">
+    <rect x="0" y="538.3" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-23">
+    <rect x="0" y="562.7" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-24">
+    <rect x="0" y="587.1" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-25">
+    <rect x="0" y="611.5" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-26">
+    <rect x="0" y="635.9" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-27">
+    <rect x="0" y="660.3" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-28">
+    <rect x="0" y="684.7" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-29">
+    <rect x="0" y="709.1" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-30">
+    <rect x="0" y="733.5" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-31">
+    <rect x="0" y="757.9" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-32">
+    <rect x="0" y="782.3" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-33">
+    <rect x="0" y="806.7" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-34">
+    <rect x="0" y="831.1" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-35">
+    <rect x="0" y="855.5" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-36">
+    <rect x="0" y="879.9" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-37">
+    <rect x="0" y="904.3" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-38">
+    <rect x="0" y="928.7" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-39">
+    <rect x="0" y="953.1" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-40">
+    <rect x="0" y="977.5" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-41">
+    <rect x="0" y="1001.9" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-42">
+    <rect x="0" y="1026.3" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-43">
+    <rect x="0" y="1050.7" width="1439.6" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1241864989-line-44">
+    <rect x="0" y="1075.1" width="1439.6" height="24.65"/>
+            </clipPath>
+    </defs>
+
+    <rect fill="#292929" stroke="rgba(255,255,255,0.35)" stroke-width="1" x="1" y="1" width="1456" height="1170.4" rx="8"/><text class="terminal-1241864989-title" fill="#c5c8c6" text-anchor="middle" x="728" y="27">compass&#160;assess&#160;processes.csv</text>
+            <g transform="translate(26,22)">
+            <circle cx="0" cy="0" r="7" fill="#ff5f57"/>
+            <circle cx="22" cy="0" r="7" fill="#febc2e"/>
+            <circle cx="44" cy="0" r="7" fill="#28c840"/>
+            </g>
+
+    <g transform="translate(9, 41)" clip-path="url(#terminal-1241864989-clip-terminal)">
+
+    <g class="terminal-1241864989-matrix">
+    <text class="terminal-1241864989-r1" x="0" y="20" textLength="24.4" clip-path="url(#terminal-1241864989-line-0)">╭─</text><text class="terminal-1241864989-r1" x="24.4" y="20" textLength="597.8" clip-path="url(#terminal-1241864989-line-0)">─────────────────────────────────────────────────</text><text class="terminal-1241864989-r1" x="622.2" y="20" textLength="195.2" clip-path="url(#terminal-1241864989-line-0)">&#160;Итоги&#160;портфеля&#160;</text><text class="terminal-1241864989-r1" x="817.4" y="20" textLength="597.8" clip-path="url(#terminal-1241864989-line-0)">─────────────────────────────────────────────────</text><text class="terminal-1241864989-r1" x="1415.2" y="20" textLength="24.4" clip-path="url(#terminal-1241864989-line-0)">─╮</text><text class="terminal-1241864989-r2" x="1439.6" y="20" textLength="12.2" clip-path="url(#terminal-1241864989-line-0)">
+</text><text class="terminal-1241864989-r1" x="0" y="44.4" textLength="12.2" clip-path="url(#terminal-1241864989-line-1)">│</text><text class="terminal-1241864989-r2" x="24.4" y="44.4" textLength="292.8" clip-path="url(#terminal-1241864989-line-1)">Процессов&#160;оценено&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r3" x="341.6" y="44.4" textLength="24.4" clip-path="url(#terminal-1241864989-line-1)">18</text><text class="terminal-1241864989-r2" x="366" y="44.4" textLength="219.6" clip-path="url(#terminal-1241864989-line-1)">&#160;&#160;(рекомендовано:&#160;</text><text class="terminal-1241864989-r1" x="585.6" y="44.4" textLength="24.4" clip-path="url(#terminal-1241864989-line-1)">11</text><text class="terminal-1241864989-r2" x="610" y="44.4" textLength="170.8" clip-path="url(#terminal-1241864989-line-1)">,&#160;без&#160;модели:&#160;</text><text class="terminal-1241864989-r4" x="780.8" y="44.4" textLength="12.2" clip-path="url(#terminal-1241864989-line-1)">2</text><text class="terminal-1241864989-r2" x="793" y="44.4" textLength="12.2" clip-path="url(#terminal-1241864989-line-1)">)</text><text class="terminal-1241864989-r1" x="1427.4" y="44.4" textLength="12.2" clip-path="url(#terminal-1241864989-line-1)">│</text><text class="terminal-1241864989-r2" x="1439.6" y="44.4" textLength="12.2" clip-path="url(#terminal-1241864989-line-1)">
+</text><text class="terminal-1241864989-r1" x="0" y="68.8" textLength="12.2" clip-path="url(#terminal-1241864989-line-2)">│</text><text class="terminal-1241864989-r2" x="24.4" y="68.8" textLength="292.8" clip-path="url(#terminal-1241864989-line-2)">Высвобождается&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r3" x="341.6" y="68.8" textLength="109.8" clip-path="url(#terminal-1241864989-line-2)">950&#160;ч/мес</text><text class="terminal-1241864989-r2" x="451.4" y="68.8" textLength="353.8" clip-path="url(#terminal-1241864989-line-2)">&#160;&#160;(≈&#160;5.9&#160;ставки)&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r1" x="1427.4" y="68.8" textLength="12.2" clip-path="url(#terminal-1241864989-line-2)">│</text><text class="terminal-1241864989-r2" x="1439.6" y="68.8" textLength="12.2" clip-path="url(#terminal-1241864989-line-2)">
+</text><text class="terminal-1241864989-r1" x="0" y="93.2" textLength="12.2" clip-path="url(#terminal-1241864989-line-3)">│</text><text class="terminal-1241864989-r2" x="24.4" y="93.2" textLength="292.8" clip-path="url(#terminal-1241864989-line-3)">Эффект&#160;/&#160;затраты&#160;в&#160;месяц</text><text class="terminal-1241864989-r2" x="341.6" y="93.2" textLength="463.6" clip-path="url(#terminal-1241864989-line-3)">795 851 ₽&#160;/&#160;127 541 ₽&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r1" x="1427.4" y="93.2" textLength="12.2" clip-path="url(#terminal-1241864989-line-3)">│</text><text class="terminal-1241864989-r2" x="1439.6" y="93.2" textLength="12.2" clip-path="url(#terminal-1241864989-line-3)">
+</text><text class="terminal-1241864989-r1" x="0" y="117.6" textLength="12.2" clip-path="url(#terminal-1241864989-line-4)">│</text><text class="terminal-1241864989-r2" x="24.4" y="117.6" textLength="292.8" clip-path="url(#terminal-1241864989-line-4)">Внедрение&#160;(разово)&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="341.6" y="117.6" textLength="463.6" clip-path="url(#terminal-1241864989-line-4)">2 209 375 ₽&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r1" x="1427.4" y="117.6" textLength="12.2" clip-path="url(#terminal-1241864989-line-4)">│</text><text class="terminal-1241864989-r2" x="1439.6" y="117.6" textLength="12.2" clip-path="url(#terminal-1241864989-line-4)">
+</text><text class="terminal-1241864989-r1" x="0" y="142" textLength="12.2" clip-path="url(#terminal-1241864989-line-5)">│</text><text class="terminal-1241864989-r2" x="24.4" y="142" textLength="292.8" clip-path="url(#terminal-1241864989-line-5)">Окупаемость&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r3" x="341.6" y="142" textLength="97.6" clip-path="url(#terminal-1241864989-line-5)">3.3&#160;мес.</text><text class="terminal-1241864989-r1" x="1427.4" y="142" textLength="12.2" clip-path="url(#terminal-1241864989-line-5)">│</text><text class="terminal-1241864989-r2" x="1439.6" y="142" textLength="12.2" clip-path="url(#terminal-1241864989-line-5)">
+</text><text class="terminal-1241864989-r1" x="0" y="166.4" textLength="12.2" clip-path="url(#terminal-1241864989-line-6)">│</text><text class="terminal-1241864989-r2" x="24.4" y="166.4" textLength="292.8" clip-path="url(#terminal-1241864989-line-6)">Чистый&#160;эффект&#160;за&#160;12&#160;мес.</text><text class="terminal-1241864989-r5" x="341.6" y="166.4" textLength="134.2" clip-path="url(#terminal-1241864989-line-6)">5 810 346 ₽</text><text class="terminal-1241864989-r2" x="475.8" y="166.4" textLength="329.4" clip-path="url(#terminal-1241864989-line-6)">&#160;&#160;(ROI&#160;155%)&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r1" x="1427.4" y="166.4" textLength="12.2" clip-path="url(#terminal-1241864989-line-6)">│</text><text class="terminal-1241864989-r2" x="1439.6" y="166.4" textLength="12.2" clip-path="url(#terminal-1241864989-line-6)">
+</text><text class="terminal-1241864989-r1" x="0" y="190.8" textLength="1439.6" clip-path="url(#terminal-1241864989-line-7)">╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯</text><text class="terminal-1241864989-r2" x="1439.6" y="190.8" textLength="12.2" clip-path="url(#terminal-1241864989-line-7)">
+</text><text class="terminal-1241864989-r2" x="1439.6" y="215.2" textLength="12.2" clip-path="url(#terminal-1241864989-line-8)">
+</text><text class="terminal-1241864989-r3" x="24.4" y="239.6" textLength="24.4" clip-path="url(#terminal-1241864989-line-9)">&#160;№</text><text class="terminal-1241864989-r3" x="85.4" y="239.6" textLength="353.8" clip-path="url(#terminal-1241864989-line-9)">Процесс&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r3" x="475.8" y="239.6" textLength="183" clip-path="url(#terminal-1241864989-line-9)">Квадрант&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r3" x="695.4" y="239.6" textLength="109.8" clip-path="url(#terminal-1241864989-line-9)">Модель&#160;&#160;&#160;</text><text class="terminal-1241864989-r3" x="841.8" y="239.6" textLength="61" clip-path="url(#terminal-1241864989-line-9)">ч/мес</text><text class="terminal-1241864989-r3" x="939.4" y="239.6" textLength="134.2" clip-path="url(#terminal-1241864989-line-9)">&#160;&#160;Внедрение</text><text class="terminal-1241864989-r3" x="1110.2" y="239.6" textLength="122" clip-path="url(#terminal-1241864989-line-9)">Окуп.,&#160;мес</text><text class="terminal-1241864989-r3" x="1268.8" y="239.6" textLength="146.4" clip-path="url(#terminal-1241864989-line-9)">&#160;&#160;&#160;&#160;&#160;&#160;Эффект</text><text class="terminal-1241864989-r2" x="1439.6" y="239.6" textLength="12.2" clip-path="url(#terminal-1241864989-line-9)">
+</text><text class="terminal-1241864989-r2" x="0" y="264" textLength="1439.6" clip-path="url(#terminal-1241864989-line-10)">&#160;────────────────────────────────────────────────────────────────────────────────────────────────────────────────────&#160;</text><text class="terminal-1241864989-r2" x="1439.6" y="264" textLength="12.2" clip-path="url(#terminal-1241864989-line-10)">
+</text><text class="terminal-1241864989-r2" x="24.4" y="288.4" textLength="24.4" clip-path="url(#terminal-1241864989-line-11)">&#160;1</text><text class="terminal-1241864989-r2" x="85.4" y="288.4" textLength="353.8" clip-path="url(#terminal-1241864989-line-11)">Маршрутизация&#160;обращений&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r5" x="475.8" y="288.4" textLength="183" clip-path="url(#terminal-1241864989-line-11)">Быстрая&#160;победа&#160;</text><text class="terminal-1241864989-r2" x="695.4" y="288.4" textLength="109.8" clip-path="url(#terminal-1241864989-line-11)">Qwen&#160;⌂&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="841.8" y="288.4" textLength="61" clip-path="url(#terminal-1241864989-line-11)">&#160;&#160;251</text><text class="terminal-1241864989-r2" x="939.4" y="288.4" textLength="134.2" clip-path="url(#terminal-1241864989-line-11)">&#160;&#160;187 500 ₽</text><text class="terminal-1241864989-r2" x="1110.2" y="288.4" textLength="122" clip-path="url(#terminal-1241864989-line-11)">&#160;&#160;&#160;&#160;&#160;&#160;&#160;1.1</text><text class="terminal-1241864989-r2" x="1268.8" y="288.4" textLength="146.4" clip-path="url(#terminal-1241864989-line-11)">&#160;1 879 910 ₽</text><text class="terminal-1241864989-r2" x="1439.6" y="288.4" textLength="12.2" clip-path="url(#terminal-1241864989-line-11)">
+</text><text class="terminal-1241864989-r2" x="85.4" y="312.8" textLength="353.8" clip-path="url(#terminal-1241864989-line-12)">клиентов&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="1439.6" y="312.8" textLength="12.2" clip-path="url(#terminal-1241864989-line-12)">
+</text><text class="terminal-1241864989-r2" x="24.4" y="337.2" textLength="24.4" clip-path="url(#terminal-1241864989-line-13)">&#160;2</text><text class="terminal-1241864989-r2" x="85.4" y="337.2" textLength="353.8" clip-path="url(#terminal-1241864989-line-13)">Описания&#160;карточек&#160;товаров&#160;для</text><text class="terminal-1241864989-r5" x="475.8" y="337.2" textLength="183" clip-path="url(#terminal-1241864989-line-13)">Быстрая&#160;победа&#160;</text><text class="terminal-1241864989-r2" x="695.4" y="337.2" textLength="109.8" clip-path="url(#terminal-1241864989-line-13)">YandexGPT</text><text class="terminal-1241864989-r2" x="841.8" y="337.2" textLength="61" clip-path="url(#terminal-1241864989-line-13)">&#160;&#160;106</text><text class="terminal-1241864989-r2" x="939.4" y="337.2" textLength="134.2" clip-path="url(#terminal-1241864989-line-13)">&#160;&#160;100 000 ₽</text><text class="terminal-1241864989-r2" x="1110.2" y="337.2" textLength="122" clip-path="url(#terminal-1241864989-line-13)">&#160;&#160;&#160;&#160;&#160;&#160;&#160;1.6</text><text class="terminal-1241864989-r2" x="1268.8" y="337.2" textLength="146.4" clip-path="url(#terminal-1241864989-line-13)">&#160;&#160;&#160;656 224 ₽</text><text class="terminal-1241864989-r2" x="1439.6" y="337.2" textLength="12.2" clip-path="url(#terminal-1241864989-line-13)">
+</text><text class="terminal-1241864989-r2" x="85.4" y="361.6" textLength="353.8" clip-path="url(#terminal-1241864989-line-14)">маркетплейсов&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="1439.6" y="361.6" textLength="12.2" clip-path="url(#terminal-1241864989-line-14)">
+</text><text class="terminal-1241864989-r2" x="24.4" y="386" textLength="24.4" clip-path="url(#terminal-1241864989-line-15)">&#160;3</text><text class="terminal-1241864989-r2" x="85.4" y="386" textLength="353.8" clip-path="url(#terminal-1241864989-line-15)">Ответы&#160;на&#160;типовые&#160;вопросы&#160;по&#160;</text><text class="terminal-1241864989-r5" x="475.8" y="386" textLength="183" clip-path="url(#terminal-1241864989-line-15)">Быстрая&#160;победа&#160;</text><text class="terminal-1241864989-r2" x="695.4" y="386" textLength="109.8" clip-path="url(#terminal-1241864989-line-15)">YandexGPT</text><text class="terminal-1241864989-r2" x="841.8" y="386" textLength="61" clip-path="url(#terminal-1241864989-line-15)">&#160;&#160;152</text><text class="terminal-1241864989-r2" x="939.4" y="386" textLength="134.2" clip-path="url(#terminal-1241864989-line-15)">&#160;&#160;375 000 ₽</text><text class="terminal-1241864989-r2" x="1110.2" y="386" textLength="122" clip-path="url(#terminal-1241864989-line-15)">&#160;&#160;&#160;&#160;&#160;&#160;&#160;3.6</text><text class="terminal-1241864989-r2" x="1268.8" y="386" textLength="146.4" clip-path="url(#terminal-1241864989-line-15)">&#160;&#160;&#160;864 804 ₽</text><text class="terminal-1241864989-r2" x="1439.6" y="386" textLength="12.2" clip-path="url(#terminal-1241864989-line-15)">
+</text><text class="terminal-1241864989-r2" x="85.4" y="410.4" textLength="353.8" clip-path="url(#terminal-1241864989-line-16)">базе&#160;знаний&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="1439.6" y="410.4" textLength="12.2" clip-path="url(#terminal-1241864989-line-16)">
+</text><text class="terminal-1241864989-r2" x="24.4" y="434.8" textLength="24.4" clip-path="url(#terminal-1241864989-line-17)">&#160;4</text><text class="terminal-1241864989-r2" x="85.4" y="434.8" textLength="353.8" clip-path="url(#terminal-1241864989-line-17)">Резюмирование&#160;звонков&#160;и&#160;чатов</text><text class="terminal-1241864989-r5" x="475.8" y="434.8" textLength="183" clip-path="url(#terminal-1241864989-line-17)">Быстрая&#160;победа&#160;</text><text class="terminal-1241864989-r2" x="695.4" y="434.8" textLength="109.8" clip-path="url(#terminal-1241864989-line-17)">Qwen&#160;⌂&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="841.8" y="434.8" textLength="61" clip-path="url(#terminal-1241864989-line-17)">&#160;&#160;111</text><text class="terminal-1241864989-r2" x="939.4" y="434.8" textLength="134.2" clip-path="url(#terminal-1241864989-line-17)">&#160;&#160;125 000 ₽</text><text class="terminal-1241864989-r2" x="1110.2" y="434.8" textLength="122" clip-path="url(#terminal-1241864989-line-17)">&#160;&#160;&#160;&#160;&#160;&#160;&#160;2.3</text><text class="terminal-1241864989-r2" x="1268.8" y="434.8" textLength="146.4" clip-path="url(#terminal-1241864989-line-17)">&#160;&#160;&#160;536 795 ₽</text><text class="terminal-1241864989-r2" x="1439.6" y="434.8" textLength="12.2" clip-path="url(#terminal-1241864989-line-17)">
+</text><text class="terminal-1241864989-r2" x="85.4" y="459.2" textLength="353.8" clip-path="url(#terminal-1241864989-line-18)">для&#160;CRM&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="1439.6" y="459.2" textLength="12.2" clip-path="url(#terminal-1241864989-line-18)">
+</text><text class="terminal-1241864989-r2" x="24.4" y="483.6" textLength="24.4" clip-path="url(#terminal-1241864989-line-19)">&#160;5</text><text class="terminal-1241864989-r2" x="85.4" y="483.6" textLength="353.8" clip-path="url(#terminal-1241864989-line-19)">Подготовка&#160;коммерческих&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r5" x="475.8" y="483.6" textLength="183" clip-path="url(#terminal-1241864989-line-19)">Быстрая&#160;победа&#160;</text><text class="terminal-1241864989-r2" x="695.4" y="483.6" textLength="109.8" clip-path="url(#terminal-1241864989-line-19)">YandexGPT</text><text class="terminal-1241864989-r2" x="841.8" y="483.6" textLength="61" clip-path="url(#terminal-1241864989-line-19)">&#160;&#160;&#160;44</text><text class="terminal-1241864989-r2" x="939.4" y="483.6" textLength="134.2" clip-path="url(#terminal-1241864989-line-19)">&#160;&#160;150 000 ₽</text><text class="terminal-1241864989-r2" x="1110.2" y="483.6" textLength="122" clip-path="url(#terminal-1241864989-line-19)">&#160;&#160;&#160;&#160;&#160;&#160;&#160;2.9</text><text class="terminal-1241864989-r2" x="1268.8" y="483.6" textLength="146.4" clip-path="url(#terminal-1241864989-line-19)">&#160;&#160;&#160;482 442 ₽</text><text class="terminal-1241864989-r2" x="1439.6" y="483.6" textLength="12.2" clip-path="url(#terminal-1241864989-line-19)">
+</text><text class="terminal-1241864989-r2" x="85.4" y="508" textLength="353.8" clip-path="url(#terminal-1241864989-line-20)">предложений&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="1439.6" y="508" textLength="12.2" clip-path="url(#terminal-1241864989-line-20)">
+</text><text class="terminal-1241864989-r2" x="24.4" y="532.4" textLength="24.4" clip-path="url(#terminal-1241864989-line-21)">&#160;6</text><text class="terminal-1241864989-r2" x="85.4" y="532.4" textLength="353.8" clip-path="url(#terminal-1241864989-line-21)">Разбор&#160;входящих&#160;счетов&#160;и&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r6" x="475.8" y="532.4" textLength="183" clip-path="url(#terminal-1241864989-line-21)">Стратегический&#160;</text><text class="terminal-1241864989-r2" x="695.4" y="532.4" textLength="109.8" clip-path="url(#terminal-1241864989-line-21)">GigaChat&#160;</text><text class="terminal-1241864989-r2" x="841.8" y="532.4" textLength="61" clip-path="url(#terminal-1241864989-line-21)">&#160;&#160;&#160;76</text><text class="terminal-1241864989-r2" x="939.4" y="532.4" textLength="134.2" clip-path="url(#terminal-1241864989-line-21)">&#160;&#160;421 875 ₽</text><text class="terminal-1241864989-r2" x="1110.2" y="532.4" textLength="122" clip-path="url(#terminal-1241864989-line-21)">&#160;&#160;&#160;&#160;&#160;&#160;&#160;5.2</text><text class="terminal-1241864989-r2" x="1268.8" y="532.4" textLength="146.4" clip-path="url(#terminal-1241864989-line-21)">&#160;&#160;&#160;547 998 ₽</text><text class="terminal-1241864989-r2" x="1439.6" y="532.4" textLength="12.2" clip-path="url(#terminal-1241864989-line-21)">
+</text><text class="terminal-1241864989-r2" x="85.4" y="556.8" textLength="353.8" clip-path="url(#terminal-1241864989-line-22)">актов&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="1439.6" y="556.8" textLength="12.2" clip-path="url(#terminal-1241864989-line-22)">
+</text><text class="terminal-1241864989-r2" x="24.4" y="581.2" textLength="24.4" clip-path="url(#terminal-1241864989-line-23)">&#160;7</text><text class="terminal-1241864989-r2" x="85.4" y="581.2" textLength="353.8" clip-path="url(#terminal-1241864989-line-23)">Ответы&#160;на&#160;отзывы&#160;и&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r7" x="475.8" y="581.2" textLength="183" clip-path="url(#terminal-1241864989-line-23)">Попутная&#160;задача</text><text class="terminal-1241864989-r2" x="695.4" y="581.2" textLength="109.8" clip-path="url(#terminal-1241864989-line-23)">YandexGPT</text><text class="terminal-1241864989-r2" x="841.8" y="581.2" textLength="61" clip-path="url(#terminal-1241864989-line-23)">&#160;&#160;&#160;46</text><text class="terminal-1241864989-r2" x="939.4" y="581.2" textLength="134.2" clip-path="url(#terminal-1241864989-line-23)">&#160;&#160;100 000 ₽</text><text class="terminal-1241864989-r2" x="1110.2" y="581.2" textLength="122" clip-path="url(#terminal-1241864989-line-23)">&#160;&#160;&#160;&#160;&#160;&#160;&#160;4.1</text><text class="terminal-1241864989-r2" x="1268.8" y="581.2" textLength="146.4" clip-path="url(#terminal-1241864989-line-23)">&#160;&#160;&#160;193 064 ₽</text><text class="terminal-1241864989-r2" x="1439.6" y="581.2" textLength="12.2" clip-path="url(#terminal-1241864989-line-23)">
+</text><text class="terminal-1241864989-r2" x="85.4" y="605.6" textLength="353.8" clip-path="url(#terminal-1241864989-line-24)">комментарии&#160;в&#160;соцсетях&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="1439.6" y="605.6" textLength="12.2" clip-path="url(#terminal-1241864989-line-24)">
+</text><text class="terminal-1241864989-r2" x="24.4" y="630" textLength="24.4" clip-path="url(#terminal-1241864989-line-25)">&#160;8</text><text class="terminal-1241864989-r2" x="85.4" y="630" textLength="353.8" clip-path="url(#terminal-1241864989-line-25)">Перевод&#160;технической&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r7" x="475.8" y="630" textLength="183" clip-path="url(#terminal-1241864989-line-25)">Попутная&#160;задача</text><text class="terminal-1241864989-r2" x="695.4" y="630" textLength="109.8" clip-path="url(#terminal-1241864989-line-25)">GigaChat&#160;</text><text class="terminal-1241864989-r2" x="841.8" y="630" textLength="61" clip-path="url(#terminal-1241864989-line-25)">&#160;&#160;&#160;24</text><text class="terminal-1241864989-r2" x="939.4" y="630" textLength="134.2" clip-path="url(#terminal-1241864989-line-25)">&#160;&#160;&#160;75 000 ₽</text><text class="terminal-1241864989-r2" x="1110.2" y="630" textLength="122" clip-path="url(#terminal-1241864989-line-25)">&#160;&#160;&#160;&#160;&#160;&#160;&#160;3.6</text><text class="terminal-1241864989-r2" x="1268.8" y="630" textLength="146.4" clip-path="url(#terminal-1241864989-line-25)">&#160;&#160;&#160;173 884 ₽</text><text class="terminal-1241864989-r2" x="1439.6" y="630" textLength="12.2" clip-path="url(#terminal-1241864989-line-25)">
+</text><text class="terminal-1241864989-r2" x="85.4" y="654.4" textLength="353.8" clip-path="url(#terminal-1241864989-line-26)">документации&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="1439.6" y="654.4" textLength="12.2" clip-path="url(#terminal-1241864989-line-26)">
+</text><text class="terminal-1241864989-r2" x="24.4" y="678.8" textLength="24.4" clip-path="url(#terminal-1241864989-line-27)">&#160;9</text><text class="terminal-1241864989-r2" x="85.4" y="678.8" textLength="353.8" clip-path="url(#terminal-1241864989-line-27)">Выделение&#160;задач&#160;из&#160;протоколов</text><text class="terminal-1241864989-r7" x="475.8" y="678.8" textLength="183" clip-path="url(#terminal-1241864989-line-27)">Попутная&#160;задача</text><text class="terminal-1241864989-r2" x="695.4" y="678.8" textLength="109.8" clip-path="url(#terminal-1241864989-line-27)">YandexGPT</text><text class="terminal-1241864989-r2" x="841.8" y="678.8" textLength="61" clip-path="url(#terminal-1241864989-line-27)">&#160;&#160;&#160;36</text><text class="terminal-1241864989-r2" x="939.4" y="678.8" textLength="134.2" clip-path="url(#terminal-1241864989-line-27)">&#160;&#160;225 000 ₽</text><text class="terminal-1241864989-r2" x="1110.2" y="678.8" textLength="122" clip-path="url(#terminal-1241864989-line-27)">&#160;&#160;&#160;&#160;&#160;&#160;&#160;6.1</text><text class="terminal-1241864989-r2" x="1268.8" y="678.8" textLength="146.4" clip-path="url(#terminal-1241864989-line-27)">&#160;&#160;&#160;217 451 ₽</text><text class="terminal-1241864989-r2" x="1439.6" y="678.8" textLength="12.2" clip-path="url(#terminal-1241864989-line-27)">
+</text><text class="terminal-1241864989-r2" x="85.4" y="703.2" textLength="353.8" clip-path="url(#terminal-1241864989-line-28)">встреч&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="1439.6" y="703.2" textLength="12.2" clip-path="url(#terminal-1241864989-line-28)">
+</text><text class="terminal-1241864989-r2" x="24.4" y="727.6" textLength="24.4" clip-path="url(#terminal-1241864989-line-29)">10</text><text class="terminal-1241864989-r2" x="85.4" y="727.6" textLength="353.8" clip-path="url(#terminal-1241864989-line-29)">Первичный&#160;скрининг&#160;резюме&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r7" x="475.8" y="727.6" textLength="183" clip-path="url(#terminal-1241864989-line-29)">Попутная&#160;задача</text><text class="terminal-1241864989-r2" x="695.4" y="727.6" textLength="109.8" clip-path="url(#terminal-1241864989-line-29)">YandexGPT</text><text class="terminal-1241864989-r2" x="841.8" y="727.6" textLength="61" clip-path="url(#terminal-1241864989-line-29)">&#160;&#160;&#160;57</text><text class="terminal-1241864989-r2" x="939.4" y="727.6" textLength="134.2" clip-path="url(#terminal-1241864989-line-29)">&#160;&#160;225 000 ₽</text><text class="terminal-1241864989-r2" x="1110.2" y="727.6" textLength="122" clip-path="url(#terminal-1241864989-line-29)">&#160;&#160;&#160;&#160;&#160;&#160;&#160;7.2</text><text class="terminal-1241864989-r2" x="1268.8" y="727.6" textLength="146.4" clip-path="url(#terminal-1241864989-line-29)">&#160;&#160;&#160;148 335 ₽</text><text class="terminal-1241864989-r2" x="1439.6" y="727.6" textLength="12.2" clip-path="url(#terminal-1241864989-line-29)">
+</text><text class="terminal-1241864989-r2" x="24.4" y="752" textLength="24.4" clip-path="url(#terminal-1241864989-line-30)">11</text><text class="terminal-1241864989-r2" x="85.4" y="752" textLength="353.8" clip-path="url(#terminal-1241864989-line-30)">Классификация&#160;документов&#160;в&#160;&#160;&#160;</text><text class="terminal-1241864989-r7" x="475.8" y="752" textLength="183" clip-path="url(#terminal-1241864989-line-30)">Попутная&#160;задача</text><text class="terminal-1241864989-r2" x="695.4" y="752" textLength="109.8" clip-path="url(#terminal-1241864989-line-30)">GigaChat&#160;</text><text class="terminal-1241864989-r2" x="841.8" y="752" textLength="61" clip-path="url(#terminal-1241864989-line-30)">&#160;&#160;&#160;48</text><text class="terminal-1241864989-r2" x="939.4" y="752" textLength="134.2" clip-path="url(#terminal-1241864989-line-30)">&#160;&#160;225 000 ₽</text><text class="terminal-1241864989-r2" x="1110.2" y="752" textLength="122" clip-path="url(#terminal-1241864989-line-30)">&#160;&#160;&#160;&#160;&#160;&#160;&#160;8.1</text><text class="terminal-1241864989-r2" x="1268.8" y="752" textLength="146.4" clip-path="url(#terminal-1241864989-line-30)">&#160;&#160;&#160;109 437 ₽</text><text class="terminal-1241864989-r2" x="1439.6" y="752" textLength="12.2" clip-path="url(#terminal-1241864989-line-30)">
+</text><text class="terminal-1241864989-r2" x="85.4" y="776.4" textLength="353.8" clip-path="url(#terminal-1241864989-line-31)">архиве&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="1439.6" y="776.4" textLength="12.2" clip-path="url(#terminal-1241864989-line-31)">
+</text><text class="terminal-1241864989-r2" x="24.4" y="800.8" textLength="24.4" clip-path="url(#terminal-1241864989-line-32)">12</text><text class="terminal-1241864989-r2" x="85.4" y="800.8" textLength="353.8" clip-path="url(#terminal-1241864989-line-32)">Подготовка&#160;описаний&#160;вакансий&#160;</text><text class="terminal-1241864989-r8" x="475.8" y="800.8" textLength="183" clip-path="url(#terminal-1241864989-line-32)">Отложить&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="695.4" y="800.8" textLength="109.8" clip-path="url(#terminal-1241864989-line-32)">YandexGPT</text><text class="terminal-1241864989-r2" x="841.8" y="800.8" textLength="61" clip-path="url(#terminal-1241864989-line-32)">&#160;&#160;&#160;&#160;5</text><text class="terminal-1241864989-r2" x="939.4" y="800.8" textLength="134.2" clip-path="url(#terminal-1241864989-line-32)">&#160;&#160;100 000 ₽</text><text class="terminal-1241864989-r2" x="1110.2" y="800.8" textLength="122" clip-path="url(#terminal-1241864989-line-32)">&#160;&#160;&#160;&#160;&#160;&#160;66.9</text><text class="terminal-1241864989-r2" x="1268.8" y="800.8" textLength="146.4" clip-path="url(#terminal-1241864989-line-32)">&#160;&#160;&#160;-82 053 ₽</text><text class="terminal-1241864989-r2" x="1439.6" y="800.8" textLength="12.2" clip-path="url(#terminal-1241864989-line-32)">
+</text><text class="terminal-1241864989-r2" x="24.4" y="825.2" textLength="24.4" clip-path="url(#terminal-1241864989-line-33)">13</text><text class="terminal-1241864989-r2" x="85.4" y="825.2" textLength="353.8" clip-path="url(#terminal-1241864989-line-33)">SQL-запросы&#160;и&#160;формулы&#160;Excel&#160;&#160;</text><text class="terminal-1241864989-r8" x="475.8" y="825.2" textLength="183" clip-path="url(#terminal-1241864989-line-33)">Отложить&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="695.4" y="825.2" textLength="109.8" clip-path="url(#terminal-1241864989-line-33)">Qwen&#160;⌂&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="841.8" y="825.2" textLength="61" clip-path="url(#terminal-1241864989-line-33)">&#160;&#160;&#160;15</text><text class="terminal-1241864989-r2" x="939.4" y="825.2" textLength="134.2" clip-path="url(#terminal-1241864989-line-33)">&#160;&#160;200 000 ₽</text><text class="terminal-1241864989-r2" x="1110.2" y="825.2" textLength="122" clip-path="url(#terminal-1241864989-line-33)">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;—</text><text class="terminal-1241864989-r2" x="1268.8" y="825.2" textLength="146.4" clip-path="url(#terminal-1241864989-line-33)">-2 689 656 ₽</text><text class="terminal-1241864989-r2" x="1439.6" y="825.2" textLength="12.2" clip-path="url(#terminal-1241864989-line-33)">
+</text><text class="terminal-1241864989-r2" x="85.4" y="849.6" textLength="353.8" clip-path="url(#terminal-1241864989-line-34)">для&#160;отчётов&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="1439.6" y="849.6" textLength="12.2" clip-path="url(#terminal-1241864989-line-34)">
+</text><text class="terminal-1241864989-r2" x="24.4" y="874" textLength="24.4" clip-path="url(#terminal-1241864989-line-35)">14</text><text class="terminal-1241864989-r2" x="85.4" y="874" textLength="353.8" clip-path="url(#terminal-1241864989-line-35)">Еженедельные&#160;отчёты&#160;для&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r8" x="475.8" y="874" textLength="183" clip-path="url(#terminal-1241864989-line-35)">Отложить&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="695.4" y="874" textLength="109.8" clip-path="url(#terminal-1241864989-line-35)">GigaChat&#160;</text><text class="terminal-1241864989-r2" x="841.8" y="874" textLength="61" clip-path="url(#terminal-1241864989-line-35)">&#160;&#160;&#160;24</text><text class="terminal-1241864989-r2" x="939.4" y="874" textLength="134.2" clip-path="url(#terminal-1241864989-line-35)">&#160;&#160;250 000 ₽</text><text class="terminal-1241864989-r2" x="1110.2" y="874" textLength="122" clip-path="url(#terminal-1241864989-line-35)">&#160;&#160;&#160;&#160;&#160;&#160;12.8</text><text class="terminal-1241864989-r2" x="1268.8" y="874" textLength="146.4" clip-path="url(#terminal-1241864989-line-35)">&#160;&#160;&#160;-15 835 ₽</text><text class="terminal-1241864989-r2" x="1439.6" y="874" textLength="12.2" clip-path="url(#terminal-1241864989-line-35)">
+</text><text class="terminal-1241864989-r2" x="85.4" y="898.4" textLength="353.8" clip-path="url(#terminal-1241864989-line-36)">руководства&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="1439.6" y="898.4" textLength="12.2" clip-path="url(#terminal-1241864989-line-36)">
+</text><text class="terminal-1241864989-r2" x="24.4" y="922.8" textLength="24.4" clip-path="url(#terminal-1241864989-line-37)">15</text><text class="terminal-1241864989-r2" x="85.4" y="922.8" textLength="353.8" clip-path="url(#terminal-1241864989-line-37)">Сверка&#160;платежей&#160;с&#160;заказами&#160;&#160;&#160;</text><text class="terminal-1241864989-r8" x="475.8" y="922.8" textLength="183" clip-path="url(#terminal-1241864989-line-37)">Отложить&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="695.4" y="922.8" textLength="109.8" clip-path="url(#terminal-1241864989-line-37)">GigaChat&#160;</text><text class="terminal-1241864989-r2" x="841.8" y="922.8" textLength="61" clip-path="url(#terminal-1241864989-line-37)">&#160;&#160;&#160;26</text><text class="terminal-1241864989-r2" x="939.4" y="922.8" textLength="134.2" clip-path="url(#terminal-1241864989-line-37)">&#160;&#160;312 500 ₽</text><text class="terminal-1241864989-r2" x="1110.2" y="922.8" textLength="122" clip-path="url(#terminal-1241864989-line-37)">&#160;&#160;&#160;&#160;&#160;&#160;19.8</text><text class="terminal-1241864989-r2" x="1268.8" y="922.8" textLength="146.4" clip-path="url(#terminal-1241864989-line-37)">&#160;&#160;-123 124 ₽</text><text class="terminal-1241864989-r2" x="1439.6" y="922.8" textLength="12.2" clip-path="url(#terminal-1241864989-line-37)">
+</text><text class="terminal-1241864989-r2" x="24.4" y="947.2" textLength="24.4" clip-path="url(#terminal-1241864989-line-38)">16</text><text class="terminal-1241864989-r2" x="85.4" y="947.2" textLength="353.8" clip-path="url(#terminal-1241864989-line-38)">Подготовка&#160;ответов&#160;на&#160;запросы</text><text class="terminal-1241864989-r8" x="475.8" y="947.2" textLength="183" clip-path="url(#terminal-1241864989-line-38)">Отложить&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="695.4" y="947.2" textLength="109.8" clip-path="url(#terminal-1241864989-line-38)">YandexGPT</text><text class="terminal-1241864989-r2" x="841.8" y="947.2" textLength="61" clip-path="url(#terminal-1241864989-line-38)">&#160;&#160;&#160;&#160;5</text><text class="terminal-1241864989-r2" x="939.4" y="947.2" textLength="134.2" clip-path="url(#terminal-1241864989-line-38)">&#160;&#160;180 000 ₽</text><text class="terminal-1241864989-r2" x="1110.2" y="947.2" textLength="122" clip-path="url(#terminal-1241864989-line-38)">&#160;&#160;&#160;&#160;&#160;&#160;25.2</text><text class="terminal-1241864989-r2" x="1268.8" y="947.2" textLength="146.4" clip-path="url(#terminal-1241864989-line-38)">&#160;&#160;&#160;-94 280 ₽</text><text class="terminal-1241864989-r2" x="1439.6" y="947.2" textLength="12.2" clip-path="url(#terminal-1241864989-line-38)">
+</text><text class="terminal-1241864989-r2" x="85.4" y="971.6" textLength="353.8" clip-path="url(#terminal-1241864989-line-39)">по&#160;ПДн&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="1439.6" y="971.6" textLength="12.2" clip-path="url(#terminal-1241864989-line-39)">
+</text><text class="terminal-1241864989-r2" x="24.4" y="996" textLength="24.4" clip-path="url(#terminal-1241864989-line-40)">17</text><text class="terminal-1241864989-r2" x="85.4" y="996" textLength="353.8" clip-path="url(#terminal-1241864989-line-40)">Предварительная&#160;проверка&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r9" x="475.8" y="996" textLength="183" clip-path="url(#terminal-1241864989-line-40)">Нет&#160;модели&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="695.4" y="996" textLength="109.8" clip-path="url(#terminal-1241864989-line-40)">—&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="841.8" y="996" textLength="61" clip-path="url(#terminal-1241864989-line-40)">&#160;&#160;&#160;15</text><text class="terminal-1241864989-r2" x="939.4" y="996" textLength="134.2" clip-path="url(#terminal-1241864989-line-40)">&#160;&#160;562 500 ₽</text><text class="terminal-1241864989-r2" x="1110.2" y="996" textLength="122" clip-path="url(#terminal-1241864989-line-40)">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;—</text><text class="terminal-1241864989-r2" x="1268.8" y="996" textLength="146.4" clip-path="url(#terminal-1241864989-line-40)">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;—</text><text class="terminal-1241864989-r2" x="1439.6" y="996" textLength="12.2" clip-path="url(#terminal-1241864989-line-40)">
+</text><text class="terminal-1241864989-r2" x="85.4" y="1020.4" textLength="353.8" clip-path="url(#terminal-1241864989-line-41)">договоров&#160;на&#160;риски&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="1439.6" y="1020.4" textLength="12.2" clip-path="url(#terminal-1241864989-line-41)">
+</text><text class="terminal-1241864989-r2" x="24.4" y="1044.8" textLength="24.4" clip-path="url(#terminal-1241864989-line-42)">18</text><text class="terminal-1241864989-r2" x="85.4" y="1044.8" textLength="353.8" clip-path="url(#terminal-1241864989-line-42)">Оценка&#160;надёжности&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r9" x="475.8" y="1044.8" textLength="183" clip-path="url(#terminal-1241864989-line-42)">Нет&#160;модели&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="695.4" y="1044.8" textLength="109.8" clip-path="url(#terminal-1241864989-line-42)">—&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="841.8" y="1044.8" textLength="61" clip-path="url(#terminal-1241864989-line-42)">&#160;&#160;&#160;&#160;8</text><text class="terminal-1241864989-r2" x="939.4" y="1044.8" textLength="134.2" clip-path="url(#terminal-1241864989-line-42)">1 125 000 ₽</text><text class="terminal-1241864989-r2" x="1110.2" y="1044.8" textLength="122" clip-path="url(#terminal-1241864989-line-42)">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;—</text><text class="terminal-1241864989-r2" x="1268.8" y="1044.8" textLength="146.4" clip-path="url(#terminal-1241864989-line-42)">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;—</text><text class="terminal-1241864989-r2" x="1439.6" y="1044.8" textLength="12.2" clip-path="url(#terminal-1241864989-line-42)">
+</text><text class="terminal-1241864989-r2" x="85.4" y="1069.2" textLength="353.8" clip-path="url(#terminal-1241864989-line-43)">контрагентов&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1241864989-r2" x="1439.6" y="1069.2" textLength="12.2" clip-path="url(#terminal-1241864989-line-43)">
+</text><text class="terminal-1241864989-r2" x="1439.6" y="1093.6" textLength="12.2" clip-path="url(#terminal-1241864989-line-44)">
+</text><text class="terminal-1241864989-r8" x="0" y="1118" textLength="12.2" clip-path="url(#terminal-1241864989-line-45)">!</text><text class="terminal-1241864989-r2" x="12.2" y="1118" textLength="1281" clip-path="url(#terminal-1241864989-line-45)">&#160;Каталог&#160;моделей&#160;содержит&#160;демонстрационные&#160;цены&#160;и&#160;оценки&#160;качества&#160;—&#160;обновите&#160;его&#160;перед&#160;принятием&#160;решений.</text><text class="terminal-1241864989-r2" x="1439.6" y="1118" textLength="12.2" clip-path="url(#terminal-1241864989-line-45)">
+</text>
+    </g>
+    </g>
+</svg>

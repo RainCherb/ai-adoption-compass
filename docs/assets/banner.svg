@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 320" width="1280" height="320" role="img" aria-label="AI Adoption Compass — где применить ИИ, какой моделью и как безопасно">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1220"/>
+      <stop offset="1" stop-color="#15233f"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2dd4bf"/>
+      <stop offset="1" stop-color="#38bdf8"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.18" cy="0.5" r="0.55">
+      <stop offset="0" stop-color="#2dd4bf" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.2" fill="#93a4c3" fill-opacity=".14"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="320" fill="url(#bg)"/>
+  <rect width="1280" height="320" fill="url(#dots)"/>
+  <rect width="1280" height="320" fill="url(#glow)"/>
+
+  <g transform="translate(86 80) scale(2.5)">
+    <circle cx="32" cy="32" r="28" fill="#0b1220" stroke="url(#ring)" stroke-width="3"/>
+    <g stroke="#93a4c3" stroke-width="1.6" stroke-linecap="round" opacity=".75">
+      <path d="M32 7.5v4.5M32 52v4.5M7.5 32H12M52 32h4.5"/>
+    </g>
+    <g transform="rotate(38 32 32)">
+      <path d="M32 11 38.5 32h-13z" fill="#fbbf24"/>
+      <path d="M32 53 38.5 32h-13z" fill="#e6edf7" fill-opacity=".9"/>
+    </g>
+    <circle cx="32" cy="32" r="3.2" fill="#0b1220" stroke="#e6edf7" stroke-width="1.6"/>
+  </g>
+
+  <g font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+    <text x="290" y="145" font-size="62" font-weight="700" fill="#e6edf7">AI Adoption Compass</text>
+    <text x="292" y="190" font-size="26" fill="#93a4c3">Где применить ИИ, какой моделью и как безопасно</text>
+    <g font-size="18" font-weight="600">
+      <rect x="292" y="222" width="272" height="38" rx="19" fill="#2dd4bf" fill-opacity=".14" stroke="#2dd4bf" stroke-opacity=".5"/>
+      <text x="428" y="247" text-anchor="middle" fill="#2dd4bf">Оценка процессов и ROI</text>
+      <rect x="578" y="222" width="188" height="38" rx="19" fill="#38bdf8" fill-opacity=".14" stroke="#38bdf8" stroke-opacity=".5"/>
+      <text x="672" y="247" text-anchor="middle" fill="#38bdf8">Подбор моделей</text>
+      <rect x="778" y="222" width="188" height="38" rx="19" fill="#fbbf24" fill-opacity=".14" stroke="#fbbf24" stroke-opacity=".5"/>
+      <text x="872" y="247" text-anchor="middle" fill="#fbbf24">Защита данных</text>
+      <rect x="978" y="222" width="172" height="38" rx="19" fill="#a78bfa" fill-opacity=".14" stroke="#a78bfa" stroke-opacity=".5"/>
+      <text x="1064" y="247" text-anchor="middle" fill="#a78bfa">MCP-сервер</text>
+    </g>
+  </g>
+</svg>

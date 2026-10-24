@@ -1,0 +1,248 @@
+version: 1
+as_of: 2026-10-24
+data_status: illustrative
+disclaimer: >-
+  Каталог содержит ДЕМОНСТРАЦИОННЫЕ значения: классы моделей, ориентировочные цены, оценки качества
+  (1–5, экспертные, для бизнес-задач на русском языке) и статус доступности из РФ. Это стартовая
+  точка, а не прайс-лист. Перед решением сверьте тарифы и условия с официальными страницами
+  провайдеров, обновите reviewed_at и проверьте качество на своих данных (compass eval).
+
+# Порядок оценок quality: classification, extraction, summarization, drafting, qa_search,
+# translation, analysis, code, decision_support.
+models:
+  - id: openai-flagship
+    name: OpenAI GPT — флагманский класс
+    vendor: OpenAI
+    family: GPT
+    tier: flagship
+    deployment: foreign_cloud
+    origin: США
+    ru_access: workaround
+    pricing: {currency: USD, input_per_mtok: 2.5, output_per_mtok: 10.0}
+    context_window: 128000
+    vision: true
+    tool_calling: true
+    quality: {classification: 5, extraction: 5, summarization: 5, drafting: 5, qa_search: 5, translation: 5, analysis: 5, code: 5, decision_support: 5}
+    strengths: [Сильные рассуждения и код, Зрелая экосистема и вызов функций]
+    limitations: [Регион РФ официально не поддерживается, Данные обрабатываются за рубежом — нельзя передавать ПДн и коммерческую тайну]
+    pricing_url: https://platform.openai.com/docs/pricing
+    reviewed_at: 2026-10-24
+
+  - id: openai-mini
+    name: OpenAI GPT — экономичный класс
+    vendor: OpenAI
+    family: GPT
+    tier: economy
+    deployment: foreign_cloud
+    origin: США
+    ru_access: workaround
+    pricing: {currency: USD, input_per_mtok: 0.25, output_per_mtok: 2.0}
+    context_window: 128000
+    vision: true
+    tool_calling: true
+    quality: {classification: 4, extraction: 4, summarization: 4, drafting: 4, qa_search: 4, translation: 4, analysis: 3, code: 4, decision_support: 3}
+    strengths: [Низкая цена за токен, Хорош для массовой классификации и извлечения]
+    limitations: [Регион РФ официально не поддерживается, Слабее флагмана на сложном анализе]
+    pricing_url: https://platform.openai.com/docs/pricing
+    reviewed_at: 2026-10-24
+
+  - id: anthropic-flagship
+    name: Anthropic Claude — флагманский класс
+    vendor: Anthropic
+    family: Claude
+    tier: flagship
+    deployment: foreign_cloud
+    origin: США
+    ru_access: workaround
+    pricing: {currency: USD, input_per_mtok: 3.0, output_per_mtok: 15.0}
+    context_window: 200000
+    vision: true
+    tool_calling: true
+    quality: {classification: 5, extraction: 5, summarization: 5, drafting: 5, qa_search: 5, translation: 5, analysis: 5, code: 5, decision_support: 5}
+    strengths: [Длинные документы и аккуратное следование инструкциям, Сильная работа с кодом и агентами]
+    limitations: [Регион РФ официально не поддерживается, Данные обрабатываются за рубежом]
+    pricing_url: https://docs.anthropic.com/en/docs/about-claude/pricing
+    reviewed_at: 2026-10-24
+
+  - id: anthropic-fast
+    name: Anthropic Claude — быстрый класс
+    vendor: Anthropic
+    family: Claude
+    tier: economy
+    deployment: foreign_cloud
+    origin: США
+    ru_access: workaround
+    pricing: {currency: USD, input_per_mtok: 0.8, output_per_mtok: 4.0}
+    context_window: 200000
+    vision: true
+    tool_calling: true
+    quality: {classification: 4, extraction: 4, summarization: 4, drafting: 4, qa_search: 4, translation: 4, analysis: 3, code: 4, decision_support: 3}
+    strengths: [Быстрые ответы, Большое контекстное окно за небольшую цену]
+    limitations: [Регион РФ официально не поддерживается, Слабее флагмана в многошаговом анализе]
+    pricing_url: https://docs.anthropic.com/en/docs/about-claude/pricing
+    reviewed_at: 2026-10-24
+
+  - id: google-pro
+    name: Google Gemini — Pro-класс
+    vendor: Google
+    family: Gemini
+    tier: flagship
+    deployment: foreign_cloud
+    origin: США
+    ru_access: workaround
+    pricing: {currency: USD, input_per_mtok: 1.25, output_per_mtok: 10.0}
+    context_window: 1000000
+    vision: true
+    tool_calling: true
+    quality: {classification: 5, extraction: 5, summarization: 5, drafting: 5, qa_search: 5, translation: 5, analysis: 5, code: 4, decision_support: 5}
+    strengths: [Контекст до миллиона токенов, Работа с изображениями, аудио и видео]
+    limitations: [Доступ из РФ ограничен, Данные обрабатываются за рубежом]
+    pricing_url: https://ai.google.dev/gemini-api/docs/pricing
+    reviewed_at: 2026-10-24
+
+  - id: google-flash
+    name: Google Gemini — Flash-класс
+    vendor: Google
+    family: Gemini
+    tier: economy
+    deployment: foreign_cloud
+    origin: США
+    ru_access: workaround
+    pricing: {currency: USD, input_per_mtok: 0.3, output_per_mtok: 2.5}
+    context_window: 1000000
+    vision: true
+    tool_calling: true
+    quality: {classification: 4, extraction: 4, summarization: 4, drafting: 4, qa_search: 4, translation: 4, analysis: 4, code: 3, decision_support: 3}
+    strengths: [Очень большой контекст за малые деньги, Быстрая массовая обработка]
+    limitations: [Доступ из РФ ограничен, Данные обрабатываются за рубежом]
+    pricing_url: https://ai.google.dev/gemini-api/docs/pricing
+    reviewed_at: 2026-10-24
+
+  - id: gigachat-max
+    name: Сбер GigaChat — старший класс
+    vendor: Сбер
+    family: GigaChat
+    tier: flagship
+    deployment: ru_cloud
+    origin: Россия
+    ru_access: direct
+    pricing: {currency: RUB, input_per_mtok: 650, output_per_mtok: 650}
+    context_window: 128000
+    vision: true
+    tool_calling: true
+    quality: {classification: 4, extraction: 4, summarization: 4, drafting: 5, qa_search: 4, translation: 5, analysis: 4, code: 3, decision_support: 4}
+    strengths: [Сильный русский язык, Оплата в рублях и обработка в РФ, Работа с изображениями]
+    limitations: [Слабее зарубежных флагманов в коде и сложных рассуждениях]
+    pricing_url: https://developers.sber.ru/docs/ru/gigachat/tariffs/legal-tariffs
+    reviewed_at: 2026-10-24
+
+  - id: gigachat-lite
+    name: Сбер GigaChat — лёгкий класс
+    vendor: Сбер
+    family: GigaChat
+    tier: economy
+    deployment: ru_cloud
+    origin: Россия
+    ru_access: direct
+    pricing: {currency: RUB, input_per_mtok: 65, output_per_mtok: 65}
+    context_window: 32000
+    vision: false
+    tool_calling: false
+    quality: {classification: 3, extraction: 3, summarization: 3, drafting: 4, qa_search: 3, translation: 4, analysis: 2, code: 2, decision_support: 2}
+    strengths: [Минимальная цена, Хорош для простой классификации и коротких ответов]
+    limitations: [Небольшое контекстное окно, Нет вызова функций, Не подходит для сложного анализа]
+    pricing_url: https://developers.sber.ru/docs/ru/gigachat/tariffs/legal-tariffs
+    reviewed_at: 2026-10-24
+
+  - id: yandexgpt-pro
+    name: Yandex Cloud YandexGPT — Pro-класс
+    vendor: Яндекс
+    family: YandexGPT
+    tier: balanced
+    deployment: ru_cloud
+    origin: Россия
+    ru_access: direct
+    pricing: {currency: RUB, input_per_mtok: 400, output_per_mtok: 400}
+    context_window: 32000
+    vision: false
+    tool_calling: true
+    quality: {classification: 4, extraction: 4, summarization: 4, drafting: 5, qa_search: 4, translation: 4, analysis: 3, code: 3, decision_support: 3}
+    strengths: [Сильный русский язык, Интеграция с Yandex Cloud и поиском, Оплата в рублях]
+    limitations: [Контекстное окно меньше, чем у лидеров, Слабее в коде и анализе]
+    pricing_url: https://yandex.cloud/ru/docs/foundation-models/pricing
+    reviewed_at: 2026-10-24
+
+  - id: yandexgpt-lite
+    name: Yandex Cloud YandexGPT — Lite-класс
+    vendor: Яндекс
+    family: YandexGPT
+    tier: economy
+    deployment: ru_cloud
+    origin: Россия
+    ru_access: direct
+    pricing: {currency: RUB, input_per_mtok: 200, output_per_mtok: 200}
+    context_window: 32000
+    vision: false
+    tool_calling: false
+    quality: {classification: 3, extraction: 3, summarization: 3, drafting: 4, qa_search: 3, translation: 3, analysis: 2, code: 2, decision_support: 2}
+    strengths: [Низкая цена, Быстрые ответы на простых задачах]
+    limitations: [Нет вызова функций, Не подходит для сложных рассуждений]
+    pricing_url: https://yandex.cloud/ru/docs/foundation-models/pricing
+    reviewed_at: 2026-10-24
+
+  - id: qwen-large-selfhost
+    name: Qwen (крупная открытая модель) — свой контур
+    vendor: Alibaba Qwen (open weights)
+    family: Qwen
+    tier: balanced
+    deployment: self_hosted
+    origin: Открытые веса
+    ru_access: direct
+    pricing: {currency: RUB, input_per_mtok: 0, output_per_mtok: 0, fixed_monthly: 220000, capacity_mtok_month: 800}
+    context_window: 128000
+    vision: false
+    tool_calling: true
+    quality: {classification: 4, extraction: 4, summarization: 4, drafting: 4, qa_search: 4, translation: 4, analysis: 4, code: 4, decision_support: 3}
+    strengths: [Данные не покидают контур, Нет платы за токены — только инфраструктура, Хорош в коде]
+    limitations: [Нужны GPU-серверы и сопровождение, Качество русского ниже, чем у GigaChat и YandexGPT]
+    pricing_url: https://huggingface.co/Qwen
+    reviewed_at: 2026-10-24
+    notes: Стоимость — аренда 2×GPU класса A100 80 ГБ; ёмкость рассчитана при загрузке ~30%.
+
+  - id: qwen-small-selfhost
+    name: Qwen (компактная открытая модель) — свой контур
+    vendor: Alibaba Qwen (open weights)
+    family: Qwen
+    tier: economy
+    deployment: self_hosted
+    origin: Открытые веса
+    ru_access: direct
+    pricing: {currency: RUB, input_per_mtok: 0, output_per_mtok: 0, fixed_monthly: 70000, capacity_mtok_month: 300}
+    context_window: 32000
+    vision: false
+    tool_calling: true
+    quality: {classification: 3, extraction: 3, summarization: 3, drafting: 3, qa_search: 3, translation: 3, analysis: 2, code: 3, decision_support: 2}
+    strengths: [Работает на одном GPU, Данные не покидают контур]
+    limitations: [Ограниченное качество на сложных задачах, Нужны инфраструктура и сопровождение]
+    pricing_url: https://huggingface.co/Qwen
+    reviewed_at: 2026-10-24
+    notes: Стоимость — аренда одного GPU с 24–48 ГБ памяти.
+
+  - id: deepseek-large-selfhost
+    name: DeepSeek (крупная открытая модель) — свой контур
+    vendor: DeepSeek (open weights)
+    family: DeepSeek
+    tier: flagship
+    deployment: self_hosted
+    origin: Открытые веса
+    ru_access: direct
+    pricing: {currency: RUB, input_per_mtok: 0, output_per_mtok: 0, fixed_monthly: 1600000, capacity_mtok_month: 6000}
+    context_window: 128000
+    vision: false
+    tool_calling: true
+    quality: {classification: 4, extraction: 4, summarization: 4, drafting: 4, qa_search: 4, translation: 4, analysis: 4, code: 5, decision_support: 4}
+    strengths: [Уровень, близкий к облачным флагманам, Данные не покидают контур]
+    limitations: [Требует парк из нескольких GPU — оправдан только при большом объёме и жёстких требованиях к ИБ]
+    pricing_url: https://huggingface.co/deepseek-ai
+    reviewed_at: 2026-10-24
+    notes: Стоимость — аренда сервера класса 8×H100.

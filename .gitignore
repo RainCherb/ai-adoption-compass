@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.hypothesis/
+.coverage
+coverage.xml
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Локальные данные приложения
+*.db
+*.db-shm
+*.db-wal
+.env
+.env.*
+!.env.example
+
+# Frontend
+web/node_modules/
+web/coverage/
+src/adoption_compass/static/
+
+# Служебное
+.hoplite/
+.DS_Store
+.idea/
+.vscode/
+.serena/
+*.tsbuildinfo

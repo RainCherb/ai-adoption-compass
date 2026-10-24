@@ -1,0 +1,37 @@
+name: Catalog freshness
+
+# Раз в месяц проверяет, не устарели ли цены и оценки в каталоге моделей,
+# и заводит issue-напоминание, если пора обновить данные.
+on:
+  schedule:
+    - cron: "0 6 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e .
+      - id: check
+        run: compass catalog check --strict
+        continue-on-error: true
+      - name: Завести issue, если каталог устарел
+        if: steps.check.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          existing=$(gh issue list --state open --label catalog-stale --json number --jq '.[0].number // empty')
+          if [ -z "$existing" ]; then
+            gh label create catalog-stale --color FBCA04 --description "Нужно обновить цены и оценки в каталоге моделей" || true
+            gh issue create --label catalog-stale \
+              --title "Каталог моделей устарел: пора обновить цены и оценки" \
+              --body "Проверка \`compass catalog check --strict\` нашла записи старше 90 дней. Сверьте тарифы и условия на официальных страницах провайдеров (ссылки в \`catalog.yaml\`), обновите \`reviewed_at\` и при необходимости оценки качества по результатам \`compass eval\`."
+          fi

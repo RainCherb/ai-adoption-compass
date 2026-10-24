@@ -1,0 +1,118 @@
+version: 1
+
+# Допущения по умолчанию. Любое значение можно переопределить в запросе к API / CLI.
+assumptions:
+  horizon_months: 12
+  implementation_day_rub: 25000
+  support_share_per_month: 0.02
+  llm_overhead: 1.3
+  error_reduction: 0.25
+  usd_rub: 90.0
+  default_hourly_cost_rub: 800
+  impact_scale_rub: 500000
+  allow_workarounds: false
+  share_infrastructure: true
+
+# Сценарии чувствительности: множители к экономии, стоимости LLM и затратам на внедрение.
+scenarios:
+  pessimistic:
+    label: Пессимистичный
+    savings: 0.6
+    llm_cost: 1.5
+    implementation: 1.3
+  base:
+    label: Базовый
+    savings: 1.0
+    llm_cost: 1.0
+    implementation: 1.0
+  optimistic:
+    label: Оптимистичный
+    savings: 1.25
+    llm_cost: 0.8
+    implementation: 0.9
+
+thresholds:
+  impact: 50
+  ease: 50
+
+priority_weights:
+  impact: 0.5
+  ease: 0.3
+  fit: 0.2
+
+# Множители трудоёмкости внедрения.
+complexity:
+  digital_readiness: {1: 1.5, 2: 1.5, 3: 1.2, 4: 1.0, 5: 1.0}
+  risk: {1: 1.0, 2: 1.0, 3: 1.0, 4: 1.2, 5: 1.5}
+  sensitivity:
+    public: 1.0
+    internal: 1.0
+    confidential: 1.25
+    personal: 1.25
+
+# Профили задач: base_automation — доля ручного времени, которую ИИ снимает в идеальных
+# условиях; review_overhead — базовая доля времени на проверку человеком.
+task_types:
+  classification:
+    base_automation: 0.70
+    review_overhead: 0.10
+    implementation_days: 6
+    tokens_in: 700
+    tokens_out: 60
+    min_quality: 3
+  extraction:
+    base_automation: 0.65
+    review_overhead: 0.15
+    implementation_days: 9
+    tokens_in: 1800
+    tokens_out: 300
+    min_quality: 3
+  summarization:
+    base_automation: 0.60
+    review_overhead: 0.10
+    implementation_days: 4
+    tokens_in: 4000
+    tokens_out: 500
+    min_quality: 3
+  drafting:
+    base_automation: 0.50
+    review_overhead: 0.15
+    implementation_days: 4
+    tokens_in: 800
+    tokens_out: 500
+    min_quality: 3
+  qa_search:
+    base_automation: 0.55
+    review_overhead: 0.10
+    implementation_days: 15
+    tokens_in: 3500
+    tokens_out: 400
+    min_quality: 4
+  translation:
+    base_automation: 0.65
+    review_overhead: 0.15
+    implementation_days: 3
+    tokens_in: 1200
+    tokens_out: 1200
+    min_quality: 3
+  analysis:
+    base_automation: 0.40
+    review_overhead: 0.20
+    implementation_days: 10
+    tokens_in: 3000
+    tokens_out: 800
+    min_quality: 4
+  code:
+    base_automation: 0.35
+    review_overhead: 0.25
+    implementation_days: 8
+    tokens_in: 1500
+    tokens_out: 800
+    min_quality: 4
+  decision_support:
+    base_automation: 0.25
+    review_overhead: 0.30
+    implementation_days: 20
+    tokens_in: 2500
+    tokens_out: 500
+    min_quality: 4

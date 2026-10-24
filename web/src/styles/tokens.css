@@ -1,0 +1,98 @@
+/*
+ * Дизайн-токены. Каждый цвет задан парой light-dark(светлая, тёмная):
+ * тема переключается атрибутом data-theme на <html> (иначе — по prefers-color-scheme).
+ */
+:root {
+  color-scheme: light dark;
+
+  /* Поверхности */
+  --bg: light-dark(#f6f8fc, #0b1220);
+  --surface: light-dark(#ffffff, #111a2e);
+  --surface-2: light-dark(#f0f4fa, #17233d);
+  --surface-3: light-dark(#e3eaf5, #1f2f50);
+  --border: light-dark(#dde4f0, #22314f);
+  --border-strong: light-dark(#c3cde1, #35497a);
+  /* Границы полей ввода: контраст не ниже 3:1 с фоном (WCAG 1.4.11) */
+  --control-border: light-dark(#7a8caa, #546b99);
+
+  /* Текст */
+  --text: light-dark(#0f1b33, #e6edf7);
+  --muted: light-dark(#566784, #93a4c3);
+
+  /* Акцент: --accent для графики, --accent-ink для текста и ссылок, --accent-solid для кнопок */
+  --accent: light-dark(#0d9488, #2dd4bf);
+  --accent-ink: light-dark(#0f766e, #2dd4bf);
+  --accent-solid: light-dark(#0f766e, #2dd4bf);
+  --accent-solid-hover: light-dark(#115e59, #5eead4);
+  --on-accent: light-dark(#ffffff, #052e2b);
+  --accent-soft: light-dark(rgb(13 148 136 / 0.1), rgb(45 212 191 / 0.13));
+  --amber: light-dark(#b45309, #fbbf24);
+  --focus: light-dark(#0f766e, #5eead4);
+
+  /* Семантика: ink — текст/значки, soft — фон, edge — рамка */
+  --success: light-dark(#047857, #34d399);
+  --success-ink: light-dark(#065f46, #34d399);
+  --success-soft: light-dark(#e1f6ec, rgb(52 211 153 / 0.14));
+  --warning: light-dark(#b45309, #fbbf24);
+  --warning-ink: light-dark(#8a3d09, #fbbf24);
+  --warning-soft: light-dark(#fdf1d6, rgb(251 191 36 / 0.14));
+  --danger: light-dark(#b91c1c, #f87171);
+  --danger-ink: light-dark(#a11818, #f87171);
+  --danger-soft: light-dark(#fde9e9, rgb(248 113 113 / 0.14));
+  --info: light-dark(#1d4ed8, #60a5fa);
+  --info-ink: light-dark(#1a45bf, #60a5fa);
+  --info-soft: light-dark(#e6eeff, rgb(96 165 250 / 0.14));
+
+  /* Квадранты матрицы приоритетов */
+  --q-quick-win: light-dark(#15803d, #4ade80);
+  --q-strategic: light-dark(#1d4ed8, #60a5fa);
+  --q-fill-in: light-dark(#0f766e, #2dd4bf);
+  --q-postpone: light-dark(#b45309, #fbbf24);
+  --q-blocked: light-dark(#b91c1c, #f87171);
+  --on-q: light-dark(#ffffff, #0b1220);
+
+  /* Типографика: только системные шрифты, никаких внешних загрузок */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.125rem;
+
+  /* Шкала отступов кратна 8 px */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+
+  /* Форма и глубина */
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-pill: 999px;
+  --shadow-color: light-dark(rgb(15 27 51 / 0.07), rgb(0 0 0 / 0.38));
+  --shadow-sm: 0 1px 2px var(--shadow-color);
+  --shadow-md: 0 6px 20px var(--shadow-color), 0 1px 3px var(--shadow-color);
+  --shadow-lg: 0 24px 60px light-dark(rgb(15 27 51 / 0.22), rgb(0 0 0 / 0.6));
+  --overlay: light-dark(rgb(15 27 51 / 0.38), rgb(3 7 16 / 0.66));
+
+  /* Раскладка */
+  --sidebar-w: 248px;
+  --content-max: 1240px;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
