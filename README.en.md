@@ -24,13 +24,13 @@ dashboard, a CLI, a REST API and an MCP server for coding agents.
 > The product UI, templates, policy and documentation are in Russian (the target audience is Russian-speaking
 > companies); code identifiers and API fields are in English. The methodology itself is language-independent.
 
-## Featured international models
+## Integrated international models
 
-The demo opens with **Claude Sonnet 5.5 → GPT-6.1 Sol → DeepSeek V4.1 Flash**. Compare direct API costs on the same workload, with DeepSeek peak/off-peak and GPT long-context pricing. Provider facts and limits are linked to official sources, pinned to reviewed snapshots and hidden from cost calculations after expiry. This is a cost comparison; these three models have not been evaluated in this project. [Method and checked numbers](docs/FEATURED_MODELS.md).
+The model advisor and all 18 public demo processes use **Claude Sonnet 5.5 → GPT-6.1 Sol → DeepSeek V4.1 Flash**. Compare direct API costs on the same workload, with DeepSeek peak/off-peak and GPT long-context pricing. Provider facts and limits are linked to official sources, pinned to reviewed snapshots and hidden from cost calculations after expiry. The same tariffs drive ROI, sensitivity scenarios and exports. Quality ratings are explicit expert assumptions; these three models have not been evaluated in this project. [Method and checked numbers](docs/FEATURED_MODELS.md).
 
-![Featured international models and one shared workload](docs/assets/screenshots/models.png)
+![Integrated advisor with three primary models](docs/assets/screenshots/advisor.png)
 
-## New in 1.2
+## New in 1.3
 
 **[Try the public demo →](https://ai-adoption-compass-demo.onrender.com)** ·
 [Measured LLM results](https://ai-adoption-compass-demo.onrender.com/#/evals)
@@ -77,7 +77,7 @@ No installation or account needed. Render Free may take about a minute to wake u
   </tr>
   <tr>
     <td><img src="docs/assets/screenshots/prompts.png" alt="Prompt library and linter"><br><sub>Templates by department, quality score, answer-check checklist</sub></td>
-    <td><img src="docs/assets/screenshots/evals.png" alt="Model evaluation"><br><sub>Models vs. a rules baseline: accuracy, latency, cost</sub></td>
+    <td><img src="docs/assets/screenshots/evals.png" alt="Model evaluation"><br><sub>Shared expert quality matrix; measured benchmarks available separately</sub></td>
   </tr>
 </table>
 

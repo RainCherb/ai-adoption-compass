@@ -190,7 +190,7 @@ class TestPortfolio:
             Advisor(load_catalog(), Policy.load(), today=TODAY + timedelta(days=365)),
         )
         warnings = " ".join(late.assess([proc()]).warnings)
-        assert "демонстрационные" in warnings
+        assert "экспертн" in warnings
         assert "90 дней" in warnings
 
     def test_duplicate_and_empty_inputs_are_rejected(self, engine):

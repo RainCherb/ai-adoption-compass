@@ -484,6 +484,8 @@ export interface components {
             data_status: string;
             /** Excluded */
             excluded: components["schemas"]["Exclusion"][];
+            /** Model Options */
+            model_options?: components["schemas"]["ModelOption"][];
             /** Notes */
             notes: string[];
             /** Recommendations */
@@ -568,6 +570,12 @@ export interface components {
              */
             allow_workarounds: boolean;
             /**
+             * Deepseek Period
+             * @default peak
+             * @enum {string}
+             */
+            deepseek_period: "peak" | "off_peak";
+            /**
              * Default Hourly Cost Rub
              * @default 800
              */
@@ -598,6 +606,12 @@ export interface components {
              */
             llm_overhead: number;
             /**
+             * Model Preference
+             * @default balanced
+             * @enum {string}
+             */
+            model_preference: "balanced" | "cost" | "quality" | "safety";
+            /**
              * Share Infrastructure
              * @default true
              */
@@ -607,6 +621,11 @@ export interface components {
              * @default 0.02
              */
             support_share_per_month: number;
+            /**
+             * Supported Region
+             * @default false
+             */
+            supported_region: boolean;
             /**
              * Usd Rub
              * @default 90
@@ -620,6 +639,8 @@ export interface components {
         AssumptionsOverride: {
             /** Allow Workarounds */
             allow_workarounds?: boolean | null;
+            /** Deepseek Period */
+            deepseek_period?: ("peak" | "off_peak") | null;
             /** Default Hourly Cost Rub */
             default_hourly_cost_rub?: number | null;
             /** Error Reduction */
@@ -632,10 +653,14 @@ export interface components {
             implementation_day_rub?: number | null;
             /** Llm Overhead */
             llm_overhead?: number | null;
+            /** Model Preference */
+            model_preference?: ("balanced" | "cost" | "quality" | "safety") | null;
             /** Share Infrastructure */
             share_infrastructure?: boolean | null;
             /** Support Share Per Month */
             support_share_per_month?: number | null;
+            /** Supported Region */
+            supported_region?: boolean | null;
             /** Usd Rub */
             usd_rub?: number | null;
         };
@@ -683,8 +708,16 @@ export interface components {
         CostBreakdown: {
             /** Fixed Rub */
             fixed_rub: number;
+            /** Input Rate Usd */
+            input_rate_usd?: number | null;
+            /** Output Rate Usd */
+            output_rate_usd?: number | null;
+            /** Tariff */
+            tariff?: string | null;
             /** Total Rub */
             total_rub: number;
+            /** Total Usd */
+            total_usd?: number | null;
             /**
              * Units
              * @default 1
@@ -1136,6 +1169,21 @@ export interface components {
             /** Tariff */
             tariff: string;
         };
+        /** ModelOption */
+        ModelOption: {
+            cost: components["schemas"]["CostBreakdown"] | null;
+            /** Eligible */
+            eligible: boolean;
+            /** Model Id */
+            model_id: string;
+            /** Name */
+            name: string;
+            profile: components["schemas"]["FeaturedModel"];
+            /** Quality */
+            quality: number;
+            /** Reasons */
+            reasons: string[];
+        };
         /** ModelPick */
         ModelPick: {
             cost: components["schemas"]["CostBreakdown"];
@@ -1324,6 +1372,8 @@ export interface components {
             /** Manual Cost Month Rub */
             manual_cost_month_rub: number;
             model: components["schemas"]["ModelPick"] | null;
+            /** Model Options */
+            model_options?: components["schemas"]["ModelOption"][];
             /** Name */
             name: string;
             /** Net Horizon Rub */
@@ -1413,6 +1463,7 @@ export interface components {
             model_id: string;
             /** Name */
             name: string;
+            profile?: components["schemas"]["FeaturedModel"] | null;
             /** Pros */
             pros: string[];
             /** Quality */
@@ -1635,6 +1686,12 @@ export interface components {
             allow_workarounds: boolean;
             /** @default internal */
             data_sensitivity: components["schemas"]["Sensitivity"];
+            /**
+             * Deepseek Period
+             * @default peak
+             * @enum {string}
+             */
+            deepseek_period: "peak" | "off_peak";
             /** Min Context Tokens */
             min_context_tokens?: number | null;
             /**
@@ -1663,6 +1720,11 @@ export interface components {
             prefer: components["schemas"]["Preference"];
             /** Requests Per Month */
             requests_per_month: number;
+            /**
+             * Supported Region
+             * @default false
+             */
+            supported_region: boolean;
             task_type: components["schemas"]["TaskType"];
             /**
              * Tokens In

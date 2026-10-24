@@ -27,6 +27,9 @@ class AssumptionsOverride(BaseModel):
     impact_scale_rub: float | None = Field(None, gt=0)
     allow_workarounds: bool | None = None
     share_infrastructure: bool | None = None
+    supported_region: bool | None = None
+    deepseek_period: Literal["peak", "off_peak"] | None = None
+    model_preference: Literal["balanced", "cost", "quality", "safety"] | None = None
 
 
 class AssessmentRequest(BaseModel):

@@ -1,7 +1,7 @@
 """Конфигурация скоринга: допущения, сценарии, профили задач."""
 
 from pathlib import Path
-from typing import Self
+from typing import Literal, Self
 
 from pydantic import BaseModel, Field, model_validator
 
@@ -22,6 +22,9 @@ class Assumptions(BaseModel):
     impact_scale_rub: float = Field(500_000, gt=0)
     allow_workarounds: bool = False
     share_infrastructure: bool = True
+    supported_region: bool = False
+    deepseek_period: Literal["peak", "off_peak"] = "peak"
+    model_preference: Literal["balanced", "cost", "quality", "safety"] = "balanced"
 
 
 class TaskProfile(BaseModel):

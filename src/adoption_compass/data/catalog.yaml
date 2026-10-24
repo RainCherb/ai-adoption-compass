@@ -2,14 +2,94 @@ version: 1
 as_of: 2026-10-24
 data_status: illustrative
 disclaimer: >-
-  Каталог содержит ДЕМОНСТРАЦИОННЫЕ значения: классы моделей, ориентировочные цены, оценки качества
-  (1–5, экспертные, для бизнес-задач на русском языке) и статус доступности из РФ. Это стартовая
-  точка, а не прайс-лист. Перед решением сверьте тарифы и условия с официальными страницами
-  провайдеров, обновите reviewed_at и проверьте качество на своих данных (compass eval).
+  Основные модели: Claude Sonnet 5.5, GPT-6.1 Sol и DeepSeek V4.1 Flash. Их тарифы и лимиты взяты из
+  датированных официальных источников. Качество 1–5, автоматизация, экономия и ROI — экспертные
+  допущения, а не измеренные гарантии. Курс USD/RUB задаётся пользователем. Дополнительные модели вне
+  публичного демо содержат условные значения. Доступ и политику данных проверяйте отдельно.
 
-# Порядок оценок quality: classification, extraction, summarization, drafting, qa_search,
-# translation, analysis, code, decision_support.
+primary_model_ids: [claude-sonnet-5-5, gpt-6-1-sol, deepseek-v4-1-flash]
+
+# Оценки 1–5 — экспертные допущения, не результаты собственных замеров.
 models:
+  - id: claude-sonnet-5-5
+    profile_id: claude-sonnet-5-5
+    family: Claude
+    tier: flagship
+    deployment: foreign_cloud
+    origin: США
+    ru_access: workaround
+    vision: true
+    tool_calling: true
+    quality:
+      classification: 5
+      extraction: 5
+      summarization: 5
+      drafting: 5
+      qa_search: 5
+      translation: 5
+      analysis: 4
+      code: 5
+      decision_support: 4
+    strengths:
+    - Документы, разработка и рабочие задачи с чёткими требованиями.
+    limitations:
+    - РФ не входит в официальный список регионов API. Доступ требует поддерживаемого региона, аккаунта и
+      оплаты; в демо API не вызывается.
+    - Оценки качества 1–5 — экспертные допущения демонстрации, не результаты собственного теста.
+    notes: Стоимость и лимиты загружаются из единого проверяемого тарифного профиля.
+  - id: gpt-6-1-sol
+    profile_id: gpt-6-1-sol
+    family: GPT
+    tier: flagship
+    deployment: foreign_cloud
+    origin: США
+    ru_access: workaround
+    vision: true
+    tool_calling: true
+    quality:
+      classification: 5
+      extraction: 5
+      summarization: 4
+      drafting: 4
+      qa_search: 5
+      translation: 4
+      analysis: 5
+      code: 5
+      decision_support: 5
+    strengths:
+    - Разработка, анализ и профессиональные задачи с управляемой глубиной рассуждений.
+    limitations:
+    - РФ не входит в официальный список стран API. Подписка ChatGPT/Codex не заменяет оплату API; в демо
+      API не вызывается.
+    - Оценки качества 1–5 — экспертные допущения демонстрации, не результаты собственного теста.
+    notes: Стоимость и лимиты загружаются из единого проверяемого тарифного профиля.
+  - id: deepseek-v4-1-flash
+    profile_id: deepseek-v4-1-flash
+    family: DeepSeek
+    tier: economy
+    deployment: foreign_cloud
+    origin: Китай
+    ru_access: workaround
+    vision: true
+    tool_calling: true
+    quality:
+      classification: 4
+      extraction: 4
+      summarization: 4
+      drafting: 4
+      qa_search: 4
+      translation: 4
+      analysis: 4
+      code: 4
+      decision_support: 4
+    strengths:
+    - Текстовые и мультимодальные задачи с отдельными пиковыми и внепиковыми тарифами.
+    limitations:
+    - Доступ и оплату проверяйте для своего аккаунта и юрисдикции. Наличие страницы тарифов не подтверждает
+      доступность сервиса из РФ.
+    - Оценки качества 1–5 — экспертные допущения демонстрации, не результаты собственного теста.
+    notes: Стоимость и лимиты загружаются из единого проверяемого тарифного профиля.
+
   - id: openai-flagship
     name: OpenAI GPT — флагманский класс
     vendor: OpenAI

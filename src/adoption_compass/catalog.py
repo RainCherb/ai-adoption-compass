@@ -7,6 +7,7 @@ from typing import Literal, Self
 from pydantic import BaseModel, Field, field_validator, model_validator
 
 from .domain import Deployment, RuAccess, TaskType, Tier
+from .featured_models import FeaturedModel, load_featured
 from .resources import load_yaml
 
 
@@ -47,6 +48,7 @@ class ModelEntry(BaseModel):
     pricing_url: str | None = None
     reviewed_at: date
     notes: str | None = None
+    profile: FeaturedModel | None = None
 
     @field_validator("quality")
     @classmethod
@@ -73,6 +75,7 @@ class Catalog(BaseModel):
     data_status: Literal["illustrative", "verified"] = "illustrative"
     disclaimer: str = ""
     models: list[ModelEntry]
+    primary_model_ids: list[str] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def _unique_ids(self) -> Self:
@@ -105,4 +108,23 @@ class Catalog(BaseModel):
 
 
 def load_catalog(data_dir: Path | None = None) -> Catalog:
-    return Catalog.model_validate(load_yaml("catalog.yaml", data_dir))
+    raw = load_yaml("catalog.yaml", data_dir)
+    profiles = {p.id: p for p in load_featured(data_dir).models}
+    for model in raw["models"]:
+        profile_id = model.pop("profile_id", None)
+        if profile_id:
+            p = profiles[profile_id]
+            model.update(
+                name=p.name,
+                vendor=p.vendor,
+                context_window=p.context_tokens,
+                pricing_url=p.pricing_url,
+                reviewed_at=p.reviewed_at,
+                profile=p.model_dump(),
+                pricing={
+                    "currency": "USD",
+                    "input_per_mtok": p.pricing.input_per_mtok,
+                    "output_per_mtok": p.pricing.output_per_mtok,
+                },
+            )
+    return Catalog.model_validate(raw)

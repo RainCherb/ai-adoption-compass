@@ -90,6 +90,52 @@ def main() -> None:
     assessment = request("/api/assessments/demo")
     if len(assessment["processes"]) != 18:
         raise RuntimeError("Synthetic assessment not preloaded")
+    primary_ids = ["claude-sonnet-5-5", "gpt-6-1-sol", "deepseek-v4-1-flash"]
+    catalog = request("/api/catalog")
+    if [m["id"] for m in catalog["models"]] != primary_ids:
+        raise RuntimeError("Public advisor still uses the old catalogue")
+    for process in assessment["result"]["processes"]:
+        if process["model"]["model_id"] not in primary_ids:
+            raise RuntimeError("Process economics still use an old model")
+        if [o["model_id"] for o in process["model_options"]] != primary_ids:
+            raise RuntimeError("A process is missing primary model alternatives")
+        if process["llm_cost_month_rub"] != process["model"]["cost"]["total_rub"]:
+            raise RuntimeError("Selected model and process costs diverge")
+    report = request("/api/assessments/demo/report.md")
+    exported = request("/api/assessments/demo/export.csv")
+    if not all(m["api_model"] in report for m in profiles["models"]):
+        raise RuntimeError("Report is missing a primary model")
+    if "llm_cost_month_usd" not in exported or len(exported.splitlines()) != 19:
+        raise RuntimeError("CSV is missing model costs or processes")
+    advice = request(
+        "/api/advice",
+        {
+            "task_type": "classification",
+            "data_sensitivity": "public",
+            "supported_region": True,
+            "prefer": "quality",
+            "requests_per_month": 10000,
+            "tokens_in": 1000,
+            "tokens_out": 300,
+        },
+    )
+    if [r["model_id"] for r in advice["recommendations"]] != primary_ids:
+        raise RuntimeError("Default public recommendation order incorrect")
+    if [r["cost"]["total_usd"] for r in advice["recommendations"]] != [50, 50, 6.6]:
+        raise RuntimeError("Advisor prices differ from the source calculator")
+    scenarios = []
+    for period in ("peak", "off_peak"):
+        scenarios.append(
+            request(
+                "/api/assess",
+                {
+                    "processes": assessment["processes"],
+                    "assumptions": {"model_preference": "cost", "deepseek_period": period},
+                },
+            )
+        )
+    if scenarios[1]["summary"]["cost_month_rub"] >= scenarios[0]["summary"]["cost_month_rub"]:
+        raise RuntimeError("DeepSeek period is disconnected from portfolio ROI")
     recalculated = request(
         "/api/assess", {"processes": assessment["processes"], "assumptions": {"horizon_months": 24}}
     )

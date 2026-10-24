@@ -199,7 +199,7 @@ describe("AdvisorPage: каталог", () => {
     const table = await screen.findByTestId("catalog-table");
     expect(within(table).getByText("OpenAI GPT — флагманский класс")).toBeInTheDocument();
     expect(within(table).getByText("Через обходные пути")).toBeInTheDocument();
-    expect(within(table).getByText(/Качество: Классификация и маршрутизация/)).toBeInTheDocument();
+    expect(within(table).getByText(/Качество, экспертно: Классификация и маршрутизация/)).toBeInTheDocument();
     expect(within(table).getByText("5 из 5")).toBeInTheDocument();
   });
 });

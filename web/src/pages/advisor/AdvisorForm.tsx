@@ -155,6 +155,9 @@ export function AdvisorForm({ form, errors, onChange }: AdvisorFormProps) {
       <fieldset className="fieldset">
         <legend className="field__label">Требования и ограничения</legend>
         <div className="checks">
+          <Check checked={form.supported_region} onChange={(value) => patch({ supported_region: value })}>
+            Предполагается аккаунт и оплата в поддерживаемом регионе API
+          </Check>
           <Check checked={form.needs_vision} onChange={(value) => patch({ needs_vision: value })}>
             Работа с изображениями
           </Check>
@@ -188,6 +191,9 @@ export function AdvisorForm({ form, errors, onChange }: AdvisorFormProps) {
             ))}
           </select>
         )}
+      </Field>
+      <Field label="Тариф DeepSeek">
+        {(control) => <select {...control} className="select" value={form.deepseek_period} onChange={(e) => patch({ deepseek_period: e.target.value as "peak" | "off_peak" })}><option value="peak">Peak — консервативный расчёт</option><option value="off_peak">Off-peak — внепиковая нагрузка</option></select>}
       </Field>
     </form>
   );

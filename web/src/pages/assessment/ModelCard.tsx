@@ -25,7 +25,7 @@ export function ModelCard({ model }: { model: ModelPick }) {
       </div>
       <dl className="facts">
         <div>
-          <dt>Качество для задачи</dt>
+          <dt>Качество для задачи, экспертно</dt>
           <dd className="num">{model.quality} из 5</dd>
         </div>
         <div>
@@ -47,6 +47,7 @@ export function ModelCard({ model }: { model: ModelPick }) {
           <dd className="num">{formatRub(model.cost.total_rub)}/мес</dd>
         </div>
       </dl>
+      {model.cost.total_usd != null ? <p className="small muted">API: ${formatNumber(model.cost.total_usd, 8)}/мес · {model.cost.tariff}. Конвертация по курсу из допущений. Налоги и комиссии не включены.</p> : null}
     </div>
   );
 }

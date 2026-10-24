@@ -10,6 +10,8 @@ import { useAsync } from "../../hooks/useAsync";
 import { useDebounced } from "../../hooks/useDebounced";
 import { useMeta } from "../../hooks/useMeta";
 import { formatCount } from "../../lib/format";
+import { ModelOptionsTable } from "./ModelOptionsTable";
+import { Disclosure } from "../../components/ui/Disclosure";
 import { AdvisorForm } from "./AdvisorForm";
 import { CatalogTable } from "./CatalogTable";
 import { ExcludedList } from "./ExcludedList";
@@ -41,14 +43,11 @@ export function AdvisorPage() {
     <>
       <PageHeader
         title="Подбор моделей"
-        lead="Опишите задачу и данные — сервис отберёт подходящие модели по политике данных, качеству, цене и доступности из РФ и объяснит, почему остальные исключены."
+        lead={meta.demo_mode ? "Sonnet 5.5, GPT‑6.1 Sol и DeepSeek V4.1 Flash — единая база подбора, всех 18 процессов, ROI и отчётов. Меняйте нагрузку и приоритет, чтобы сравнить решения." : "Опишите задачу и данные — сервис отберёт подходящие модели по политике данных, качеству, цене и доступности из РФ и объяснит, почему остальные исключены."}
       />
 
-      <p><a href="#/models">Основные модели демо: Sonnet 5.5 → GPT‑6.1 Sol → DeepSeek V4.1 Flash. Сравнить прямые тарифы →</a></p>
-      <p className="muted small">Ниже — отдельный экспертный каталог для подбора по политике данных и доступу из РФ. Его условные классы не заменяют точные модели и прямые тарифы на главном экране.</p>
-
       {showIllustrative ? (
-        <Banner tone="warning" prominent title="Каталог моделей содержит демонстрационные данные">
+        meta.demo_mode ? <details className="model-disclaimer"><summary>Источники тарифов и ограничения экспертных оценок</summary><p>{meta.catalog.disclaimer}</p></details> : <Banner tone="warning" prominent title="Каталог моделей содержит демонстрационные данные">
           {meta.catalog.disclaimer}
         </Banner>
       ) : null}
@@ -93,7 +92,7 @@ export function AdvisorPage() {
                 </p>
 
                 {result.notes.length > 0 ? (
-                  <Banner tone="info" title="Примечания">
+                  meta.demo_mode ? <Disclosure title="Как читать оценки и стоимость"><ul>{result.notes.map((note) => <li key={note}>{note}</li>)}</ul></Disclosure> : <Banner tone="info" title="Примечания">
                     <ul className="banner__list">
                       {result.notes.map((note) => (
                         <li key={note}>{note}</li>
@@ -121,6 +120,7 @@ export function AdvisorPage() {
                   </div>
                 ) : null}
 
+                <ModelOptionsTable items={result.model_options ?? []} />
                 <ExcludedList items={result.excluded} defaultOpen={eligible === 0} />
               </div>
             ) : null}

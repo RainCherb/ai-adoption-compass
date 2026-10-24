@@ -1,6 +1,7 @@
 import type { components } from "./schema";
 
 type S = components["schemas"];
+export type ModelOption = S["ModelOption"];
 export type ModelComparisonRequest = S["ModelComparisonRequest"];
 export type ModelComparison = S["ModelComparison"];
 
@@ -83,6 +84,7 @@ export interface CatalogPricing {
 }
 
 export interface CatalogModel {
+  profile?: S["FeaturedModel"] | null;
   id: string;
   name: string;
   vendor: string;

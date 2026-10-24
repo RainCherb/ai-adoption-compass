@@ -29,6 +29,13 @@
             "title": "Excluded",
             "type": "array"
           },
+          "model_options": {
+            "items": {
+              "$ref": "#/components/schemas/ModelOption"
+            },
+            "title": "Model Options",
+            "type": "array"
+          },
           "notes": {
             "items": {
               "type": "string"
@@ -260,6 +267,15 @@
             "title": "Allow Workarounds",
             "type": "boolean"
           },
+          "deepseek_period": {
+            "default": "peak",
+            "enum": [
+              "peak",
+              "off_peak"
+            ],
+            "title": "Deepseek Period",
+            "type": "string"
+          },
           "default_hourly_cost_rub": {
             "default": 800,
             "exclusiveMinimum": 0.0,
@@ -301,6 +317,17 @@
             "title": "Llm Overhead",
             "type": "number"
           },
+          "model_preference": {
+            "default": "balanced",
+            "enum": [
+              "balanced",
+              "cost",
+              "quality",
+              "safety"
+            ],
+            "title": "Model Preference",
+            "type": "string"
+          },
           "share_infrastructure": {
             "default": true,
             "title": "Share Infrastructure",
@@ -312,6 +339,11 @@
             "minimum": 0.0,
             "title": "Support Share Per Month",
             "type": "number"
+          },
+          "supported_region": {
+            "default": false,
+            "title": "Supported Region",
+            "type": "boolean"
           },
           "usd_rub": {
             "default": 90.0,
@@ -337,6 +369,21 @@
               }
             ],
             "title": "Allow Workarounds"
+          },
+          "deepseek_period": {
+            "anyOf": [
+              {
+                "enum": [
+                  "peak",
+                  "off_peak"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deepseek Period"
           },
           "default_hourly_cost_rub": {
             "anyOf": [
@@ -415,6 +462,23 @@
             ],
             "title": "Llm Overhead"
           },
+          "model_preference": {
+            "anyOf": [
+              {
+                "enum": [
+                  "balanced",
+                  "cost",
+                  "quality",
+                  "safety"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Preference"
+          },
           "share_infrastructure": {
             "anyOf": [
               {
@@ -438,6 +502,17 @@
               }
             ],
             "title": "Support Share Per Month"
+          },
+          "supported_region": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supported Region"
           },
           "usd_rub": {
             "anyOf": [
@@ -557,9 +632,53 @@
             "title": "Fixed Rub",
             "type": "number"
           },
+          "input_rate_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Rate Usd"
+          },
+          "output_rate_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Output Rate Usd"
+          },
+          "tariff": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tariff"
+          },
           "total_rub": {
             "title": "Total Rub",
             "type": "number"
+          },
+          "total_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Usd"
           },
           "units": {
             "default": 1,
@@ -1782,6 +1901,57 @@
         "title": "ModelCostLine",
         "type": "object"
       },
+      "ModelOption": {
+        "properties": {
+          "cost": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CostBreakdown"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "eligible": {
+            "title": "Eligible",
+            "type": "boolean"
+          },
+          "model_id": {
+            "title": "Model Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/FeaturedModel"
+          },
+          "quality": {
+            "title": "Quality",
+            "type": "integer"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Reasons",
+            "type": "array"
+          }
+        },
+        "required": [
+          "model_id",
+          "name",
+          "quality",
+          "cost",
+          "eligible",
+          "reasons",
+          "profile"
+        ],
+        "title": "ModelOption",
+        "type": "object"
+      },
       "ModelPick": {
         "properties": {
           "cost": {
@@ -2257,6 +2427,13 @@
               }
             ]
           },
+          "model_options": {
+            "items": {
+              "$ref": "#/components/schemas/ModelOption"
+            },
+            "title": "Model Options",
+            "type": "array"
+          },
           "name": {
             "title": "Name",
             "type": "string"
@@ -2536,6 +2713,16 @@
           "name": {
             "title": "Name",
             "type": "string"
+          },
+          "profile": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FeaturedModel"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "pros": {
             "items": {
@@ -3114,6 +3301,15 @@
             "$ref": "#/components/schemas/Sensitivity",
             "default": "internal"
           },
+          "deepseek_period": {
+            "default": "peak",
+            "enum": [
+              "peak",
+              "off_peak"
+            ],
+            "title": "Deepseek Period",
+            "type": "string"
+          },
           "min_context_tokens": {
             "anyOf": [
               {
@@ -3171,6 +3367,11 @@
             "title": "Requests Per Month",
             "type": "integer"
           },
+          "supported_region": {
+            "default": false,
+            "title": "Supported Region",
+            "type": "boolean"
+          },
           "task_type": {
             "$ref": "#/components/schemas/TaskType"
           },
@@ -3203,7 +3404,7 @@
   "info": {
     "summary": "Оценка процессов и ROI, подбор моделей, защита данных, шаблоны промптов.",
     "title": "AI Adoption Compass API",
-    "version": "1.2.0"
+    "version": "1.3.0"
   },
   "openapi": "3.1.0",
   "paths": {

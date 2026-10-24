@@ -38,6 +38,9 @@ const NUMERIC_FIELDS: readonly NumericField[] = [
 
 interface FormState {
   numbers: Record<NumericKey, string>;
+  supported_region: boolean;
+  deepseek_period: "peak" | "off_peak";
+  model_preference: "balanced" | "cost" | "quality" | "safety";
   allow_workarounds: boolean;
   share_infrastructure: boolean;
 }
@@ -52,6 +55,9 @@ function toForm(assumptions: Assumptions): FormState {
   ) as Record<NumericKey, string>;
   return {
     numbers,
+    supported_region: assumptions.supported_region ?? false,
+    deepseek_period: assumptions.deepseek_period ?? "peak",
+    model_preference: assumptions.model_preference ?? "balanced",
     allow_workarounds: assumptions.allow_workarounds,
     share_infrastructure: assumptions.share_infrastructure,
   };
@@ -77,6 +83,9 @@ function fromForm(form: FormState, base: Assumptions): Assumptions {
   const get = (key: NumericKey) => parseNumber(form.numbers[key]);
   return {
     ...base,
+    supported_region: form.supported_region,
+    deepseek_period: form.deepseek_period,
+    model_preference: form.model_preference,
     horizon_months: get("horizon_months"),
     implementation_day_rub: get("implementation_day_rub"),
     default_hourly_cost_rub: get("default_hourly_cost_rub"),
@@ -156,6 +165,20 @@ export function AssumptionsPanel({ baseline, defaults, whatIfActive, busy, error
         </div>
 
         <div className="assumptions__checks">
+          <Field label="Приоритет подбора">
+            {(control) => <select {...control} className="input" value={form.model_preference} onChange={(event) => setForm((previous) => ({ ...previous, model_preference: event.target.value as FormState["model_preference"] }))}>
+              <option value="quality">Качество</option><option value="cost">Стоимость</option><option value="balanced">Баланс</option><option value="safety">Безопасность</option>
+            </select>}
+          </Field>
+          <Field label="Тариф DeepSeek" hint="Период задаётся вручную. По умолчанию — более дорогой Peak.">
+            {(control) => <select {...control} className="input" value={form.deepseek_period} onChange={(event) => setForm((previous) => ({ ...previous, deepseek_period: event.target.value as FormState["deepseek_period"] }))}>
+              <option value="peak">Peak</option><option value="off_peak">Off-peak</option>
+            </select>}
+          </Field>
+          <label className="check">
+            <input type="checkbox" checked={form.supported_region} onChange={(event) => setForm((previous) => ({ ...previous, supported_region: event.target.checked }))} />
+            <span>Предположить доступный аккаунт и оплату в поддерживаемом регионе API. Это допущение демо, доступ из РФ не гарантируется.</span>
+          </label>
           <label className="check">
             <input
               type="checkbox"

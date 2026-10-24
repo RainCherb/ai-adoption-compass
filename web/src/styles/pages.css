@@ -842,6 +842,16 @@
   font-weight: 650;
 }
 
+.catalog-table { min-width: 1050px; }
+.catalog-table thead th { white-space: normal; }
+.catalog-table th:first-child { min-width: 210px; max-width: 250px; }
+.catalog-table code, .model-options-table code { overflow-wrap: anywhere; }
+.model-options-table { min-width: 680px; }
+.model-options-table th:first-child { min-width: 170px; }
+.model-options-table thead th { white-space: normal; }
+.model-disclaimer { margin-bottom: var(--sp-5); color: var(--muted); font-size: var(--text-sm); }
+.model-disclaimer summary { cursor: pointer; }
+
 .caps {
   display: flex;
   flex-wrap: wrap;
@@ -1579,26 +1589,3 @@
 .button-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.25rem; }
 
 /* Основные зарубежные модели: одинаковая нагрузка, фиксированный порядок, без рейтинга. */
-.model-focus__inputs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-block: 1rem; }
-.model-focus__profiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); list-style: none; padding: 0; margin: 0; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-.model-focus__profile { padding: clamp(1rem, 2vw, 1.6rem); min-width: 0; }
-.model-focus__profile + .model-focus__profile { border-left: 1px solid var(--border); }
-.model-focus__profile h2 { font-size: 1.35rem; margin-block: .75rem; }
-.model-focus__profile h2 + p { min-height: 4.8em; }
-.model-focus__profile code { overflow-wrap: anywhere; }
-.model-focus__index { font-size: .8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-.model-focus__amount { font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 700; font-variant-numeric: tabular-nums; margin-top: 1.5rem; }
-.model-focus__amount span { display: block; font-size: .8rem; font-weight: 400; color: var(--muted); }
-.model-focus__facts { margin-block: 1rem; font-size: .875rem; }
-.model-focus__facts > div { display: flex; justify-content: space-between; gap: .5rem; padding-block: .35rem; border-bottom: 1px solid var(--border); }
-.model-focus__facts dd { margin: 0; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.model-focus__profile details { margin-top: 1rem; font-size: .875rem; line-height: 1.6; }
-.model-focus__profile details li { margin-bottom: .6rem; }
-@media (max-width: 1100px) { .model-focus__inputs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 850px) {
-  .model-focus__profiles { grid-template-columns: 1fr; }
-  .model-focus__profile + .model-focus__profile { border-left: 0; border-top: 1px solid var(--border); }
-}
-@media (max-width: 480px) { .model-focus__inputs { grid-template-columns: 1fr; } }
-
-.model-focus__workload { margin-bottom: 0; align-items: center; }

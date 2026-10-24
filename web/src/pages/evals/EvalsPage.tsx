@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { getEvalDemo, getMeasuredEvals } from "../../api/client";
-import type { EvalDemo } from "../../api/types";
+import { getCatalog, getEvalDemo, getMeasuredEvals } from "../../api/client";
+import type { EvalDemo, TaskType } from "../../api/types";
 import { Banner, ErrorBanner } from "../../components/ui/Banner";
 import { Button } from "../../components/ui/Button";
 import { CopyButton } from "../../components/ui/CopyButton";
 import { PageHeader } from "../../components/ui/PageHeader";
 import { LoadingRegion, Skeleton } from "../../components/ui/Skeleton";
 import { useAsync } from "../../hooks/useAsync";
+import { useMeta } from "../../hooks/useMeta";
 import { downloadTextFile } from "../../lib/download";
 import { formatCount } from "../../lib/format";
 import { ComparisonTable, pickHighlights } from "./ComparisonTable";
@@ -17,37 +18,41 @@ export const CLI_SNIPPET = [
   "compass eval run -p baseline -p api --base-url https://… --model … --catalog-id …",
 ].join("\n");
 
-export function EvalsPage({ initialMode = "measured" }: { initialMode?: "measured" | "simulated" }) {
-  const [mode, setMode] = useState(initialMode);
-  const evals = useAsync((signal) => mode === "measured" ? getMeasuredEvals(signal) : getEvalDemo(signal), `evals-${mode}`);
+export function EvalsPage({ initialMode }: { initialMode?: "measured" | "simulated" }) {
+  const meta = useMeta();
+  const [mode, setMode] = useState<"expert" | "measured" | "simulated">(initialMode ?? (meta.demo_mode ? "expert" : "measured"));
+  const evals = useAsync(mode === "expert" ? null : (signal) => mode === "measured" ? getMeasuredEvals(signal) : getEvalDemo(signal), `evals-${mode}`);
   const [selected, setSelected] = useState<string | null>(null);
 
   return (
     <>
       <PageHeader
         title="Качество моделей"
-        lead="Сравнение моделей на размеченном наборе: точность, задержка и стоимость. Решение о модели принимают по цифрам на своих данных, а не по рекламе."
+        lead="Экспертные оценки Sonnet 5.5, GPT‑6.1 Sol и DeepSeek V4.1 Flash, используемые в подборе и ROI. Реальные измерения и учебная симуляция доступны отдельно."
       />
 
       <Banner tone="warning" title="Sonnet 5.5, GPT‑6.1 Sol и DeepSeek V4.1 Flash здесь не тестировались">
-        Ниже показан прежний эксперимент с компактными локальными LLM. Он не измеряет качество основных моделей демо.
-        <a href="#/models"> Прямые тарифы основных моделей и калькулятор стоимости →</a>
+        Оценки 1–5 — гипотезы для демонстрации выбора и экономики. Они не являются точностью, F1 или результатами собственных замеров. Прежний эксперимент с компактными LLM доступен в «Реальных измерениях».
+        <a href="#/advisor"> Подбор основных моделей, оценки и стоимость →</a>
       </Banner>
 
       <div className="button-row" aria-label="Тип сравнения">
+        <Button variant={mode === "expert" ? "primary" : "secondary"} aria-pressed={mode === "expert"} onClick={() => { setSelected(null); setMode("expert"); }}>Экспертные оценки</Button>
         <Button variant={mode === "measured" ? "primary" : "secondary"} aria-pressed={mode === "measured"} onClick={() => { setSelected(null); setMode("measured"); }}>Реальные измерения</Button>
         <Button variant={mode === "simulated" ? "primary" : "secondary"} aria-pressed={mode === "simulated"} onClick={() => { setSelected(null); setMode("simulated"); }}>Симуляция для обучения</Button>
       </div>
 
-      {evals.error ? <ErrorBanner error={evals.error} onRetry={evals.reload} title="Не удалось загрузить сравнение" /> : null}
-      {evals.loading && !evals.data ? (
+      {mode === "expert" ? <PrimaryQuality /> : null}
+
+      {mode !== "expert" && evals.error ? <ErrorBanner error={evals.error} onRetry={evals.reload} title="Не удалось загрузить сравнение" /> : null}
+      {mode !== "expert" && evals.loading && !evals.data ? (
         <LoadingRegion label="Считаем сравнение…" className="stack">
           <Skeleton height={64} radius={12} />
           <Skeleton height={260} radius={12} />
         </LoadingRegion>
       ) : null}
 
-      {evals.data ? (
+      {mode !== "expert" && evals.data ? (
         <EvalsContent
           demo={evals.data}
           selected={selected ?? pickHighlights(evals.data.reports).best ?? evals.data.reports[0]?.provider ?? ""}
@@ -56,6 +61,23 @@ export function EvalsPage({ initialMode = "measured" }: { initialMode?: "measure
       ) : null}
     </>
   );
+}
+
+function PrimaryQuality() {
+  const meta = useMeta();
+  const catalog = useAsync((signal) => getCatalog(signal), "primary-quality");
+  if (catalog.error) return <ErrorBanner error={catalog.error} onRetry={catalog.reload} title="Не удалось загрузить экспертные оценки" />;
+  if (!catalog.data) return <LoadingRegion label="Загружаем оценки…"><Skeleton height={260} radius={12} /></LoadingRegion>;
+  const models = catalog.data.models.filter((model) => model.profile);
+  return <section className="stack" aria-label="Экспертная матрица базовых моделей">
+    <h2>Одна матрица для подбора и всех процессов</h2>
+    <p className="muted">1 — низкое ожидаемое качество, 5 — высокое. Это относительные предположения для учебных бизнес-задач на русском языке. Значения хранятся в каталоге и не меняются из-за успешной загрузки тарифа. Перед внедрением нужен собственный размеченный набор.</p>
+    <div className="table-wrap" tabIndex={0} role="region" aria-label="Оценки качества по типам задач"><table className="table">
+      <thead><tr><th>Тип задачи</th>{models.map((model) => <th key={model.id}>{model.name}<div className="small muted">экспертно, 1–5</div></th>)}</tr></thead>
+      <tbody>{meta.task_types.map((task) => <tr key={task.value}><th scope="row">{task.label}</th>{models.map((model) => <td key={model.id}>{model.quality[task.value as TaskType]} / 5</td>)}</tr>)}</tbody>
+    </table></div>
+    <p>Приоритет «Качество» учитывает эти оценки; приоритет «Стоимость» может выбрать более дешёвую модель, если она проходит минимальный порог. <a href="#/advisor">Проверить подбор →</a></p>
+  </section>;
 }
 
 function EvalsContent({

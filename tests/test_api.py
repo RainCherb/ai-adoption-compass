@@ -37,7 +37,7 @@ class TestService:
 
     def test_health_reports_stale_catalog(self, settings):
         late = TestClient(create_app(replace(settings, today=TODAY + timedelta(days=200))))
-        assert late.get("/api/health").json()["catalog"]["stale"] == 13
+        assert late.get("/api/health").json()["catalog"]["stale"] == 16
 
     def test_meta_exposes_enums_defaults_and_limits(self, client):
         meta = client.get("/api/meta").json()
@@ -51,7 +51,7 @@ class TestService:
 
     def test_catalog_lists_all_models(self, client):
         body = client.get("/api/catalog").json()
-        assert len(body["models"]) == 13
+        assert len(body["models"]) == 16
         assert body["stale"] == []
         assert body["usd_rub"] == 90.0
 

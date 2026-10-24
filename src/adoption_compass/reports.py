@@ -89,6 +89,36 @@ def assessment_markdown(
         )
     lines.append("")
 
+    if any(p.model_options for p in result.processes):
+        lines += [
+            "## Три базовые модели: сравнение по каждому процессу",
+            "",
+            "Качество 1–5 и итоговый балл — экспертные допущения, не измерения LLM. "
+            "USD/RUB — сценарный курс; налоги, комиссии, кэш и инструменты не включены. "
+            "Вход и весь оплачиваемый выход умножены на запас токенов из допущений.",
+            "",
+            "| Процесс | Модель / API ID | Качество, экспертно | USD/мес | ₽/мес | Допустимость |",
+            "| --- | --- | --- | --- | --- | --- |",
+        ]
+        for process in result.processes:
+            for option in process.model_options:
+                usd = f"{option.cost.total_usd:.8f}" if option.cost else "—"
+                rub = f"{option.cost.total_rub:.2f}" if option.cost else "—"
+                reason = "проходит ограничения" if option.eligible else "; ".join(option.reasons)
+                lines.append(
+                    f"| {_escape(process.name)} | {option.name} / `{option.profile.api_model}` | "
+                    f"{option.quality}/5 | {usd} | {rub} | {_escape(reason)} |"
+                )
+        lines += ["", "### Источники тарифов и лимитов", ""]
+        profiles = {o.model_id: o.profile for p in result.processes for o in p.model_options}
+        lines += [
+            f"- [{profile.name}]({profile.pricing_url}): сверено {profile.reviewed_at}; "
+            f"контекст {profile.context_label}, максимальный выход {profile.max_output_tokens}. "
+            f"{profile.access_note}"
+            for profile in profiles.values()
+        ]
+        lines.append("")
+
     deferred = [p for p in result.processes if p.wave is None]
     if deferred:
         lines += ["## Отложено и заблокировано", ""]
@@ -133,12 +163,16 @@ def assessment_markdown(
         f"| Запас токенов (повторы, контекст) | ×{a.llm_overhead:.2f} |",
         f"| Снижение ошибок | {a.error_reduction:.0%} |",
         f"| Курс USD/RUB | {a.usd_rub:.0f} |",
+        f"| Приоритет модели | {a.model_preference} |",
+        f"| Тариф DeepSeek | {a.deepseek_period} |",
+        f"| Доступный аккаунт и оплата в поддерживаемом регионе | {'предполагаются; доступ из РФ не гарантируется' if a.supported_region else 'не предполагаются'} |",
         f"| Обходные пути доступа к зарубежным моделям | {'разрешены' if a.allow_workarounds else 'не используются'} |",
         f"| Общая инфраструктура self-hosted | {'делится между процессами' if a.share_infrastructure else 'отдельная для каждого'} |",
         "",
         "> Расчёт — оценка на основе допущений, а не гарантия результата. "
         + (
-            "Каталог моделей содержит демонстрационные цены: сверьте их с провайдерами. "
+            "Основные три тарифа сверены с официальными источниками; качество и эффект "
+            "нуждаются в проверке на ваших задачах. Остальной каталог условный. "
             if result.data_status == "illustrative"
             else ""
         )
@@ -170,6 +204,11 @@ CSV_COLUMNS = (
     "impact",
     "ease",
     "priority",
+    "model_api_id",
+    "model_quality_expert",
+    "llm_cost_month_usd",
+    "tariff",
+    "usd_rub",
 )
 
 
@@ -202,6 +241,18 @@ def assessment_csv(result: AssessmentResult) -> str:
                 p.impact,
                 p.ease,
                 p.priority,
+                next(
+                    (
+                        o.profile.api_model
+                        for o in p.model_options
+                        if p.model and o.model_id == p.model.model_id
+                    ),
+                    "",
+                ),
+                p.model.quality if p.model else "",
+                p.model.cost.total_usd if p.model and p.model.cost.total_usd is not None else "",
+                p.model.cost.tariff if p.model else "",
+                result.assumptions.usd_rub,
             ]
         )
     return "\ufeff" + buffer.getvalue()

@@ -9,6 +9,7 @@ import { labelOf, useMeta } from "../../hooks/useMeta";
 import { formatDate, formatNumber, formatRub, formatUsd } from "../../lib/format";
 import { RU_ACCESS_LABELS, TIER_LABELS } from "../../lib/labels";
 import { CatalogSources } from "./CatalogSources";
+import { Disclosure } from "../../components/ui/Disclosure";
 
 function price(model: CatalogModel): string {
   const { currency, input_per_mtok: input, output_per_mtok: output } = model.pricing;
@@ -39,14 +40,13 @@ export function CatalogTable({ taskType }: { taskType: TaskType }) {
 
   return (
     <div className="stack">
-      <CatalogSources />
-      {catalog.data.data_status === "illustrative" ? (
+      {catalog.data.data_status === "illustrative" && !meta.demo_mode ? (
         <Banner tone="warning" title="Демонстрационные данные">
           {catalog.data.disclaimer}
         </Banner>
       ) : null}
       <div className="table-wrap" tabIndex={0} role="region" aria-label="Каталог моделей">
-        <table className="table" data-testid="catalog-table">
+        <table className="table catalog-table" data-testid="catalog-table">
           <caption className="visually-hidden">
             Каталог моделей: размещение, цены за 1 млн токенов, возможности и оценка качества для задачи «{taskLabel}»
           </caption>
@@ -54,7 +54,7 @@ export function CatalogTable({ taskType }: { taskType: TaskType }) {
             <tr>
               <th scope="col">Модель</th>
               <th scope="col">Размещение</th>
-              <th scope="col">Доступ из РФ</th>
+              <th scope="col">Условия доступа</th>
               <th scope="col" className="num-col">
                 Цена вход / выход за 1 млн токенов
               </th>
@@ -66,7 +66,7 @@ export function CatalogTable({ taskType }: { taskType: TaskType }) {
               </th>
               <th scope="col">Возможности</th>
               <th scope="col" className="num-col">
-                Качество: {taskLabel}
+                Качество, экспертно: {taskLabel}
               </th>
               <th scope="col">Проверено</th>
             </tr>
@@ -76,6 +76,7 @@ export function CatalogTable({ taskType }: { taskType: TaskType }) {
               <tr key={model.id}>
                 <th scope="row">
                   <span className="catalog-name">{model.name}</span>
+                  {model.profile ? <div className="small"><code>{model.profile.api_model}</code> · <a href={model.profile.pricing_url} target="_blank" rel="noreferrer">Прямой тариф ↗</a><details><summary>Условия тарифа</summary><ul>{model.profile.conditions.map((c) => <li key={c}>{c}</li>)}</ul><p>{model.profile.access_note}</p></details></div> : null}
                   <span className="muted small">
                     {model.vendor} · {TIER_LABELS[model.tier]}
                   </span>
@@ -84,7 +85,7 @@ export function CatalogTable({ taskType }: { taskType: TaskType }) {
                   <Badge tone="info">{labelOf(meta.deployments, model.deployment)}</Badge>
                 </td>
                 <td>
-                  <Badge tone={model.ru_access === "direct" ? "success" : "warning"}>{RU_ACCESS_LABELS[model.ru_access]}</Badge>
+                  <Badge tone={model.ru_access === "direct" ? "success" : "warning"}>{model.profile ? "Проверить регион API" : RU_ACCESS_LABELS[model.ru_access]}</Badge>
                 </td>
                 <td className="num-col num">{model.pricing.input_per_mtok === 0 && model.pricing.output_per_mtok === 0 ? "—" : price(model)}</td>
                 <td className="num-col num">
@@ -131,9 +132,10 @@ export function CatalogTable({ taskType }: { taskType: TaskType }) {
           </tbody>
         </table>
       </div>
+      <Disclosure title="Источники тарифов, лимитов и условий доступа"><CatalogSources /></Disclosure>
       <p className="muted small">
         <Icon name="info" size={14} /> Курс для пересчёта в рубли: {formatNumber(catalog.data.usd_rub, 2)} ₽ за $1 · каталог на{" "}
-        {formatDate(catalog.data.as_of)}. Цены и оценки качества — ориентировочные.
+        {formatDate(catalog.data.as_of)}. Базовые тарифы — Standard без кэша; DeepSeek Peak. Курс и качество — допущения, условия прямых тарифов указаны в карточках.
       </p>
     </div>
   );

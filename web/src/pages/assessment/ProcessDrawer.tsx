@@ -10,6 +10,7 @@ import { ModelCard } from "./ModelCard";
 import { MoneySteps } from "./MoneySteps";
 import { QuadrantBadge } from "./QuadrantBadge";
 import { ScenarioTable } from "./ScenarioTable";
+import { ModelOptionsTable } from "../advisor/ModelOptionsTable";
 
 interface ProcessDrawerProps {
   process: ProcessResult;
@@ -76,6 +77,7 @@ export function ProcessDrawer({ process, assumptions, infra, onClose }: ProcessD
         </>
       )}
 
+      <ModelOptionsTable items={process.model_options ?? []} />
       <section className="drawer-section" aria-labelledby="drawer-flags">
         <h3 id="drawer-flags" className="drawer-section__title">
           Флаги и риски

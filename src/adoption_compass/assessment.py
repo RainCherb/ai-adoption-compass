@@ -8,7 +8,7 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
-from .advisor import Advisor, CostBreakdown, Preference, Recommendation, Workload
+from .advisor import Advisor, CostBreakdown, ModelOption, Preference, Recommendation, Workload
 from .domain import (
     Deployment,
     Quadrant,
@@ -106,6 +106,7 @@ class ProcessResult(BaseModel):
     quadrant: Quadrant
     wave: int | None
     model: ModelPick | None
+    model_options: list[ModelOption] = Field(default_factory=list)
     flags: list[Flag]
 
 
@@ -190,7 +191,9 @@ class AssessmentEngine:
             min_quality=min(5, profile.min_quality + (1 if p.risk_level >= 4 else 0)),
             must_self_host=p.must_self_host,
             allow_workarounds=a.allow_workarounds,
-            prefer=Preference.BALANCED,
+            prefer=Preference(a.model_preference),
+            supported_region=a.supported_region,
+            deepseek_period=a.deepseek_period,
         )
 
     def _allocate_infrastructure(
@@ -504,7 +507,11 @@ class AssessmentEngine:
 
         a = self.resolve_assumptions(overrides)
         advisor = Advisor(
-            self.advisor.catalog, self.advisor.policy, usd_rub=a.usd_rub, today=self.advisor.today
+            self.advisor.catalog,
+            self.advisor.policy,
+            usd_rub=a.usd_rub,
+            today=self.advisor.today,
+            data_dir=self.advisor.data_dir,
         )
         picks: dict[str, Recommendation | None] = {}
         for p in processes:
@@ -531,7 +538,17 @@ class AssessmentEngine:
                 break
             active -= dropped
         results.sort(key=lambda r: (-r.priority, r.id))
-        results = [r.model_copy(update={"rank": i}) for i, r in enumerate(results, start=1)]
+        results = [
+            r.model_copy(
+                update={
+                    "rank": i,
+                    "model_options": advisor.model_options(
+                        self._workload(next(p for p in processes if p.id == r.id), a)
+                    ),
+                }
+            )
+            for i, r in enumerate(results, start=1)
+        ]
 
         summary = self._summarize(results, infrastructure, a)
         return AssessmentResult(
@@ -539,7 +556,14 @@ class AssessmentEngine:
             processes=results,
             summary=summary,
             roadmap=self._roadmap(results),
-            warnings=self._warnings(advisor),
+            warnings=self._warnings(advisor)
+            + (
+                [
+                    "Предполагаются аккаунт и оплата в поддерживаемом регионе API. Доступ из РФ не гарантируется; это допущение можно снять в настройках расчёта."
+                ]
+                if a.supported_region
+                else []
+            ),
             catalog_as_of=advisor.catalog.as_of,
             data_status=advisor.catalog.data_status,
         )
@@ -603,8 +627,8 @@ class AssessmentEngine:
         warnings: list[str] = []
         if advisor.catalog.data_status == "illustrative":
             warnings.append(
-                "Каталог моделей содержит демонстрационные цены и оценки качества — "
-                "обновите его перед принятием решений."
+                "Качество и ROI основаны на экспертных допущениях; тарифы трёх основных моделей — из официальных источников. "
+                "Перед решением перепроверьте тарифы и протестируйте качество на своих задачах."
             )
         stale = advisor.catalog.stale_entries(advisor.today)
         if stale:
