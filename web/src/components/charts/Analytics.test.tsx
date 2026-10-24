@@ -129,6 +129,22 @@ it("убыточный сценарий остаётся ниже нуля, а �
   expect(cashflowAt(loss, 12, 12)).toBe(-130000);
   const { rerender } = render(<CashflowChart rows={[loss]} horizon={12} />);
   expect(screen.getByText("Не окупается")).toBeInTheDocument();
+  rerender(
+    <CashflowChart
+      rows={[
+        {
+          ...row,
+          implementation_rub: 0,
+          net_month_rub: 0,
+          net_horizon_rub: 0,
+          payback_months: null,
+        },
+      ]}
+      horizon={12}
+    />,
+  );
+  expect(within(screen.getByRole("img")).getByText("0 ₽")).toBeInTheDocument();
+  expect(within(screen.getByRole("img")).getByText("1 ₽")).toBeInTheDocument();
   rerender(<CashflowChart rows={[]} horizon={12} />);
   expect(screen.queryByRole("img")).not.toBeInTheDocument();
 });

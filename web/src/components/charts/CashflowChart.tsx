@@ -35,7 +35,7 @@ export function CashflowChart({
     ...rows.map((row) => row.net_horizon_rub),
   );
   const maximum = Math.max(0, ...rows.map((row) => row.net_horizon_rub));
-  const roughStep = Math.max(1, maximum - minimum) / 5;
+  const roughStep = Math.max(5, maximum - minimum) / 5;
   const magnitude = 10 ** Math.floor(Math.log10(roughStep));
   const step =
     ([1, 2, 2.5, 5, 10].find((n) => n * magnitude >= roughStep) ?? 10) *
