@@ -55,7 +55,7 @@ def main() -> None:
         try:
             health = request("/api/health")
             break
-        except (urllib.error.URLError, RuntimeError, TimeoutError):
+        except (urllib.error.URLError, ConnectionError, RuntimeError, TimeoutError):
             if time.monotonic() > deadline:
                 raise
             time.sleep(1)
