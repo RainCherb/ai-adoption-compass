@@ -4,11 +4,32 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    open-pull-requests-limit: 3
+    groups:
+      python-compatible:
+        patterns: ["*"]
+        update-types: [minor, patch]
   - package-ecosystem: npm
     directory: /web
     schedule:
       interval: weekly
+    open-pull-requests-limit: 3
+    groups:
+      frontend-compatible:
+        patterns: ["*"]
+        update-types: [minor, patch]
+    ignore:
+      # openapi-typescript 7 требует TypeScript 5; major — отдельная миграция.
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
+      # Типы должны соответствовать Node 24 в CI и Docker.
+      - dependency-name: "@types/node"
+        update-types: [version-update:semver-major]
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: monthly
+    open-pull-requests-limit: 1
+    groups:
+      github-actions:
+        patterns: ["*"]
