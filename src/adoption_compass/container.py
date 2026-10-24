@@ -17,7 +17,7 @@ def main() -> None:
         uvicorn.run(
             "adoption_compass.api.app:create_app",
             factory=True,
-            host="0.0.0.0",
+            host="0.0.0.0",  # noqa: S104 — внешний интерфейс внутри контейнера хостинга
             port=port,
             limit_concurrency=32,
             access_log=False,
