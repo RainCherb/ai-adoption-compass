@@ -46,7 +46,7 @@ jobs:
         run: python scripts/export_openapi.py --check
       - name: Свежесть каталога моделей (информационно)
         run: compass catalog check || true
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: matrix.python == '3.12'
         with:
           name: coverage-xml
