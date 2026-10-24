@@ -60,7 +60,7 @@ describe("SafetyPage: проверка текста", () => {
     expect(screen.getByText("найдены секреты")).toBeInTheDocument();
   });
 
-  it("показывает счётчики, категории и три карточки решений с действием и причинами", async () => {
+  it("показывает счётчики, категории и две карточки решений API с действием и причинами", async () => {
     const user = userEvent.setup();
     setup();
     await analyze(user);
@@ -72,12 +72,12 @@ describe("SafetyPage: проверка текста", () => {
     expect(screen.getByText("Итоговая категория").nextElementSibling).toHaveTextContent("Персональные");
 
     const cards = screen.getAllByTestId("decision-card");
-    expect(cards.map((card) => card.getAttribute("data-action"))).toEqual(["mask", "deny", "allow"]);
+    expect(cards.map((card) => card.getAttribute("data-action"))).toEqual(["mask", "deny"]);
     expect(within(cards[0] as HTMLElement).getByRole("heading", { name: "Российское облако" })).toBeInTheDocument();
     expect(within(cards[0] as HTMLElement).getByText("После обезличивания")).toBeInTheDocument();
     expect(within(cards[1] as HTMLElement).getByText("Нельзя")).toBeInTheDocument();
     expect(within(cards[1] as HTMLElement).getByText("Отправка за рубеж запрещена политикой.")).toBeInTheDocument();
-    expect(within(cards[2] as HTMLElement).getByText("Можно")).toBeInTheDocument();
+    expect(cards).toHaveLength(2);
     expect(screen.getByTestId("masked-text")).toHaveTextContent("Звоните [PHONE_1], почта [EMAIL_1]");
   });
 
@@ -156,7 +156,6 @@ describe("SafetyPage: политика", () => {
     expect(within(personal).getAllByRole("cell").map((cell) => cell.textContent)).toEqual([
       "После обезличивания",
       "Нельзя",
-      "Можно",
     ]);
     expect(screen.getByText("Определяйте категорию данных перед отправкой.")).toBeInTheDocument();
     expect(screen.getByText("Не вставляйте пароли и ключи API.")).toBeInTheDocument();

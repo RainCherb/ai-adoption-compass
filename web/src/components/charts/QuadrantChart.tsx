@@ -237,6 +237,7 @@ export function QuadrantChart({ processes, thresholds, quadrantLabels, selectedI
             aria-hidden="true"
           >
             <strong>{active.process.name}</strong>
+            <span>{active.process.model?.name ?? "Нет допустимого API"}</span>
             <span>{quadrantLabels[active.process.quadrant]}</span>
             <span>
               Лёгкость {formatNumber(active.process.ease)} · эффект {formatNumber(active.process.impact)}
@@ -244,6 +245,7 @@ export function QuadrantChart({ processes, thresholds, quadrantLabels, selectedI
             <span>
               {formatHours(active.process.hours_saved_month)}/мес · {formatRub(active.process.net_month_rub)}/мес
             </span>
+            <span>API: {formatRub(active.process.llm_cost_month_rub)}/мес · чистый эффект за период {formatRub(active.process.net_horizon_rub)}</span>
           </div>
         ) : null}
       </div>

@@ -119,6 +119,24 @@ def assessment_markdown(
         ]
         lines.append("")
 
+    if result.portfolio_scenarios:
+        lines += [
+            "## Накопленный эффект: три сценария одного плана",
+            "",
+            "Внедрение списывается в месяце 0; далее постоянный ежемесячный поток. "
+            "Поэтапный запуск, налоги и дисконтирование не учитываются.",
+            "",
+            "| Сценарий | Внедрение, месяц 0 | Чистый поток/мес | Эффект за период | Окупаемость |",
+            "| --- | --- | --- | --- | --- |",
+        ]
+        for row in result.portfolio_scenarios:
+            lines.append(
+                f"| {row.label} | −{format_rub(row.implementation_rub)} | "
+                f"{format_rub(row.net_month_rub)} | {format_rub(row.net_horizon_rub)} | "
+                f"{_months(row.payback_months)} |"
+            )
+        lines.append("")
+
     deferred = [p for p in result.processes if p.wave is None]
     if deferred:
         lines += ["## Отложено и заблокировано", ""]
@@ -167,7 +185,6 @@ def assessment_markdown(
         f"| Тариф DeepSeek | {a.deepseek_period} |",
         f"| Доступный аккаунт и оплата в поддерживаемом регионе | {'предполагаются; доступ из РФ не гарантируется' if a.supported_region else 'не предполагаются'} |",
         f"| Обходные пути доступа к зарубежным моделям | {'разрешены' if a.allow_workarounds else 'не используются'} |",
-        f"| Общая инфраструктура self-hosted | {'делится между процессами' if a.share_infrastructure else 'отдельная для каждого'} |",
         "",
         "> Расчёт — оценка на основе допущений, а не гарантия результата. "
         + (

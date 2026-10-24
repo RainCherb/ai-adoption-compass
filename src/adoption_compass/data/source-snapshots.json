@@ -46,28 +46,6 @@
       "review_note": "Codex сверил DeepSeek-V4.1-Flash-1017, API deepseek-flash: peak $0.30/$1.20, off-peak $0.15/$0.60, cache $0.006/$0.003; контекст 1M, выход 384K. Peak пн-пт 01-04 и 06-10 UTC кроме праздников КНР. Качество и доступ из РФ не измерялись."
     },
     {
-      "source_id": "anthropic-access",
-      "url": "https://platform.claude.com/docs/en/api/supported-regions",
-      "fetched_at": "2026-10-24T18:04:33.564799Z",
-      "content_sha256": "8a83f198a865a350ea46c9bb60b927d34519402cb265a998eff75a808a8d1f00",
-      "status": "review_required",
-      "reviewed_at": null,
-      "reviewed_by": null,
-      "offers": [],
-      "review_note": "Страница получена. Содержание и доступность из региона требуют ручного ревью; получение HTTP 200 не подтверждает доступ из РФ."
-    },
-    {
-      "source_id": "openai-access",
-      "url": "https://developers.openai.com/api/docs/supported-countries",
-      "fetched_at": "2026-10-24T18:04:33.691268Z",
-      "content_sha256": "7abc61e88716eab016af09dc545c261a546a8e27eebc1ea79285c848b541a8e2",
-      "status": "review_required",
-      "reviewed_at": null,
-      "reviewed_by": null,
-      "offers": [],
-      "review_note": "Страница получена. Содержание и доступность из региона требуют ручного ревью; получение HTTP 200 не подтверждает доступ из РФ."
-    },
-    {
       "source_id": "openrouter-models",
       "url": "https://openrouter.ai/api/v1/models",
       "fetched_at": "2026-10-24T17:04:17.060751Z",
@@ -135,6 +113,39 @@
       "reviewed_by": null,
       "offers": [],
       "review_note": "Источник недоступен или формат изменился. Не использовать для решений; требуется ручная проверка."
+    },
+    {
+      "source_id": "anthropic-access",
+      "url": "https://platform.claude.com/docs/en/api/supported-regions",
+      "fetched_at": "2026-10-24T22:05:23.803624Z",
+      "content_sha256": "e17fe02b7ec8f2043e6075bd509cfea4d0e3e6ced7d630113bb3178a2a068d16",
+      "status": "reviewed",
+      "reviewed_at": "2026-10-24T22:05:24.463334Z",
+      "reviewed_by": "Codex — сверка официальных источников",
+      "offers": [],
+      "review_note": "Codex сверил официальный список регионов Claude API: Россия отсутствует. Официальный API в РФ не поддерживается."
+    },
+    {
+      "source_id": "openai-access",
+      "url": "https://developers.openai.com/api/docs/supported-countries",
+      "fetched_at": "2026-10-24T22:05:24.329183Z",
+      "content_sha256": "7abc61e88716eab016af09dc545c261a546a8e27eebc1ea79285c848b541a8e2",
+      "status": "reviewed",
+      "reviewed_at": "2026-10-24T22:05:24.463843Z",
+      "reviewed_by": "Codex — сверка официальных источников",
+      "offers": [],
+      "review_note": "Codex сверил официальный список поддерживаемых стран API: Россия отсутствует. Это подтверждает отсутствие официальной поддержки API в РФ, а не успешный обход ограничений."
+    },
+    {
+      "source_id": "deepseek-access",
+      "url": "https://cdn.deepseek.com/policies/en-US/deepseek-terms-of-use.html",
+      "fetched_at": "2026-10-24T22:05:24.463334Z",
+      "content_sha256": "e5c52c238ff59a6d274cd66c449f939ba6bd3183fe7927397b595df02887a76d",
+      "status": "reviewed",
+      "reviewed_at": "2026-10-24T22:05:24.463843Z",
+      "reviewed_by": "Codex — сверка официальных источников",
+      "offers": [],
+      "review_note": "Codex сверил п. 1.5 официальных условий: DeepSeek не гарантирует доступность по юрисдикциям. Публичного списка поддерживаемых стран и подтверждения API-доступа из РФ нет. Статус — не подтверждён, не обещание доступности."
     }
   ]
 }

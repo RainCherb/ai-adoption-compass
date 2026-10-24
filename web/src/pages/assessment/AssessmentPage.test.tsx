@@ -82,7 +82,7 @@ describe("AssessmentPage: загрузка данных", () => {
     expect(screen.getByRole("heading", { name: "Демо: ООО «Ромашка»" })).toBeInTheDocument();
   });
 
-  it("показывает показатели, предупреждения, план внедрения и собственную инфраструктуру", async () => {
+  it("показывает показатели, предупреждения, план внедрения без локальной инфраструктуры", async () => {
     const user = userEvent.setup();
     setup();
     await openDemo(user);
@@ -99,7 +99,7 @@ describe("AssessmentPage: загрузка данных", () => {
     const waves = screen.getAllByTestId("roadmap-wave");
     expect(waves).toHaveLength(2);
     expect(within(waves[0] as HTMLElement).getByRole("button", { name: "Маршрутизация обращений" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /Собственная инфраструктура/ })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /Собственная инфраструктура/ })).not.toBeInTheDocument();
   });
 
   it("разбор CSV: показывает строки с ошибками из parse_errors", async () => {

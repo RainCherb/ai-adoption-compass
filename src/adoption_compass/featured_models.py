@@ -56,6 +56,10 @@ class FeaturedModel(BaseModel):
     specs_url: str
     access_url: str | None = None
     access_note: str
+    russia_api_status: Literal["available", "unavailable", "unverified"] = "unverified"
+    russia_api_note: str = "Региональная доступность API не подтверждена"
+    access_reviewed_at: date | None = None
+    best_for: list[str] = Field(default_factory=list)
     conditions: list[str]
     reviewed_at: date
     quality_status: Literal["not_measured"] = "not_measured"

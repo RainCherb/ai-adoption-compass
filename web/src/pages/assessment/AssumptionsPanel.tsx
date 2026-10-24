@@ -187,14 +187,6 @@ export function AssumptionsPanel({ baseline, defaults, whatIfActive, busy, error
             />
             <span>Допускать обходные пути доступа к зарубежным моделям</span>
           </label>
-          <label className="check">
-            <input
-              type="checkbox"
-              checked={form.share_infrastructure}
-              onChange={(event) => setForm((previous) => ({ ...previous, share_infrastructure: event.target.checked }))}
-            />
-            <span>Делить self-hosted инфраструктуру между процессами</span>
-          </label>
         </div>
 
         {error ? <ErrorBanner error={error} title="Не удалось пересчитать" /> : null}

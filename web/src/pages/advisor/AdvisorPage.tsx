@@ -11,6 +11,7 @@ import { useDebounced } from "../../hooks/useDebounced";
 import { useMeta } from "../../hooks/useMeta";
 import { formatCount } from "../../lib/format";
 import { ModelOptionsTable } from "./ModelOptionsTable";
+import { ModelCostChart } from "./ModelCostChart";
 import { Disclosure } from "../../components/ui/Disclosure";
 import { AdvisorForm } from "./AdvisorForm";
 import { CatalogTable } from "./CatalogTable";
@@ -91,6 +92,7 @@ export function AdvisorPage() {
                   {" · "}курс {result.usd_rub} ₽/$
                 </p>
 
+                <ModelCostChart items={result.model_options ?? []} />
                 {result.notes.length > 0 ? (
                   meta.demo_mode ? <Disclosure title="Как читать оценки и стоимость"><ul>{result.notes.map((note) => <li key={note}>{note}</li>)}</ul></Disclosure> : <Banner tone="info" title="Примечания">
                     <ul className="banner__list">

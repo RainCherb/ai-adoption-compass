@@ -146,10 +146,20 @@ class RoadmapWave(BaseModel):
     net_horizon_rub: float
 
 
+class PortfolioScenario(BaseModel):
+    key: str
+    label: str
+    implementation_rub: float
+    net_month_rub: float
+    net_horizon_rub: float
+    payback_months: float | None
+
+
 class AssessmentResult(BaseModel):
     assumptions: Assumptions
     processes: list[ProcessResult]
     summary: PortfolioSummary
+    portfolio_scenarios: list[PortfolioScenario] = Field(default_factory=list)
     roadmap: list[RoadmapWave]
     warnings: list[str]
     catalog_as_of: date
@@ -555,6 +565,7 @@ class AssessmentEngine:
             assumptions=a,
             processes=results,
             summary=summary,
+            portfolio_scenarios=self._portfolio_scenarios(results, summary, a),
             roadmap=self._roadmap(results),
             warnings=self._warnings(advisor)
             + (
@@ -567,6 +578,35 @@ class AssessmentEngine:
             catalog_as_of=advisor.catalog.as_of,
             data_status=advisor.catalog.data_status,
         )
+
+    def _portfolio_scenarios(
+        self, results: list[ProcessResult], summary: PortfolioSummary, a: Assumptions
+    ) -> list[PortfolioScenario]:
+        llm = sum(r.llm_cost_month_rub for r in results if r.quadrant in QUADRANT_WAVE)
+        rows = []
+        for key, factors in self.scoring.scenarios.items():
+            scenario = self._scenario(
+                key, factors, summary.benefit_month_rub, llm, summary.implementation_rub, a
+            )
+            rows.append(
+                PortfolioScenario(
+                    key=key,
+                    label=factors.label,
+                    implementation_rub=round(
+                        summary.implementation_rub * factors.implementation, 2
+                    ),
+                    net_month_rub=summary.net_month_rub
+                    if key == "base"
+                    else scenario.net_rub_month,
+                    net_horizon_rub=summary.net_horizon_rub
+                    if key == "base"
+                    else scenario.net_horizon_rub,
+                    payback_months=summary.payback_months
+                    if key == "base"
+                    else scenario.payback_months,
+                )
+            )
+        return rows
 
     def _summarize(
         self, results: list[ProcessResult], infrastructure: list[InfraLine], a: Assumptions

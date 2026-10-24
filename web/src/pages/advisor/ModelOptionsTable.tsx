@@ -1,4 +1,5 @@
 import type { ModelOption } from "../../api/types";
+import { RussiaAccess } from "./RussiaAccess";
 import { formatNumber, formatRub } from "../../lib/format";
 
 export function ModelOptionsTable({ items }: { items: readonly ModelOption[] }) {
@@ -13,10 +14,11 @@ export function ModelOptionsTable({ items }: { items: readonly ModelOption[] }) 
         <td>{item.quality} / 5</td>
         <td>{item.cost?.input_rate_usd != null ? `${formatNumber(item.cost.input_rate_usd, 3)} / ${formatNumber(item.cost.output_rate_usd, 3)}` : "—"}<div className="small muted">{item.cost?.tariff}</div></td>
         <td>{item.cost?.total_usd != null ? `${formatNumber(item.cost.total_usd, 8)} $ / ${formatRub(item.cost.total_rub)}` : "Недоступно"}</td>
-        <td>{item.eligible ? "Проходит выбранные ограничения" : item.reasons.join("; ")}<details><summary>Источник и свойства</summary>
+        <td><RussiaAccess profile={item.profile} />{item.eligible ? "Проходит выбранные ограничения" : item.reasons.join("; ")}<details><summary>Источник и свойства</summary>
           <p>Контекст {item.profile.context_label}; максимальный выход {formatNumber(item.profile.max_output_tokens)}. Сверено {item.profile.reviewed_at}.</p>
           <p>{item.profile.version_note}</p><ul>{item.profile.conditions.map((c) => <li key={c}>{c}</li>)}</ul>
-          <p>{item.profile.access_note}</p><a href={item.profile.pricing_url} target="_blank" rel="noreferrer">Официальные тарифы ↗</a>
+          <p>{item.profile.russia_api_note}</p>
+          {item.profile.access_url ? <a href={item.profile.access_url} target="_blank" rel="noreferrer">Доступ в России: официальный источник ↗</a> : null}<a href={item.profile.pricing_url} target="_blank" rel="noreferrer">Официальные тарифы ↗</a>
         </details></td>
       </tr>)}</tbody>
     </table></div>

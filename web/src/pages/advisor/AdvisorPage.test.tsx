@@ -52,7 +52,7 @@ describe("AdvisorPage: результаты", () => {
       "Качество",
       "Стоимость",
       "Безопасность",
-      "Доступность",
+      "Условия доступа",
     ]);
     expect(card.getByText("нужно обезличивание")).toBeInTheDocument();
     expect(card.getByText("Обработка в РФ")).toBeInTheDocument();
@@ -148,7 +148,7 @@ describe("AdvisorPage: форма", () => {
     await screen.findAllByTestId("recommendation");
 
     await user.click(screen.getByRole("radio", { name: /Персональные/ }));
-    await user.click(screen.getByRole("checkbox", { name: "Только self-hosted" }));
+    expect(screen.queryByRole("checkbox", { name: "Только self-hosted" })).not.toBeInTheDocument();
     await user.click(screen.getByRole("checkbox", { name: "Допускать обходные пути доступа" }));
     await user.type(screen.getByLabelText(/Бюджет в месяц/), "50000");
     await user.selectOptions(screen.getByLabelText("Что важнее"), "safety");
@@ -157,7 +157,7 @@ describe("AdvisorPage: форма", () => {
     await waitFor(() =>
       expect(adviceCalls().at(-1)?.body).toMatchObject({
         data_sensitivity: "personal",
-        must_self_host: true,
+        must_self_host: false,
         allow_workarounds: true,
         monthly_budget_rub: 50000,
         prefer: "safety",
@@ -198,7 +198,7 @@ describe("AdvisorPage: каталог", () => {
     await user.click(screen.getByRole("tab", { name: "Каталог" }));
     const table = await screen.findByTestId("catalog-table");
     expect(within(table).getByText("OpenAI GPT — флагманский класс")).toBeInTheDocument();
-    expect(within(table).getByText("Через обходные пути")).toBeInTheDocument();
+    expect(within(table).getByText("В России: не подтверждено")).toBeInTheDocument();
     expect(within(table).getByText(/Качество, экспертно: Классификация и маршрутизация/)).toBeInTheDocument();
     expect(within(table).getByText("5 из 5")).toBeInTheDocument();
   });

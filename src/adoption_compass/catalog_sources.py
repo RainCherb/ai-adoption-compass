@@ -25,6 +25,7 @@ ALLOWED_HOSTS = frozenset(
         "platform.claude.com",
         "developers.openai.com",
         "api-docs.deepseek.com",
+        "cdn.deepseek.com",
     }
 )
 MAX_SOURCE_BYTES = 8_000_000

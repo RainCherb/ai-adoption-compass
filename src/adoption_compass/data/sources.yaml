@@ -36,6 +36,12 @@ sources:
     kind: manual
     max_age_days: 30
     model_ids: []
+  - id: deepseek-access
+    title: DeepSeek — условия региональной доступности
+    url: https://cdn.deepseek.com/policies/en-US/deepseek-terms-of-use.html
+    kind: manual
+    max_age_days: 30
+    model_ids: []
   - id: openrouter-models
     title: OpenRouter — тарифы агрегатора (не прямые тарифы разработчиков)
     url: https://openrouter.ai/api/v1/models

@@ -222,6 +222,13 @@
             "title": "Data Status",
             "type": "string"
           },
+          "portfolio_scenarios": {
+            "items": {
+              "$ref": "#/components/schemas/PortfolioScenario"
+            },
+            "title": "Portfolio Scenarios",
+            "type": "array"
+          },
           "processes": {
             "items": {
               "$ref": "#/components/schemas/ProcessResult"
@@ -643,6 +650,17 @@
             ],
             "title": "Input Rate Usd"
           },
+          "input_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Usd"
+          },
           "output_rate_usd": {
             "anyOf": [
               {
@@ -653,6 +671,28 @@
               }
             ],
             "title": "Output Rate Usd"
+          },
+          "output_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Output Usd"
+          },
+          "requests_per_month": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requests Per Month"
           },
           "tariff": {
             "anyOf": [
@@ -1184,6 +1224,18 @@
             "title": "Access Note",
             "type": "string"
           },
+          "access_reviewed_at": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Access Reviewed At"
+          },
           "access_url": {
             "anyOf": [
               {
@@ -1198,6 +1250,13 @@
           "api_model": {
             "title": "Api Model",
             "type": "string"
+          },
+          "best_for": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Best For",
+            "type": "array"
           },
           "conditions": {
             "items": {
@@ -1248,6 +1307,21 @@
           "reviewed_at": {
             "format": "date",
             "title": "Reviewed At",
+            "type": "string"
+          },
+          "russia_api_note": {
+            "default": "Региональная доступность API не подтверждена",
+            "title": "Russia Api Note",
+            "type": "string"
+          },
+          "russia_api_status": {
+            "default": "unverified",
+            "enum": [
+              "available",
+              "unavailable",
+              "unverified"
+            ],
+            "title": "Russia Api Status",
             "type": "string"
           },
           "source_hashes": {
@@ -2106,6 +2180,51 @@
           "handout_markdown"
         ],
         "title": "PolicyOut",
+        "type": "object"
+      },
+      "PortfolioScenario": {
+        "properties": {
+          "implementation_rub": {
+            "title": "Implementation Rub",
+            "type": "number"
+          },
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "net_horizon_rub": {
+            "title": "Net Horizon Rub",
+            "type": "number"
+          },
+          "net_month_rub": {
+            "title": "Net Month Rub",
+            "type": "number"
+          },
+          "payback_months": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Payback Months"
+          }
+        },
+        "required": [
+          "key",
+          "label",
+          "implementation_rub",
+          "net_month_rub",
+          "net_horizon_rub",
+          "payback_months"
+        ],
+        "title": "PortfolioScenario",
         "type": "object"
       },
       "PortfolioSummary": {
@@ -3404,7 +3523,7 @@
   "info": {
     "summary": "Оценка процессов и ROI, подбор моделей, защита данных, шаблоны промптов.",
     "title": "AI Adoption Compass API",
-    "version": "1.3.0"
+    "version": "1.4.0"
   },
   "openapi": "3.1.0",
   "paths": {

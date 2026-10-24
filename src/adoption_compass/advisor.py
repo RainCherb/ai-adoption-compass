@@ -91,6 +91,9 @@ class CostBreakdown(BaseModel):
     total_rub: float
     units: int = 1
     total_usd: float | None = None
+    input_usd: float | None = None
+    output_usd: float | None = None
+    requests_per_month: int | None = None
     input_rate_usd: float | None = None
     output_rate_usd: float | None = None
     tariff: str | None = None
@@ -225,6 +228,21 @@ class Advisor:
                 fixed_rub=0,
                 total_rub=round(rub, 2),
                 total_usd=float(usd),
+                input_usd=float(
+                    Decimal(tokens_in)
+                    * Decimal(str(input_rate))
+                    * Decimal(requests)
+                    * Decimal(str(overhead))
+                    / 1_000_000
+                ),
+                output_usd=float(
+                    Decimal(tokens_out)
+                    * Decimal(str(output_rate))
+                    * Decimal(requests)
+                    * Decimal(str(overhead))
+                    / 1_000_000
+                ),
+                requests_per_month=requests,
                 input_rate_usd=input_rate,
                 output_rate_usd=output_rate,
                 tariff=tariff,
@@ -379,7 +397,7 @@ class Advisor:
             if (
                 cost
                 and workload.monthly_budget_rub is not None
-                and cost.total_rub > workload.monthly_budget_rub
+                and self._budget_cost(cost) > workload.monthly_budget_rub
             ):
                 reasons.append(("budget", "Стоимость превышает бюджет"))
             rows.append(
@@ -394,6 +412,9 @@ class Advisor:
                 )
             )
         return rows
+
+    def _budget_cost(self, cost: CostBreakdown) -> float:
+        return cost.total_usd * self.usd_rub if cost.total_usd is not None else cost.total_rub
 
     def recommend(self, workload: Workload, *, top: int = 5) -> AdviceResult:
         eligible: list[tuple[ModelEntry, CostBreakdown, Action]] = []
@@ -412,7 +433,7 @@ class Advisor:
             )
             reasons = self._blocking_reasons(model, workload)
             budget = workload.monthly_budget_rub
-            if budget is not None and cost.total_rub > budget:
+            if budget is not None and self._budget_cost(cost) > budget:
                 reasons.append(
                     (
                         "budget",
