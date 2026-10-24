@@ -166,6 +166,7 @@ def meta(svc: ServicesDep) -> MetaResponse:
                 description=svc.policy.document.deployments[d].description,
             )
             for d in Deployment
+            if d is not Deployment.SELF_HOSTED
         ],
         preferences=[
             OptionOut(value=Preference.BALANCED.value, label="Баланс"),
@@ -226,6 +227,10 @@ def catalog_sources(svc: ServicesDep) -> dict[str, Any]:
 def advice(
     workload: Workload, svc: ServicesDep, top: Annotated[int, Query(ge=1, le=20)] = 5
 ) -> AdviceResult:
+    if workload.must_self_host:
+        raise HTTPException(
+            422, "Проект рассматривает только API; локальные модели не предлагаются"
+        )
     return svc.advisor.recommend(workload, top=top)
 
 
@@ -239,6 +244,10 @@ def _overrides(value: AssumptionsOverride | None) -> dict[str, Any] | None:
 def _compute(
     svc: Services, processes: list[Process], overrides: dict[str, Any] | None
 ) -> AssessmentResult:
+    if any(process.must_self_host for process in processes):
+        raise HTTPException(
+            422, "Проект рассматривает только API; требование локальной модели не поддерживается"
+        )
     if svc.settings.demo_mode and len(processes) > 50:
         raise HTTPException(422, "В публичном демо доступно не более 50 процессов за запрос")
     try:
@@ -340,7 +349,7 @@ def demo_assessment(svc: ServicesDep) -> UploadResponse:
     if svc.settings.demo_mode:
         stored, _ = _stored_result(svc, "demo")
         return UploadResponse(assessment=stored, parse_errors=[])
-    parsed = parse_processes_csv(read_data_text("samples/processes.csv"))
+    parsed = parse_processes_csv(read_data_text("samples/demo-processes.csv"))
     stored = _persist(svc, "Демо: ООО «Ромашка-Сервис»", parsed.processes, None)
     return UploadResponse(assessment=stored, parse_errors=parsed.errors)
 
@@ -413,7 +422,7 @@ def assessment_export(assessment_id: str, svc: ServicesDep) -> Response:
 def sample_processes(svc: ServicesDep) -> Response:
     return Response(
         read_data_text(
-            "samples/demo-processes.csv" if svc.settings.demo_mode else "samples/processes.csv",
+            "samples/demo-processes.csv",
             svc.settings.data_dir,
         ),
         media_type="text/csv; charset=utf-8",
@@ -441,7 +450,11 @@ def safety_analyze(body: AnalyzeRequest, svc: ServicesDep) -> AnalyzeResponse:
         },
     )
     return AnalyzeResponse(
-        **report.model_dump(),
+        **report.model_copy(
+            update={
+                "decisions": [d for d in report.decisions if d.target is not Deployment.SELF_HOSTED]
+            }
+        ).model_dump(),
         mapping=analysis.masked.mapping if body.include_mapping else None,
     )
 
@@ -474,12 +487,16 @@ def safety_policy(svc: ServicesDep) -> PolicyOut:
                 description=doc.deployments[d].description,
             )
             for d in Deployment
+            if d is not Deployment.SELF_HOSTED
         ],
         actions=[
             OptionOut(value=a.value, label=ACTION_LABELS[a], description=doc.actions[a])
             for a in Action
         ],
-        matrix=doc.matrix,
+        matrix={
+            s: {d: action for d, action in row.items() if d is not Deployment.SELF_HOSTED}
+            for s, row in doc.matrix.items()
+        },
         do=doc.do,
         dont=doc.dont,
         secrets_message=doc.secrets.message.strip(),
@@ -570,6 +587,10 @@ def evals_demo(svc: ServicesDep) -> EvalDemoResponse:
 @router.get("/evals/measured", response_model=EvalDemoResponse, tags=["evals"])
 def evals_measured(svc: ServicesDep) -> EvalDemoResponse:
     """Сохранённые реальные измерения. Запрос не запускает LLM и ничего не оплачивает."""
+    if svc.settings.demo_mode:
+        raise HTTPException(
+            410, "Локальные измерения выведены из API-демо; архив доступен в документации проекта"
+        )
     try:
         artifact = load_benchmark(svc.settings.data_dir)
     except (ValueError, FileNotFoundError) as exc:

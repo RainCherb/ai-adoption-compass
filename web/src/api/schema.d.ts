@@ -551,6 +551,8 @@ export interface components {
             catalog_as_of: string;
             /** Data Status */
             data_status: string;
+            /** Portfolio Scenarios */
+            portfolio_scenarios?: components["schemas"]["PortfolioScenario"][];
             /** Processes */
             processes: components["schemas"]["ProcessResult"][];
             /** Roadmap */
@@ -710,8 +712,14 @@ export interface components {
             fixed_rub: number;
             /** Input Rate Usd */
             input_rate_usd?: number | null;
+            /** Input Usd */
+            input_usd?: number | null;
             /** Output Rate Usd */
             output_rate_usd?: number | null;
+            /** Output Usd */
+            output_usd?: number | null;
+            /** Requests Per Month */
+            requests_per_month?: number | null;
             /** Tariff */
             tariff?: string | null;
             /** Total Rub */
@@ -897,10 +905,14 @@ export interface components {
         FeaturedModel: {
             /** Access Note */
             access_note: string;
+            /** Access Reviewed At */
+            access_reviewed_at?: string | null;
             /** Access Url */
             access_url?: string | null;
             /** Api Model */
             api_model: string;
+            /** Best For */
+            best_for?: string[];
             /** Conditions */
             conditions: string[];
             /** Context Label */
@@ -929,6 +941,17 @@ export interface components {
              * Format: date
              */
             reviewed_at: string;
+            /**
+             * Russia Api Note
+             * @default Региональная доступность API не подтверждена
+             */
+            russia_api_note: string;
+            /**
+             * Russia Api Status
+             * @default unverified
+             * @enum {string}
+             */
+            russia_api_status: "available" | "unavailable" | "unverified";
             /** Source Hashes */
             source_hashes?: {
                 [key: string]: string;
@@ -1237,6 +1260,21 @@ export interface components {
              * Format: date
              */
             updated: string;
+        };
+        /** PortfolioScenario */
+        PortfolioScenario: {
+            /** Implementation Rub */
+            implementation_rub: number;
+            /** Key */
+            key: string;
+            /** Label */
+            label: string;
+            /** Net Horizon Rub */
+            net_horizon_rub: number;
+            /** Net Month Rub */
+            net_month_rub: number;
+            /** Payback Months */
+            payback_months: number | null;
         };
         /** PortfolioSummary */
         PortfolioSummary: {

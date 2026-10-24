@@ -70,6 +70,18 @@ def main() -> None:
         "deepseek-flash",
     ]:
         raise RuntimeError("Primary model order or API IDs changed")
+    if [m["russia_api_status"] for m in profiles["models"]] != [
+        "unavailable",
+        "unavailable",
+        "unverified",
+    ]:
+        raise RuntimeError("Regional availability lacks verified status")
+    meta = request("/api/meta")
+    if any(d["value"] == "self_hosted" for d in meta["deployments"]):
+        raise RuntimeError("Local deployment is still exposed")
+    policy = request("/api/safety/policy")
+    if any("self_hosted" in row for row in policy["matrix"].values()):
+        raise RuntimeError("Local deployment is still in API policy")
     comparison = request("/api/models/compare", {})
     if [row["monthly_usd"] for row in comparison["models"]] != [50, 50, 6.6]:
         raise RuntimeError("Incorrect or stale direct prices")
@@ -101,6 +113,13 @@ def main() -> None:
             raise RuntimeError("A process is missing primary model alternatives")
         if process["llm_cost_month_rub"] != process["model"]["cost"]["total_rub"]:
             raise RuntimeError("Selected model and process costs diverge")
+    rows = assessment["result"]["portfolio_scenarios"]
+    if len(rows) != 3:
+        raise RuntimeError("Portfolio chart is missing scenarios")
+    baseline = next(row for row in rows if row["key"] == "base")
+    for field in ("implementation_rub", "net_month_rub", "net_horizon_rub", "payback_months"):
+        if baseline[field] != assessment["result"]["summary"][field]:
+            raise RuntimeError("Base cashflow and summary diverge")
     report = request("/api/assessments/demo/report.md")
     exported = request("/api/assessments/demo/export.csv")
     if not all(m["api_model"] in report for m in profiles["models"]):
@@ -123,6 +142,23 @@ def main() -> None:
         raise RuntimeError("Default public recommendation order incorrect")
     if [r["cost"]["total_usd"] for r in advice["recommendations"]] != [50, 50, 6.6]:
         raise RuntimeError("Advisor prices differ from the source calculator")
+    for row in advice["model_options"]:
+        cost = row["cost"]
+        if abs(cost["input_usd"] + cost["output_usd"] - cost["total_usd"]) > 1e-10:
+            raise RuntimeError("Cost chart components do not sum to the quote")
+        if cost["requests_per_month"] != 10000:
+            raise RuntimeError("Cost chart uses an incorrect request count")
+    request(
+        "/api/advice",
+        {
+            "task_type": "classification",
+            "requests_per_month": 1,
+            "tokens_in": 1,
+            "tokens_out": 0,
+            "must_self_host": True,
+        },
+        expected=422,
+    )
     scenarios = []
     for period in ("peak", "off_peak"):
         scenarios.append(
@@ -158,8 +194,7 @@ def main() -> None:
         "/api/prompts/lint",
         {"text": "Ты редактор. Составь список из трёх пунктов без персональных данных."},
     )
-    if request("/api/evals/measured")["kind"] != "measured":
-        raise RuntimeError("Missing real measurements")
+    request("/api/evals/measured", expected=410)
     if request("/api/evals/demo")["kind"] != "simulated":
         raise RuntimeError("Simulation is not labelled")
     if not request("/api/catalog/sources")["sources"]:

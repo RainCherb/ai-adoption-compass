@@ -21,7 +21,7 @@ export function DecisionCards({ decisions }: { decisions: readonly Decision[] })
   const meta = useMeta();
   return (
     <div className="decisions">
-      {decisions.map((decision) => {
+      {decisions.filter((decision) => decision.target !== "self_hosted").map((decision) => {
         const style = ACTION_STYLE[decision.action];
         return (
           <article key={decision.target} className="decision" data-action={decision.action} data-testid="decision-card">

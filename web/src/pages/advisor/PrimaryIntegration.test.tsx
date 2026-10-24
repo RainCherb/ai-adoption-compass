@@ -2,7 +2,7 @@ import { render, screen, within, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import { MetaContext } from "../../hooks/useMeta";
-import { catalog, defaultAssumptions, evalDemo, meta, processResult } from "../../test/fixtures";
+import { catalog, defaultAssumptions, meta, processResult } from "../../test/fixtures";
 import { primaryAdvice } from "../../test/primaryAdvice";
 import { mockFetch } from "../../test/mockFetch";
 import { AssumptionsPanel } from "../assessment/AssumptionsPanel";
@@ -15,7 +15,7 @@ it("публичный подбор показывает три базовые �
   const api = mockFetch([{method:"POST",path:"/api/advice",reply:primaryAdvice}]);
   render(<MetaContext.Provider value={{...meta,demo_mode:true}}><AdvisorPage /></MetaContext.Provider>);
   const cards = await screen.findAllByTestId("recommendation");
-  expect(cards.map((c) => within(c).getByRole("heading").textContent)).toEqual(["Claude Sonnet 5.5","GPT-6.1 Sol","DeepSeek V4.1 Flash"]);
+  expect(cards.map((c) => within(c).getByRole("heading",{level:3}).textContent)).toEqual(["Claude Sonnet 5.5","GPT-6.1 Sol","DeepSeek V4.1 Flash"]);
   expect(api.callsTo("POST","/api/advice")[0]?.body).toMatchObject({data_sensitivity:"public",supported_region:true,prefer:"quality",tokens_in:1000,tokens_out:300,deepseek_period:"peak"});
   const table = screen.getByRole("region",{name:"Стоимость и оценки моделей"});
   expect(within(table).getAllByRole("row")).toHaveLength(4);
@@ -47,19 +47,14 @@ it("общие допущения сохраняют приоритет, пер�
 });
 
 it("качество в публичном демо открывает ту же экспертную матрицу трёх моделей", async () => {
-  const user = userEvent.setup();
   const api = mockFetch([
     {path:"/api/catalog",reply:{...catalog,models:primaryAdvice.model_options!.map((o) => ({...catalog.models[0]!,id:o.model_id,name:o.name,profile:o.profile,quality:{...catalog.models[0]!.quality,classification:o.quality}}))}},
-    {path:"/api/evals/demo",reply:evalDemo},
   ]);
   render(<MetaContext.Provider value={{...meta,demo_mode:true}}><EvalsPage /></MetaContext.Provider>);
   const table = await screen.findByRole("region",{name:"Оценки качества по типам задач"});
   expect(within(table).getAllByRole("columnheader").map((c) => c.textContent)).toEqual(["Тип задачи","Claude Sonnet 5.5экспертно, 1–5","GPT-6.1 Solэкспертно, 1–5","DeepSeek V4.1 Flashэкспертно, 1–5"]);
   expect(within(table).getAllByRole("row")).toHaveLength(meta.task_types.length+1);
-  expect(screen.getByRole("button",{name:"Экспертные оценки"})).toHaveAttribute("aria-pressed","true");
+  expect(screen.queryByRole("button",{name:"Реальные измерения"})).not.toBeInTheDocument();
   expect(api.callsTo("GET","/api/evals/measured")).toHaveLength(0);
   expect(api.callsTo("GET","/api/evals/demo")).toHaveLength(0);
-  await user.click(screen.getByRole("button",{name:"Симуляция для обучения"}));
-  expect(await screen.findAllByTestId("eval-row")).toHaveLength(3);
-  expect(api.callsTo("GET","/api/evals/demo")).toHaveLength(1);
 });

@@ -8,6 +8,7 @@ from .catalog import Catalog, load_catalog
 from .config import Settings
 from .csv_io import parse_processes_csv
 from .demo import DemoStorage
+from .domain import Deployment
 from .evals import EvalItem, EvalTask, load_items, load_task
 from .prompts import PromptLibrary, PromptLinter
 from .resources import read_data_text
@@ -36,6 +37,9 @@ def build_services(settings: Settings | None = None, *, with_storage: bool = Tru
     settings = settings or Settings.from_env()
     data_dir = settings.data_dir
     catalog = load_catalog(data_dir)
+    catalog = catalog.model_copy(
+        update={"models": [m for m in catalog.models if m.deployment is not Deployment.SELF_HOSTED]}
+    )
     policy = Policy.load(data_dir)
     scoring = load_scoring(data_dir)
     if settings.demo_mode:

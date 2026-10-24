@@ -31,6 +31,14 @@ const profiles: NonNullable<Recommendation["profile"]>[] = [
     "specs_url": "https://platform.claude.com/docs/en/models/overview",
     "access_url": "https://platform.claude.com/docs/en/api/supported-regions",
     "access_note": "РФ не входит в официальный список регионов API. Доступ требует поддерживаемого региона, аккаунта и оплаты; в демо API не вызывается.",
+    "russia_api_status": "unavailable",
+    "russia_api_note": "Официальный Claude API недоступен в России: РФ отсутствует в списке поддерживаемых регионов Anthropic.",
+    "access_reviewed_at": "2026-10-24",
+    "best_for": [
+      "Документы и резюмирование",
+      "Черновики ответов и редактура",
+      "Разработка и разбор кода"
+    ],
     "conditions": [
       "Standard, global routing; весь контекст по базовому тарифу.",
       "Cache read $0.10; запись 5 мин $2.50, 1 час $4 за 1 млн токенов. В расчёте кэш не используется.",
@@ -70,6 +78,14 @@ const profiles: NonNullable<Recommendation["profile"]>[] = [
     "specs_url": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
     "access_url": "https://developers.openai.com/api/docs/supported-countries",
     "access_note": "РФ не входит в официальный список стран API. Подписка ChatGPT/Codex не заменяет оплату API; в демо API не вызывается.",
+    "russia_api_status": "unavailable",
+    "russia_api_note": "Официальный OpenAI API недоступен в России: РФ отсутствует в списке поддерживаемых стран. Подписка ChatGPT/Codex не оплачивает API.",
+    "access_reviewed_at": "2026-10-24",
+    "best_for": [
+      "Анализ данных и рассуждения",
+      "Код, SQL и формулы",
+      "Извлечение данных и поддержка решений"
+    ],
     "conditions": [
       "Standard; при входе более 272 000 токенов весь запрос тарифицируется по $4 за вход и $15 за выход за 1 млн. Калькулятор учитывает порог.",
       "Cache read $0.10, cache write $2.50 за 1 млн при обычном контексте; кэш в расчёте не используется.",
@@ -107,8 +123,16 @@ const profiles: NonNullable<Recommendation["profile"]>[] = [
     },
     "pricing_url": "https://api-docs.deepseek.com/quick_start/pricing/",
     "specs_url": "https://api-docs.deepseek.com/quick_start/pricing/",
-    "access_url": null,
-    "access_note": "Доступ и оплату проверяйте для своего аккаунта и юрисдикции. Наличие страницы тарифов не подтверждает доступность сервиса из РФ.",
+    "access_url": "https://cdn.deepseek.com/policies/en-US/deepseek-terms-of-use.html",
+    "access_note": "Региональный статус API из РФ не подтверждён первоисточником; платёж и доступ с российского IP не проверялись.",
+    "russia_api_status": "unverified",
+    "russia_api_note": "Доступность прямого API из РФ официально не подтверждена. DeepSeek не публикует список поддерживаемых стран и не гарантирует доступ во всех юрисдикциях (п. 1.5 условий). Успешный вызов из РФ и оплата не проверялись.",
+    "access_reviewed_at": "2026-10-24",
+    "best_for": [
+      "Большой объём типовых обращений",
+      "Классификация и извлечение полей",
+      "Черновики при ограниченном бюджете"
+    ],
     "conditions": [
       "Peak — пн–пт 01:00–04:00 и 06:00–10:00 UTC, кроме официальных праздников Китая. Остальное время — off-peak.",
       "Цена определяется фактическим временем запросов; для смешанной нагрузки рассчитывайте периоды отдельно. По умолчанию выбран более дорогой Peak.",
@@ -149,6 +173,9 @@ const data = {
         "total_rub": 4500.0,
         "units": 1,
         "total_usd": 50.0,
+        "input_usd": 20.0,
+        "output_usd": 30.0,
+        "requests_per_month": 10000,
         "input_rate_usd": 2.0,
         "output_rate_usd": 10.0,
         "tariff": "Standard, без кэша"
@@ -166,6 +193,9 @@ const data = {
         "total_rub": 4500.0,
         "units": 1,
         "total_usd": 50.0,
+        "input_usd": 20.0,
+        "output_usd": 30.0,
+        "requests_per_month": 10000,
         "input_rate_usd": 2.0,
         "output_rate_usd": 10.0,
         "tariff": "Standard, без кэша"
@@ -183,6 +213,9 @@ const data = {
         "total_rub": 594.0,
         "units": 1,
         "total_usd": 6.6,
+        "input_usd": 3.0,
+        "output_usd": 3.6,
+        "requests_per_month": 10000,
         "input_rate_usd": 0.3,
         "output_rate_usd": 1.2,
         "tariff": "Peak, без кэша"
@@ -208,6 +241,9 @@ const data = {
         "total_rub": 4500.0,
         "units": 1,
         "total_usd": 50.0,
+        "input_usd": 20.0,
+        "output_usd": 30.0,
+        "requests_per_month": 10000,
         "input_rate_usd": 2.0,
         "output_rate_usd": 10.0,
         "tariff": "Standard, без кэша"
@@ -245,6 +281,9 @@ const data = {
         "total_rub": 4500.0,
         "units": 1,
         "total_usd": 50.0,
+        "input_usd": 20.0,
+        "output_usd": 30.0,
+        "requests_per_month": 10000,
         "input_rate_usd": 2.0,
         "output_rate_usd": 10.0,
         "tariff": "Standard, без кэша"
@@ -282,6 +321,9 @@ const data = {
         "total_rub": 594.0,
         "units": 1,
         "total_usd": 6.6,
+        "input_usd": 3.0,
+        "output_usd": 3.6,
+        "requests_per_month": 10000,
         "input_rate_usd": 0.3,
         "output_rate_usd": 1.2,
         "tariff": "Peak, без кэша"

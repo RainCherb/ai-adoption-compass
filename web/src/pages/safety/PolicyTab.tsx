@@ -19,7 +19,7 @@ function Matrix({ policy }: { policy: Policy }) {
         <thead>
           <tr>
             <th scope="col">Категория данных</th>
-            {policy.deployments.map((deployment) => (
+            {policy.deployments.filter((deployment) => deployment.value !== "self_hosted").map((deployment) => (
               <th key={deployment.value} scope="col" title={deployment.description ?? undefined}>
                 {deployment.label}
               </th>
@@ -33,7 +33,7 @@ function Matrix({ policy }: { policy: Policy }) {
                 {sensitivity.label}
                 <span className="muted small matrix__desc">{sensitivity.description}</span>
               </th>
-              {policy.deployments.map((deployment) => {
+              {policy.deployments.filter((deployment) => deployment.value !== "self_hosted").map((deployment) => {
                 const action = policy.matrix[sensitivity.value]?.[deployment.value];
                 return (
                   <td key={deployment.value}>

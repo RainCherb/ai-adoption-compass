@@ -1,10 +1,11 @@
-import type { ModelPick } from "../../api/types";
+import type { ModelPick, Recommendation } from "../../api/types";
+import { ModelFacts, RussiaAccess } from "../advisor/RussiaAccess";
 import { Badge } from "../../components/ui/Badge";
 import { useMeta, labelOf } from "../../hooks/useMeta";
 import { formatNumber, formatRub } from "../../lib/format";
 
 /** Выбранная модель: размещение, качество и разбивка стоимости на переменную и фиксированную части. */
-export function ModelCard({ model }: { model: ModelPick }) {
+export function ModelCard({ model, profile }: { model: ModelPick; profile?: Recommendation["profile"] }) {
   const meta = useMeta();
   return (
     <div className="model-card">
@@ -12,6 +13,7 @@ export function ModelCard({ model }: { model: ModelPick }) {
         <strong>{model.name}</strong>
         <div className="model-card__badges">
           <Badge tone="info">{labelOf(meta.deployments, model.deployment)}</Badge>
+          <RussiaAccess profile={profile} direct={model.deployment === "ru_cloud"} />
           {model.requires_masking ? (
             <Badge tone="warning" icon="eye-off">
               нужно обезличивание
@@ -36,17 +38,12 @@ export function ModelCard({ model }: { model: ModelPick }) {
           <dt>Переменная часть</dt>
           <dd className="num">{formatRub(model.cost.variable_rub)}/мес</dd>
         </div>
-        <div>
-          <dt>Фиксированная часть</dt>
-          <dd className="num">
-            {formatRub(model.cost.fixed_rub)}/мес{model.cost.units > 1 ? ` (узлов: ${model.cost.units})` : ""}
-          </dd>
-        </div>
         <div className="facts__total">
-          <dt>Итого на модель</dt>
+          <dt>Итого на API</dt>
           <dd className="num">{formatRub(model.cost.total_rub)}/мес</dd>
         </div>
       </dl>
+      {profile ? <ModelFacts profile={profile} /> : null}
       {model.cost.total_usd != null ? <p className="small muted">API: ${formatNumber(model.cost.total_usd, 8)}/мес · {model.cost.tariff}. Конвертация по курсу из допущений. Налоги и комиссии не включены.</p> : null}
     </div>
   );

@@ -4,7 +4,7 @@ import { Banner } from "../../components/ui/Banner";
 import { Badge } from "../../components/ui/Badge";
 import { Drawer } from "../../components/ui/Drawer";
 import { labelOf, useMeta } from "../../hooks/useMeta";
-import { formatCount, formatNumber, formatRub } from "../../lib/format";
+import { formatNumber } from "../../lib/format";
 import { FlagList } from "./FlagList";
 import { ModelCard } from "./ModelCard";
 import { MoneySteps } from "./MoneySteps";
@@ -19,9 +19,8 @@ interface ProcessDrawerProps {
   onClose: () => void;
 }
 
-export function ProcessDrawer({ process, assumptions, infra, onClose }: ProcessDrawerProps) {
+export function ProcessDrawer({ process, assumptions, onClose }: ProcessDrawerProps) {
   const meta = useMeta();
-  const sharedInfra = infra.find((line) => line.process_ids.includes(process.id));
 
   return (
     <Drawer
@@ -66,13 +65,7 @@ export function ProcessDrawer({ process, assumptions, infra, onClose }: ProcessD
             <h3 id="drawer-model" className="drawer-section__title">
               Выбранная модель
             </h3>
-            <ModelCard model={process.model} />
-            {sharedInfra ? (
-              <p className="muted small">
-                Фиксированная часть — доля общей инфраструктуры «{sharedInfra.name}»: {formatRub(sharedInfra.fixed_rub_month)}/мес
-                на {formatCount(sharedInfra.process_ids.length, "процесс", "процесса", "процессов")}.
-              </p>
-            ) : null}
+            <ModelCard model={process.model} profile={process.model_options?.find((option) => option.model_id === process.model?.model_id)?.profile} />
           </section>
         </>
       )}

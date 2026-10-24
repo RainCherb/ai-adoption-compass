@@ -6,6 +6,13 @@ disclaimer: 'Расчёт прямых API по одной текстовой н
   рейтингом.'
 models:
 - id: claude-sonnet-5-5
+  russia_api_status: unavailable
+  russia_api_note: "Официальный Claude API недоступен в России: РФ отсутствует в списке поддерживаемых регионов Anthropic."
+  access_reviewed_at: 2026-10-24
+  best_for:
+  - Документы и резюмирование
+  - Черновики ответов и редактура
+  - Разработка и разбор кода
   name: Claude Sonnet 5.5
   vendor: Anthropic
   api_model: claude-sonnet-5-5
@@ -36,6 +43,13 @@ models:
     anthropic-models: 5f2494e0c8b94c11d9b951c7e46f1947235adc7ad5966466a94b700ee27de133
     anthropic-direct-pricing: b14d213aaa998529a509296a93712897c14d9ccc77bd5d737cba86433a28a8c5
 - id: gpt-6-1-sol
+  russia_api_status: unavailable
+  russia_api_note: "Официальный OpenAI API недоступен в России: РФ отсутствует в списке поддерживаемых стран. Подписка ChatGPT/Codex не оплачивает API."
+  access_reviewed_at: 2026-10-24
+  best_for:
+  - Анализ данных и рассуждения
+  - Код, SQL и формулы
+  - Извлечение данных и поддержка решений
   name: GPT-6.1 Sol
   vendor: OpenAI
   api_model: gpt-6.1-sol
@@ -69,6 +83,13 @@ models:
   source_hashes:
     openai-sol-model: 6fd7494f924d9d9cb6999c86794d1d09f0f64ec36c4fc8770425919861bceb6d
 - id: deepseek-v4-1-flash
+  russia_api_status: unverified
+  russia_api_note: "Доступность прямого API из РФ официально не подтверждена. DeepSeek не публикует список поддерживаемых стран и не гарантирует доступ во всех юрисдикциях (п. 1.5 условий). Успешный вызов из РФ и оплата не проверялись."
+  access_reviewed_at: 2026-10-24
+  best_for:
+  - Большой объём типовых обращений
+  - Классификация и извлечение полей
+  - Черновики при ограниченном бюджете
   name: DeepSeek V4.1 Flash
   vendor: DeepSeek
   api_model: deepseek-flash
@@ -88,8 +109,8 @@ models:
   specs_source_id: deepseek-direct-pricing
   pricing_url: https://api-docs.deepseek.com/quick_start/pricing/
   specs_url: https://api-docs.deepseek.com/quick_start/pricing/
-  access_note: Доступ и оплату проверяйте для своего аккаунта и юрисдикции. Наличие страницы тарифов не подтверждает
-    доступность сервиса из РФ.
+  access_url: https://cdn.deepseek.com/policies/en-US/deepseek-terms-of-use.html
+  access_note: Региональный статус API из РФ не подтверждён первоисточником; платёж и доступ с российского IP не проверялись.
   conditions:
   - Peak — пн–пт 01:00–04:00 и 06:00–10:00 UTC, кроме официальных праздников Китая. Остальное время — off-peak.
   - Цена определяется фактическим временем запросов; для смешанной нагрузки рассчитывайте периоды отдельно. По умолчанию

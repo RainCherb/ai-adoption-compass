@@ -7,8 +7,9 @@ import { LoadingRegion, SkeletonLines } from "../../components/ui/Skeleton";
 import { useAsync } from "../../hooks/useAsync";
 import { labelOf, useMeta } from "../../hooks/useMeta";
 import { formatDate, formatNumber, formatRub, formatUsd } from "../../lib/format";
-import { RU_ACCESS_LABELS, TIER_LABELS } from "../../lib/labels";
+import { TIER_LABELS } from "../../lib/labels";
 import { CatalogSources } from "./CatalogSources";
+import { RussiaAccess } from "./RussiaAccess";
 import { Disclosure } from "../../components/ui/Disclosure";
 
 function price(model: CatalogModel): string {
@@ -85,7 +86,7 @@ export function CatalogTable({ taskType }: { taskType: TaskType }) {
                   <Badge tone="info">{labelOf(meta.deployments, model.deployment)}</Badge>
                 </td>
                 <td>
-                  <Badge tone={model.ru_access === "direct" ? "success" : "warning"}>{model.profile ? "Проверить регион API" : RU_ACCESS_LABELS[model.ru_access]}</Badge>
+                  <RussiaAccess profile={model.profile} direct={model.ru_access === "direct"} />
                 </td>
                 <td className="num-col num">{model.pricing.input_per_mtok === 0 && model.pricing.output_per_mtok === 0 ? "—" : price(model)}</td>
                 <td className="num-col num">

@@ -164,9 +164,6 @@ export function AdvisorForm({ form, errors, onChange }: AdvisorFormProps) {
           <Check checked={form.needs_tool_calling} onChange={(value) => patch({ needs_tool_calling: value })}>
             Вызов функций (tool calling)
           </Check>
-          <Check checked={form.must_self_host} onChange={(value) => patch({ must_self_host: value })}>
-            Только self-hosted
-          </Check>
           <Check checked={form.allow_foreign_cloud} onChange={(value) => patch({ allow_foreign_cloud: value })}>
             Допускать зарубежное облако
           </Check>

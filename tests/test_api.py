@@ -10,7 +10,7 @@ from adoption_compass.resources import read_data_text
 
 from .conftest import TODAY
 
-SAMPLE_CSV = read_data_text("samples/processes.csv").encode()
+SAMPLE_CSV = read_data_text("samples/demo-processes.csv").encode()
 PROCESS = {
     "id": "X1",
     "name": "Ответы клиентам",
@@ -37,7 +37,7 @@ class TestService:
 
     def test_health_reports_stale_catalog(self, settings):
         late = TestClient(create_app(replace(settings, today=TODAY + timedelta(days=200))))
-        assert late.get("/api/health").json()["catalog"]["stale"] == 16
+        assert late.get("/api/health").json()["catalog"]["stale"] == 13
 
     def test_meta_exposes_enums_defaults_and_limits(self, client):
         meta = client.get("/api/meta").json()
@@ -51,7 +51,7 @@ class TestService:
 
     def test_catalog_lists_all_models(self, client):
         body = client.get("/api/catalog").json()
-        assert len(body["models"]) == 16
+        assert len(body["models"]) == 13
         assert body["stale"] == []
         assert body["usd_rub"] == 90.0
 
@@ -125,18 +125,21 @@ class TestAssessments:
         stored = client.post("/api/assessments/demo").json()["assessment"]
         what_if = client.post(
             "/api/assess",
-            json={"processes": stored["processes"], "assumptions": {"allow_workarounds": True}},
+            json={
+                "processes": stored["processes"],
+                "assumptions": {"supported_region": True, "horizon_months": 24},
+            },
         ).json()
 
         def sql_helper(
             result,
-        ):  # P12 — «код» с внутренними данными: без обходных путей нужен GPU-сервер
+        ):  # P12 — учебный SQL: качество 5 требует API в поддерживаемом регионе
             return next(p for p in result["processes"] if p["id"] == "P12")
 
         before, after = sql_helper(stored["result"]), sql_helper(what_if)
-        assert before["model"]["deployment"] == "self_hosted"
+        assert before["model"] is None
         assert after["model"]["deployment"] == "foreign_cloud"
-        assert after["net_horizon_rub"] > before["net_horizon_rub"] + 1_000_000
+        assert after["net_horizon_rub"] > before["net_horizon_rub"]
 
     def test_demo_assessment(self, client):
         body = client.post("/api/assessments/demo").json()
@@ -218,7 +221,6 @@ class TestSafety:
         assert {d["target"]: d["action"] for d in body["decisions"]} == {
             "ru_cloud": "mask",
             "foreign_cloud": "deny",
-            "self_hosted": "allow",
         }
         assert body["masked_text"] == "Клиент [PERSON_1], [PHONE_1]"
         assert self.TEXT not in json.dumps(body, ensure_ascii=False)

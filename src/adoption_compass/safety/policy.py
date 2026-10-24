@@ -87,9 +87,12 @@ class Policy:
     def label(self, sensitivity: Sensitivity) -> str:
         return self.document.classes[sensitivity].label
 
-    def handout_markdown(self) -> str:
+    def handout_markdown(self, *, include_self_hosted: bool = False) -> str:
         """Памятка «Безопасная работа с нейросетями» — генерируется из той же политики."""
         doc = self.document
+        deployments = [
+            d for d in Deployment if include_self_hosted or d is not Deployment.SELF_HOSTED
+        ]
         lines: list[str] = [
             "# Памятка: безопасная работа с нейросетями",
             "",
@@ -109,13 +112,13 @@ class Policy:
             "",
             "## 2. Куда можно отправлять",
             "",
-            "| Категория данных | " + " | ".join(DEPLOYMENT_LABELS[d] for d in Deployment) + " |",
-            "| --- | " + " | ".join("---" for _ in Deployment) + " |",
+            "| Категория данных | " + " | ".join(DEPLOYMENT_LABELS[d] for d in deployments) + " |",
+            "| --- | " + " | ".join("---" for _ in deployments) + " |",
         ]
         for level in SENSITIVITY_ORDER:
             cells = [
                 f"{_ACTION_ICONS[self.action(level, d)]} {ACTION_LABELS[self.action(level, d)]}"
-                for d in Deployment
+                for d in deployments
             ]
             lines.append(f"| **{SENSITIVITY_LABELS[level]}** | " + " | ".join(cells) + " |")
 

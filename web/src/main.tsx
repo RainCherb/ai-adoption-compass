@@ -6,6 +6,7 @@ import "./styles/base.css";
 import "./styles/layout.css";
 import "./styles/components.css";
 import "./styles/pages.css";
+import "./styles/analytics.css";
 
 const container = document.getElementById("root");
 if (!container) throw new Error("Не найден контейнер #root");

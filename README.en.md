@@ -30,17 +30,17 @@ The model advisor and all 18 public demo processes use **Claude Sonnet 5.5 → G
 
 ![Integrated advisor with three primary models](docs/assets/screenshots/advisor.png)
 
-## New in 1.3
+## New in 1.4
 
 **[Try the public demo →](https://ai-adoption-compass-demo.onrender.com)** ·
-[Measured LLM results](https://ai-adoption-compass-demo.onrender.com/#/evals)
+[API model quality](https://ai-adoption-compass-demo.onrender.com/#/evals)
 
 No installation or account needed. Render Free may take about a minute to wake up after being idle. Use synthetic data only.
 
 * A public demo mode with a preloaded 18-process assessment, what-if calculations and no shared visitor data storage.
   Docker deployment on Render Free is described in [public demo operations](docs/PUBLIC_DEMO.md).
-* Real, free local runs of Qwen2.5-0.5B, Qwen3-0.6B and SmolLM2-360M on the same 72 tickets. The keyword baseline
-  outperformed all three; see the [measured report and reproduction guide](docs/REAL_EVALS.md).
+* API-only model selection: input/output budget charts, monthly / 1,000 requests / annual estimates, and cumulative cashflow with a month slider. [Numbers and limitations](docs/API_COST_ANALYTICS.md).
+* Explicit Russian API availability, a shared expert quality matrix and an API pilot plan. Previous local measurements remain an [archived study](docs/REAL_EVALS.md), outside the product comparison.
 * Managed pricing/access sources with dated snapshots, SHA-256, expiry, manual review and a weekly review artifact.
   [Source governance](docs/CATALOG_SOURCES.md) keeps aggregator offers separate from illustrative expert scores.
 
@@ -57,7 +57,7 @@ No installation or account needed. Render Free may take about a minute to wake u
 
 | Module | Description | Available via |
 | --- | --- | --- |
-| **Process scoring and ROI** | Fit, time saved, payback (pessimistic / base / optimistic), impact×ease matrix, rollout waves, shared self-hosted server costing | Dashboard · `compass assess` · API · MCP |
+| **Process scoring and ROI** | Fit, time saved, payback (pessimistic / base / optimistic), impact×ease matrix, rollout waves, external API costs | Dashboard · `compass assess` · API · MCP |
 | **Model advisor** | Filters by data policy, Russia access, quality, budget; 4 ranking profiles; "what to relax" hints | Dashboard · `compass advise` · API · MCP |
 | **Data safety** | Names, phones, e-mails, INN, SNILS, cards, passports, addresses, keys and passwords — checksum-validated; `[PHONE_1]` placeholders with reversible unmasking | Dashboard · `compass scan` / `mask` · API · MCP |
 | **Prompts** | 12 department templates, sandboxed rendering, 0–100 linter, prompt scaffold | Dashboard · `compass prompt` · API · MCP |

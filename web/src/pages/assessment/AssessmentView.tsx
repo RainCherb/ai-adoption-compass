@@ -9,7 +9,7 @@ import { useAction } from "../../hooks/useAction";
 import { labelOf, useMeta } from "../../hooks/useMeta";
 import { formatDateTime } from "../../lib/format";
 import { AssumptionsPanel } from "./AssumptionsPanel";
-import { InfraCard } from "./InfraCard";
+import { CashflowChart } from "../../components/charts/CashflowChart";
 import { KpiGrid } from "./KpiGrid";
 import { ProcessDrawer } from "./ProcessDrawer";
 import { ProcessTable } from "./ProcessTable";
@@ -154,9 +154,7 @@ export function AssessmentView({ stored, onSaved }: AssessmentViewProps) {
         </section>
       </div>
 
-      {result.summary.infrastructure.length > 0 ? (
-        <InfraCard lines={result.summary.infrastructure} processes={result.processes} />
-      ) : null}
+      <CashflowChart rows={result.portfolio_scenarios ?? []} horizon={result.assumptions.horizon_months} />
 
       <section className="card card--flush" aria-labelledby="table-title">
         <header className="card__header">
