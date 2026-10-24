@@ -199,6 +199,7 @@ def catalog(svc: ServicesDep) -> dict[str, Any]:
         "usd_rub": svc.advisor.usd_rub,
         "stale": [s.model_dump(mode="json") for s in svc.catalog.stale_entries(today)],
         "models": [m.model_dump(mode="json") for m in svc.catalog.models],
+        "primary_model_ids": svc.catalog.primary_model_ids,
     }
 
 
@@ -409,9 +410,12 @@ def assessment_export(assessment_id: str, svc: ServicesDep) -> Response:
 
 
 @router.get("/samples/processes.csv", tags=["assessments"])
-def sample_processes() -> Response:
+def sample_processes(svc: ServicesDep) -> Response:
     return Response(
-        read_data_text("samples/processes.csv"),
+        read_data_text(
+            "samples/demo-processes.csv" if svc.settings.demo_mode else "samples/processes.csv",
+            svc.settings.data_dir,
+        ),
         media_type="text/csv; charset=utf-8",
         headers={"Content-Disposition": 'attachment; filename="processes-template.csv"'},
     )

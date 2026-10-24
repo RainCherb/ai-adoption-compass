@@ -183,7 +183,7 @@ class TestRanking:
     def test_notes_warn_about_illustrative_and_stale_catalog(self):
         late = Advisor(load_catalog(), Policy.load(), today=TODAY + timedelta(days=200))
         notes = " ".join(late.recommend(workload()).notes)
-        assert "демонстрационные" in notes
+        assert "экспертн" in notes
         assert "не проверялись" in notes
 
 

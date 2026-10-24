@@ -4,7 +4,7 @@ import { ScoreRing } from "../../components/charts/ScoreRing";
 import { Badge } from "../../components/ui/Badge";
 import { Icon } from "../../components/ui/Icon";
 import { labelOf, useMeta } from "../../hooks/useMeta";
-import { formatPercent, formatRub } from "../../lib/format";
+import { formatPercent, formatRub, formatNumber } from "../../lib/format";
 import { RU_ACCESS_LABELS, TIER_LABELS } from "../../lib/labels";
 
 const BREAKDOWN: readonly { key: keyof Recommendation["breakdown"]; label: string; hint: string }[] = [
@@ -29,7 +29,7 @@ export function RecommendationCard({ item }: { item: Recommendation }) {
           </p>
           <div className="rec__badges">
             <Badge tone="info">{labelOf(meta.deployments, item.deployment)}</Badge>
-            <Badge tone={item.ru_access === "direct" ? "success" : "warning"}>{RU_ACCESS_LABELS[item.ru_access]}</Badge>
+            <Badge tone={item.ru_access === "direct" ? "success" : "warning"}>{item.profile ? "Проверьте регион API" : RU_ACCESS_LABELS[item.ru_access]}</Badge>
             {item.requires_masking ? (
               <Badge tone="warning" icon="eye-off">
                 нужно обезличивание
@@ -37,7 +37,7 @@ export function RecommendationCard({ item }: { item: Recommendation }) {
             ) : null}
           </div>
         </div>
-        <ScoreRing value={item.score} label={`Итоговая оценка «${item.name}»`} size={68} caption="оценка" />
+        <ScoreRing value={item.score} label={`Итоговая оценка «${item.name}»`} size={68} caption={item.profile ? "экспертно" : "оценка"} />
       </header>
 
       <div className="rec__body">
@@ -48,6 +48,7 @@ export function RecommendationCard({ item }: { item: Recommendation }) {
             переменная {formatRub(item.cost.variable_rub)} + фиксированная {formatRub(item.cost.fixed_rub)}
           </span>
           <span className="muted small">Качество для задачи: {item.quality} из 5</span>
+          {item.profile ? <><span className="muted small">Экспертная оценка, не собственный benchmark</span><span className="small">{formatNumber(item.cost.total_usd, 8)} $/мес. · {item.cost.tariff}</span><span className="small">Контекст {item.profile.context_label} · <code>{item.profile.api_model}</code></span><a className="small" href={item.profile.pricing_url} target="_blank" rel="noreferrer">Прямой тариф и условия ↗</a></> : null}
         </div>
         <div className="rec__breakdown">
           {BREAKDOWN.map(({ key, label, hint }) => (

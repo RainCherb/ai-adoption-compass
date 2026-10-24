@@ -31,7 +31,7 @@ export function EvalsPage({ initialMode = "measured" }: { initialMode?: "measure
 
       <Banner tone="warning" title="Sonnet 5.5, GPT‑6.1 Sol и DeepSeek V4.1 Flash здесь не тестировались">
         Ниже показан прежний эксперимент с компактными локальными LLM. Он не измеряет качество основных моделей демо.
-        <a href="#/models"> Прямые тарифы основных моделей и калькулятор стоимости →</a>
+        <a href="#/advisor"> Подбор основных моделей, оценки и стоимость →</a>
       </Banner>
 
       <div className="button-row" aria-label="Тип сравнения">

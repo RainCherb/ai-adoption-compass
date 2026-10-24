@@ -2,11 +2,15 @@
 
 import math
 from datetime import date
+from decimal import Decimal
 from enum import StrEnum
+from pathlib import Path
+from typing import Literal
 
 from pydantic import BaseModel, Field
 
 from .catalog import Catalog, ModelEntry
+from .catalog_sources import source_status
 from .domain import (
     DEPLOYMENT_LABELS,
     SENSITIVITY_LABELS,
@@ -19,6 +23,7 @@ from .domain import (
     Tier,
     format_rub,
 )
+from .featured_models import FeaturedModel, pricing_rates, profile_is_reviewed
 from .safety.policy import Policy
 
 
@@ -76,6 +81,8 @@ class Workload(BaseModel):
     allow_foreign_cloud: bool = True
     allow_workarounds: bool = False
     prefer: Preference = Preference.BALANCED
+    supported_region: bool = False
+    deepseek_period: Literal["peak", "off_peak"] = "peak"
 
 
 class CostBreakdown(BaseModel):
@@ -83,6 +90,10 @@ class CostBreakdown(BaseModel):
     fixed_rub: float
     total_rub: float
     units: int = 1
+    total_usd: float | None = None
+    input_rate_usd: float | None = None
+    output_rate_usd: float | None = None
+    tariff: str | None = None
 
 
 class ScoreBreakdown(BaseModel):
@@ -107,6 +118,17 @@ class Recommendation(BaseModel):
     requires_masking: bool
     pros: list[str]
     cons: list[str]
+    profile: FeaturedModel | None = None
+
+
+class ModelOption(BaseModel):
+    model_id: str
+    name: str
+    quality: int
+    cost: CostBreakdown | None
+    eligible: bool
+    reasons: list[str]
+    profile: FeaturedModel
 
 
 class Exclusion(BaseModel):
@@ -119,6 +141,7 @@ class Exclusion(BaseModel):
 
 class AdviceResult(BaseModel):
     workload: Workload
+    model_options: list[ModelOption] = Field(default_factory=list)
     recommendations: list[Recommendation]
     excluded: list[Exclusion]
     notes: list[str]
@@ -149,11 +172,19 @@ class Advisor:
         *,
         usd_rub: float = 90.0,
         today: date | None = None,
+        data_dir: Path | None = None,
     ) -> None:
         self.catalog = catalog
         self.policy = policy
         self.usd_rub = usd_rub
         self.today = today or date.today()
+        self.data_dir = data_dir
+        sources = {s["id"]: s for s in source_status(self.today, data_dir)["sources"]}
+        self.invalid_prices = {
+            m.id
+            for m in catalog.models
+            if m.profile and not profile_is_reviewed(m.profile, sources)
+        }
 
     def to_rub(self, amount: float, currency: str) -> float:
         return amount * self.usd_rub if currency == "USD" else amount
@@ -167,11 +198,37 @@ class Advisor:
         *,
         overhead: float = 1.0,
         fixed_override: float | None = None,
+        period: str = "peak",
     ) -> CostBreakdown:
         """Месячная стоимость: токены + аренда инфраструктуры (с учётом её ёмкости)."""
         mtok_in = requests * tokens_in * overhead / 1_000_000
         mtok_out = requests * tokens_out * overhead / 1_000_000
         pricing = model.pricing
+        if model.id in self.invalid_prices:
+            raise ValueError("Прямой тариф требует повторной сверки источника")
+        if model.profile:
+            input_rate, output_rate, tariff = pricing_rates(
+                model.profile.pricing, math.ceil(tokens_in * overhead), period
+            )
+            usd = (
+                (
+                    Decimal(tokens_in) * Decimal(str(input_rate))
+                    + Decimal(tokens_out) * Decimal(str(output_rate))
+                )
+                * Decimal(requests)
+                * Decimal(str(overhead))
+                / 1_000_000
+            )
+            rub = float(usd * Decimal(str(self.usd_rub)))
+            return CostBreakdown(
+                variable_rub=round(rub, 2),
+                fixed_rub=0,
+                total_rub=round(rub, 2),
+                total_usd=float(usd),
+                input_rate_usd=input_rate,
+                output_rate_usd=output_rate,
+                tariff=tariff,
+            )
         variable = self.to_rub(
             mtok_in * pricing.input_per_mtok + mtok_out * pricing.output_per_mtok,
             pricing.currency,
@@ -208,7 +265,11 @@ class Advisor:
             reasons.append(
                 ("self_host", "Требуется self-hosted решение: данные не должны покидать контур")
             )
-        if model.ru_access is RuAccess.WORKAROUND and not w.allow_workarounds:
+        if (
+            model.ru_access is RuAccess.WORKAROUND
+            and not w.allow_workarounds
+            and not w.supported_region
+        ):
             reasons.append(
                 (
                     "access",
@@ -229,6 +290,13 @@ class Advisor:
                 )
             )
         quality = model.quality[w.task_type]
+        if model.id in self.invalid_prices:
+            reasons.append(("pricing", "Источник тарифа требует повторного ревью"))
+        if model.profile and (
+            w.tokens_out > model.profile.max_output_tokens
+            or w.tokens_in + w.tokens_out > model.context_window
+        ):
+            reasons.append(("context", "Нагрузка превышает лимит контекста или выхода модели"))
         if quality < w.min_quality:
             reasons.append(
                 (
@@ -267,7 +335,7 @@ class Advisor:
             cons.append(
                 "Перед отправкой данные нужно обезличивать (замена идентификаторов метками)"
             )
-        if model.ru_access is RuAccess.WORKAROUND:
+        if model.ru_access is RuAccess.WORKAROUND and not w.supported_region:
             cons.append(
                 "Доступ из РФ только через обходные пути: риски блокировок и условий использования"
             )
@@ -278,14 +346,69 @@ class Advisor:
             )
         if quality == w.min_quality:
             cons.append("Качество на пороге требований — проверьте на своих данных (compass eval)")
+        if model.profile:
+            pros.append(f"Прямой API: {model.profile.api_model}; {cost.tariff}")
+            cons.append(
+                "Качество 1–5 и итоговая оценка — экспертные допущения, не измеренные метрики"
+            )
+            if w.supported_region:
+                cons.append(
+                    "Расчёт предполагает аккаунт и оплату в поддерживаемом регионе; доступ из РФ не подтверждается"
+                )
         return pros, cons
+
+    def model_options(self, workload: Workload) -> list[ModelOption]:
+        rows = []
+        for model in self.catalog.models:
+            if model.id not in self.catalog.primary_model_ids:
+                continue
+            if model.profile is None:
+                continue
+            reasons = self._blocking_reasons(model, workload)
+            cost = (
+                None
+                if any(k in {"pricing", "context"} for k, _ in reasons)
+                else self.estimate_cost(
+                    model,
+                    workload.requests_per_month,
+                    workload.tokens_in,
+                    workload.tokens_out,
+                    period=workload.deepseek_period,
+                )
+            )
+            if (
+                cost
+                and workload.monthly_budget_rub is not None
+                and cost.total_rub > workload.monthly_budget_rub
+            ):
+                reasons.append(("budget", "Стоимость превышает бюджет"))
+            rows.append(
+                ModelOption(
+                    model_id=model.id,
+                    name=model.name,
+                    quality=model.quality[workload.task_type],
+                    cost=cost,
+                    eligible=not reasons,
+                    reasons=[r for _, r in reasons],
+                    profile=model.profile,
+                )
+            )
+        return rows
 
     def recommend(self, workload: Workload, *, top: int = 5) -> AdviceResult:
         eligible: list[tuple[ModelEntry, CostBreakdown, Action]] = []
         excluded: list[Exclusion] = []
         for model in self.catalog.models:
-            cost = self.estimate_cost(
-                model, workload.requests_per_month, workload.tokens_in, workload.tokens_out
+            cost = (
+                self.estimate_cost(
+                    model,
+                    workload.requests_per_month,
+                    workload.tokens_in,
+                    workload.tokens_out,
+                    period=workload.deepseek_period,
+                )
+                if model.id not in self.invalid_prices
+                else CostBreakdown(variable_rub=0, fixed_rub=0, total_rub=0)
             )
             reasons = self._blocking_reasons(model, workload)
             budget = workload.monthly_budget_rub
@@ -314,6 +437,7 @@ class Advisor:
         recommendations = self._rank(eligible, workload)[:top]
         return AdviceResult(
             workload=workload,
+            model_options=self.model_options(workload),
             recommendations=recommendations,
             excluded=excluded,
             notes=self._notes(recommendations, excluded),
@@ -342,7 +466,7 @@ class Advisor:
                 quality=round((effective - 1) / 4, 3),
                 cost=round(cost_score, 3),
                 safety=self.policy.safety_score(w.data_sensitivity, model.deployment),
-                access=ACCESS_SCORES[model.ru_access],
+                access=1.0 if w.supported_region else ACCESS_SCORES[model.ru_access],
             )
             score = 100 * sum(weights[key] * getattr(breakdown, key) for key in weights)
             pros, cons = self._explain(
@@ -364,6 +488,7 @@ class Advisor:
                     requires_masking=action is Action.MASK,
                     pros=pros,
                     cons=cons,
+                    profile=model.profile,
                 )
             )
         scored.sort(key=lambda r: (-r.score, r.cost.total_rub, r.model_id))
@@ -373,7 +498,7 @@ class Advisor:
         notes: list[str] = []
         if self.catalog.data_status == "illustrative":
             notes.append(
-                "Данные каталога демонстрационные: перед решением сверьте тарифы и условия "
+                "Качество — экспертное допущение, не результат замеров. Тарифы основных трёх моделей взяты из официальных источников; перед решением сверьте их и условия "
                 "с официальными страницами провайдеров."
             )
         stale = self.catalog.stale_entries(self.today)

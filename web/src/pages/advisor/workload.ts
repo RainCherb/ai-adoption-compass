@@ -15,6 +15,8 @@ export interface AdvisorFormState {
   allow_foreign_cloud: boolean;
   allow_workarounds: boolean;
   prefer: Preference;
+  supported_region: boolean;
+  deepseek_period: "peak" | "off_peak";
 }
 
 export type FieldErrors = Partial<Record<"requests_per_month" | "tokens_in" | "tokens_out" | "monthly_budget_rub", string>>;
@@ -36,7 +38,7 @@ export function initialForm(meta: Meta): AdvisorFormState {
   const first = (meta.task_types[0]?.value ?? "classification") as TaskType;
   const base: AdvisorFormState = {
     task_type: first,
-    data_sensitivity: "internal",
+    data_sensitivity: meta.demo_mode ? "public" : "internal",
     requests_per_month: "10000",
     tokens_in: "1000",
     tokens_out: "300",
@@ -47,9 +49,11 @@ export function initialForm(meta: Meta): AdvisorFormState {
     must_self_host: false,
     allow_foreign_cloud: true,
     allow_workarounds: false,
-    prefer: "balanced",
+    prefer: meta.demo_mode ? "quality" : "balanced",
+    supported_region: Boolean(meta.demo_mode),
+    deepseek_period: "peak",
   };
-  return applyTaskType(base, first, meta);
+  return meta.demo_mode ? base : applyTaskType(base, first, meta);
 }
 
 function parseInteger(text: string, min: number, max: number, label: string): { value: number } | { error: string } {
@@ -99,6 +103,8 @@ export function parseForm(form: AdvisorFormState): ParsedForm {
       allow_foreign_cloud: form.allow_foreign_cloud,
       allow_workarounds: form.allow_workarounds,
       prefer: form.prefer,
+      supported_region: form.supported_region,
+      deepseek_period: form.deepseek_period,
     },
   };
 }

@@ -32,6 +32,9 @@ export const defaultAssumptions: Assumptions = {
   impact_scale_rub: 500000,
   allow_workarounds: false,
   share_infrastructure: true,
+  supported_region: false,
+  deepseek_period: "peak",
+  model_preference: "balanced",
 };
 
 export const meta: Meta = {
@@ -308,6 +311,8 @@ export const advice: AdviceResult = {
     allow_foreign_cloud: true,
     allow_workarounds: false,
     prefer: "balanced",
+    supported_region: false,
+    deepseek_period: "peak",
   },
   recommendations: [
     recommendation({}),

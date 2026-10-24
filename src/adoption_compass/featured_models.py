@@ -3,7 +3,7 @@
 from datetime import date
 from decimal import Decimal
 from pathlib import Path
-from typing import Annotated, Literal, Self
+from typing import Annotated, Any, Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -106,6 +106,43 @@ def load_featured(data_dir: Path | None = None) -> FeaturedCatalog:
     return FeaturedCatalog.model_validate(load_yaml("featured-models.yaml", data_dir))
 
 
+def pricing_rates(
+    prices: DirectPricing, tokens_in: int, period: str = "peak"
+) -> tuple[float, float, str]:
+    input_rate, output_rate = prices.input_per_mtok, prices.output_per_mtok
+    tariff = "Standard, без кэша"
+    if prices.off_peak_input_per_mtok is not None:
+        tariff = "Off-peak, без кэша" if period == "off_peak" else "Peak, без кэша"
+        if period == "off_peak":
+            input_rate = prices.off_peak_input_per_mtok
+            output_rate = prices.off_peak_output_per_mtok or 0.0
+    if prices.long_context_threshold and tokens_in > prices.long_context_threshold:
+        input_rate *= prices.long_input_multiplier
+        output_rate *= prices.long_output_multiplier
+        tariff += " · длинный контекст"
+    return input_rate, output_rate, tariff
+
+
+def profile_is_reviewed(model: FeaturedModel, sources: dict[str, Any]) -> bool:
+    for source_id, expected_url in (
+        (model.pricing_source_id, model.pricing_url),
+        (model.specs_source_id, model.specs_url),
+    ):
+        source = sources.get(source_id)
+        if (
+            source is None
+            or source["url"] != expected_url
+            or source["stale"]
+            or source["snapshot"]["status"] != "reviewed"
+            or source["snapshot"]["reviewed_at"] is None
+            or not source["snapshot"]["reviewed_by"]
+            or source["snapshot"]["content_sha256"] != model.source_hashes.get(source_id)
+            or model.reviewed_at != date.fromisoformat(source["snapshot"]["reviewed_at"][:10])
+        ):
+            return False
+    return True
+
+
 def compare_models(
     workload: ModelComparisonRequest, today: date, data_dir: Path | None = None
 ) -> ModelComparison:
@@ -113,37 +150,14 @@ def compare_models(
     sources = {s["id"]: s for s in source_status(today, data_dir)["sources"]}
     lines = []
     for model in catalog.models:
-        prices = model.pricing
-        tariff = "Standard, без кэша"
-        in_rate, out_rate = prices.input_per_mtok, prices.output_per_mtok
-        if prices.off_peak_input_per_mtok is not None:
-            off_peak = workload.deepseek_period == "off_peak"
-            tariff = "Off-peak, без кэша" if off_peak else "Peak, без кэша"
-            if off_peak:
-                in_rate = prices.off_peak_input_per_mtok
-                out_rate = prices.off_peak_output_per_mtok or 0.0
-        if prices.long_context_threshold and workload.tokens_in > prices.long_context_threshold:
-            in_rate *= prices.long_input_multiplier
-            out_rate *= prices.long_output_multiplier
-            tariff += " · длинный контекст"
-        reason = None
-        # Цифры нельзя использовать после изменения URL, потери ревью или истечения TTL.
-        for source_id, expected_url in (
-            (model.pricing_source_id, model.pricing_url),
-            (model.specs_source_id, model.specs_url),
-        ):
-            source = sources.get(source_id)
-            if (
-                source is None
-                or source["url"] != expected_url
-                or source["stale"]
-                or source["snapshot"]["status"] != "reviewed"
-                or source["snapshot"]["reviewed_at"] is None
-                or not source["snapshot"]["reviewed_by"]
-                or source["snapshot"]["content_sha256"] != model.source_hashes.get(source_id)
-                or model.reviewed_at != date.fromisoformat(source["snapshot"]["reviewed_at"][:10])
-            ):
-                reason = "Источник требует повторного ревью; расчёт скрыт"
+        in_rate, out_rate, tariff = pricing_rates(
+            model.pricing, workload.tokens_in, workload.deepseek_period
+        )
+        reason = (
+            None
+            if profile_is_reviewed(model, sources)
+            else "Источник требует повторного ревью; расчёт скрыт"
+        )
         if workload.tokens_out > model.max_output_tokens:
             reason = "Превышен максимальный выход модели"
         if workload.tokens_in + workload.tokens_out > model.context_tokens:

@@ -5,14 +5,12 @@ import App from "./App";
 import { THEME_STORAGE_KEY } from "./hooks/useTheme";
 import { advice, auditEvents, health, meta } from "./test/fixtures";
 import { mockFetch, reply } from "./test/mockFetch";
-import { featuredComparison } from "./test/featuredComparison";
 
 function setup(overrides: { health?: unknown; meta?: unknown } = {}) {
   return mockFetch([
     { path: "/api/health", reply: overrides.health ?? health },
     { path: "/api/meta", reply: overrides.meta ?? meta },
     { path: "/api/assessments", reply: [] },
-    { method: "POST", path: "/api/models/compare", reply: featuredComparison },
     { method: "POST", path: "/api/advice", reply: advice },
     { path: "/api/audit", reply: { events: auditEvents } },
   ]);
@@ -31,12 +29,12 @@ describe("App: маршрутизация", () => {
     window.location.hash = "#/assessment";
   });
 
-  it("пустой URL открывает основные зарубежные модели", async () => {
+  it("пустой URL открывает оценку процессов", async () => {
     window.location.hash = "";
     setup();
     render(<App />);
-    expect(await screen.findByRole("heading", { level: 1, name: "Зарубежные модели" })).toBeInTheDocument();
-    expect(within(nav()).getByRole("link", { name: "Зарубежные модели" })).toHaveAttribute("aria-current", "page");
+    expect(await screen.findByRole("heading", { level: 1, name: "Оценка процессов" })).toBeInTheDocument();
+    expect(within(nav()).getByRole("link", { name: "Оценка процессов" })).toHaveAttribute("aria-current", "page");
   });
 
   it("по прямой ссылке открывает «Оценку процессов» и отмечает пункт меню aria-current", async () => {
@@ -47,13 +45,12 @@ describe("App: маршрутизация", () => {
     expect(document.title).toBe("Оценка процессов · AI Adoption Compass");
   });
 
-  it("в меню семь пунктов с русскими названиями и хеш-ссылками", async () => {
+  it("в меню шесть пунктов с русскими названиями и хеш-ссылками", async () => {
     setup();
     render(<App />);
     await screen.findByRole("heading", { level: 1 });
     const links = within(nav()).getAllByRole("link");
     expect(links.map((link) => link.textContent)).toEqual([
-      "Зарубежные модели",
       "Оценка процессов",
       "Подбор моделей",
       "Безопасность данных",
@@ -62,7 +59,6 @@ describe("App: маршрутизация", () => {
       "Журнал",
     ]);
     expect(links.map((link) => link.getAttribute("href"))).toEqual([
-      "#/models",
       "#/assessment",
       "#/advisor",
       "#/safety",
@@ -107,7 +103,7 @@ describe("App: маршрутизация", () => {
     window.location.hash = "#/нет-такой-страницы";
     setup();
     render(<App />);
-    expect(await screen.findByRole("heading", { level: 1, name: "Зарубежные модели" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { level: 1, name: "Оценка процессов" })).toBeInTheDocument();
   });
 
   it("ссылка «К основному содержимому» не ломает хеш-маршрут", async () => {

@@ -13,12 +13,9 @@ import { AuditPage } from "./pages/audit/AuditPage";
 import { EvalsPage } from "./pages/evals/EvalsPage";
 import { PromptsPage } from "./pages/prompts/PromptsPage";
 import { SafetyPage } from "./pages/safety/SafetyPage";
-import { ModelsPage } from "./pages/models/ModelsPage";
 
 function Page({ route }: { route: RouteId }) {
   switch (route) {
-    case "models":
-      return <ModelsPage />;
     case "assessment":
       return <AssessmentPage />;
     case "advisor":

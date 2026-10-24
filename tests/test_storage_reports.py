@@ -113,7 +113,7 @@ class TestReports:
         assert "Волна 1" in text
         assert "ч/мес" in text
         assert "ROI за 12 мес." in text
-        assert "демонстрационные цены" in text
+        assert "официальными источниками" in text
 
     def test_every_recommended_process_is_in_the_roadmap_tables(self, demo):
         text = assessment_markdown(demo)
