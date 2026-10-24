@@ -77,7 +77,7 @@ No installation or account needed. Render Free may take about a minute to wake u
   </tr>
   <tr>
     <td><img src="docs/assets/screenshots/prompts.png" alt="Prompt library and linter"><br><sub>Templates by department, quality score, answer-check checklist</sub></td>
-    <td><img src="docs/assets/screenshots/evals.png" alt="Model evaluation"><br><sub>Models vs. a rules baseline: accuracy, latency, cost</sub></td>
+    <td><img src="docs/assets/screenshots/evals.png" alt="Model evaluation"><br><sub>Shared expert quality matrix; measured benchmarks available separately</sub></td>
   </tr>
 </table>
 

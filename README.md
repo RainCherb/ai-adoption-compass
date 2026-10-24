@@ -77,7 +77,7 @@
   </tr>
   <tr>
     <td><img src="docs/assets/screenshots/prompts.png" alt="Библиотека шаблонов и линтер запросов"><br><sub><b>Промпты:</b> шаблоны по отделам, оценка качества, чек-лист проверки ответа</sub></td>
-    <td><img src="docs/assets/screenshots/evals.png" alt="Сравнение моделей на золотом наборе"><br><sub><b>Качество моделей:</b> сравнение с baseline по точности, задержке и стоимости</sub></td>
+    <td><img src="docs/assets/screenshots/evals.png" alt="Экспертные оценки трёх базовых моделей"><br><sub><b>Качество моделей:</b> единая экспертная матрица; реальные измерения доступны отдельно</sub></td>
   </tr>
 </table>
 
