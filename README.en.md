@@ -26,6 +26,11 @@ dashboard, a CLI, a REST API and an MCP server for coding agents.
 
 ## New in 1.1
 
+**[Try the public demo →](https://ai-adoption-compass-demo.onrender.com)** ·
+[Measured LLM results](https://ai-adoption-compass-demo.onrender.com/#/evals)
+
+No installation or account needed. Render Free may take about a minute to wake up after being idle. Use synthetic data only.
+
 * A public demo mode with a preloaded 18-process assessment, what-if calculations and no shared visitor data storage.
   Docker deployment on Render Free is described in [public demo operations](docs/PUBLIC_DEMO.md).
 * Real, free local runs of Qwen2.5-0.5B, Qwen3-0.6B and SmolLM2-360M on the same 72 tickets. The keyword baseline

@@ -89,3 +89,10 @@ jobs:
       - name: Журнал контейнера
         if: always()
         run: docker logs compass || true
+      - name: Публичный demo mode — HTTP smoke
+        run: |
+          docker run -d --name compass-demo -e COMPASS_DEMO_MODE=1 -e PORT=8010 -p 8001:8010 ai-adoption-compass:ci
+          python3 scripts/smoke_demo.py --base-url http://127.0.0.1:8001
+      - name: Журнал demo-контейнера
+        if: always()
+        run: docker logs compass-demo || true

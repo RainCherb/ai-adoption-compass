@@ -1,5 +1,8 @@
 # Публичное интерактивное демо
 
+Адрес: **[ai-adoption-compass-demo.onrender.com](https://ai-adoption-compass-demo.onrender.com)**.
+Сервис `ai-adoption-compass-demo`, Render Free, Frankfurt; автодеплой из `main`.
+
 Демо разворачивается как один Docker web service на бесплатном плане Render. Браузеру посетителя не нужны Python,
 Node.js, аккаунт или API-ключ. На главной уже открыты 18 синтетических процессов; можно менять допущения ROI,
 изучать карточки процессов, подбирать модели, проверять вымышленные тексты, рендерить промпты и сравнивать измерения LLM.
@@ -15,7 +18,7 @@ Node.js, аккаунт или API-ключ. На главной уже откр
 | Runtime / Plan | Docker / Free |
 | Dockerfile | `./Dockerfile` |
 | Environment | `COMPASS_DEMO_MODE=1` |
-| Docker command | `sh -c 'uvicorn adoption_compass.api.app:create_app --factory --host 0.0.0.0 --port ${PORT:-8000} --limit-concurrency 32 --no-access-log'` |
+| Docker command | Оставить пустым: контейнерный launcher выбирает demo mode и читает `PORT` без shell |
 | Health check | `/api/health` |
 
 Перед направлением трафика убедитесь, что `/api/health` возвращает `demo_mode: true` и версию `1.1.0`.
@@ -39,6 +42,8 @@ Node.js, аккаунт или API-ключ. На главной уже откр
   только опубликованные измерения и снимки. API-ключи в сервис не загружаются.
 
 Обычный локальный режим без `COMPASS_DEMO_MODE` сохраняет прежнее поведение с SQLite и загрузкой CSV.
+В Docker demo mode всегда запускается ограниченный API, независимо от CMD, заданного хостингом. Это предотвращает
+ошибки вложенных кавычек и случайный запуск обычного режима. Вне demo mode launcher выполняет CMD без изменений.
 
 ## Приёмка
 
@@ -47,3 +52,11 @@ Node.js, аккаунт или API-ключ. На главной уже откр
 
 После публикации проверить health и флаг режима, открытие готовой оценки, пересчёт сценария, подбор моделей,
 обезличивание, промпты, вкладку измерений, актуальность источников, пустой журнал, запрет записи и защитные HTTP-заголовки.
+
+Для повторяемой HTTP-проверки без сторонних зависимостей:
+
+```bash
+python scripts/smoke_demo.py --base-url https://ai-adoption-compass-demo.onrender.com
+```
+
+Тот же скрипт в CI проверяет отдельный Docker-контейнер именно в публичном режиме, включая запрет записи и граничное число.
