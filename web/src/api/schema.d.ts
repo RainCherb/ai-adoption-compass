@@ -276,6 +276,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/models/compare": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Compare Featured */
+        post: operations["compare_featured_api_models_compare_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/models/featured": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Featured Models */
+        get: operations["featured_models_api_models_featured_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/prompts": {
         parameters: {
             query?: never;
@@ -672,6 +706,33 @@ export interface components {
          * @enum {string}
          */
         Deployment: "ru_cloud" | "foreign_cloud" | "self_hosted";
+        /** DirectPricing */
+        DirectPricing: {
+            /** Cached Input Per Mtok */
+            cached_input_per_mtok: number;
+            /** Input Per Mtok */
+            input_per_mtok: number;
+            /** Long Context Threshold */
+            long_context_threshold?: number | null;
+            /**
+             * Long Input Multiplier
+             * @default 1
+             */
+            long_input_multiplier: number;
+            /**
+             * Long Output Multiplier
+             * @default 1
+             */
+            long_output_multiplier: number;
+            /** Off Peak Cached Input Per Mtok */
+            off_peak_cached_input_per_mtok?: number | null;
+            /** Off Peak Input Per Mtok */
+            off_peak_input_per_mtok?: number | null;
+            /** Off Peak Output Per Mtok */
+            off_peak_output_per_mtok?: number | null;
+            /** Output Per Mtok */
+            output_per_mtok: number;
+        };
         /** EvalDemoResponse */
         EvalDemoResponse: {
             /**
@@ -779,6 +840,76 @@ export interface components {
             id: string;
             /** Text */
             text: string;
+        };
+        /** FeaturedCatalog */
+        FeaturedCatalog: {
+            /**
+             * Currency
+             * @default USD
+             * @constant
+             */
+            currency: "USD";
+            /** Disclaimer */
+            disclaimer: string;
+            /** Models */
+            models: components["schemas"]["FeaturedModel"][];
+            /**
+             * Version
+             * @default 1
+             * @constant
+             */
+            version: 1;
+        };
+        /** FeaturedModel */
+        FeaturedModel: {
+            /** Access Note */
+            access_note: string;
+            /** Access Url */
+            access_url?: string | null;
+            /** Api Model */
+            api_model: string;
+            /** Conditions */
+            conditions: string[];
+            /** Context Label */
+            context_label: string;
+            /** Context Tokens */
+            context_tokens: number;
+            /** Id */
+            id: string;
+            /** Max Output Tokens */
+            max_output_tokens: number;
+            /** Name */
+            name: string;
+            pricing: components["schemas"]["DirectPricing"];
+            /** Pricing Source Id */
+            pricing_source_id: string;
+            /** Pricing Url */
+            pricing_url: string;
+            /**
+             * Quality Status
+             * @default not_measured
+             * @constant
+             */
+            quality_status: "not_measured";
+            /**
+             * Reviewed At
+             * Format: date
+             */
+            reviewed_at: string;
+            /** Source Hashes */
+            source_hashes?: {
+                [key: string]: string;
+            };
+            /** Specs Source Id */
+            specs_source_id: string;
+            /** Specs Url */
+            specs_url: string;
+            /** Summary */
+            summary: string;
+            /** Vendor */
+            vendor: string;
+            /** Version Note */
+            version_note: string;
         };
         /**
          * FindingOut
@@ -944,6 +1075,66 @@ export interface components {
             n: number;
             /** Per Class */
             per_class: components["schemas"]["ClassStats"][];
+        };
+        /** ModelComparison */
+        ModelComparison: {
+            /**
+             * Currency
+             * @default USD
+             * @constant
+             */
+            currency: "USD";
+            /** Disclaimer */
+            disclaimer: string;
+            /** Models */
+            models: components["schemas"]["ModelCostLine"][];
+            workload: components["schemas"]["ModelComparisonRequest"];
+        };
+        /** ModelComparisonRequest */
+        ModelComparisonRequest: {
+            /**
+             * Deepseek Period
+             * @default peak
+             * @enum {string}
+             */
+            deepseek_period: "peak" | "off_peak";
+            /**
+             * Requests Per Month
+             * @default 10000
+             */
+            requests_per_month: number;
+            /**
+             * Tokens In
+             * @default 1000
+             */
+            tokens_in: number;
+            /**
+             * Tokens Out
+             * @default 300
+             */
+            tokens_out: number;
+        };
+        /** ModelCostLine */
+        ModelCostLine: {
+            /** Available */
+            available: boolean;
+            /** Input Rate */
+            input_rate?: number | null;
+            /** Input Usd */
+            input_usd?: number | null;
+            model: components["schemas"]["FeaturedModel"];
+            /** Monthly Usd */
+            monthly_usd?: number | null;
+            /** Output Rate */
+            output_rate?: number | null;
+            /** Output Usd */
+            output_usd?: number | null;
+            /** Per Request Usd */
+            per_request_usd?: number | null;
+            /** Reason */
+            reason?: string | null;
+            /** Tariff */
+            tariff: string;
         };
         /** ModelPick */
         ModelPick: {
@@ -1954,6 +2145,59 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["MetaResponse"];
+                };
+            };
+        };
+    };
+    compare_featured_api_models_compare_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ModelComparisonRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelComparison"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    featured_models_api_models_featured_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FeaturedCatalog"];
                 };
             };
         };

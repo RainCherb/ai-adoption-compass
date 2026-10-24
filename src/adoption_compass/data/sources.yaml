@@ -1,5 +1,41 @@
 version: 1
 sources:
+  - id: anthropic-direct-pricing
+    title: Anthropic — прямые тарифы Claude Sonnet 5.5
+    url: https://platform.claude.com/docs/en/about-claude/pricing
+    kind: manual
+    max_age_days: 7
+    model_ids: []
+  - id: anthropic-models
+    title: Anthropic — ID и лимиты Claude Sonnet 5.5
+    url: https://platform.claude.com/docs/en/models/overview
+    kind: manual
+    max_age_days: 7
+    model_ids: []
+  - id: openai-sol-model
+    title: OpenAI — GPT-6.1 Sol, тарифы и лимиты
+    url: https://developers.openai.com/api/docs/models/gpt-6.1-sol
+    kind: manual
+    max_age_days: 7
+    model_ids: []
+  - id: deepseek-direct-pricing
+    title: DeepSeek — V4.1 Flash, тарифы и лимиты
+    url: https://api-docs.deepseek.com/quick_start/pricing/
+    kind: manual
+    max_age_days: 7
+    model_ids: []
+  - id: anthropic-access
+    title: Anthropic — поддерживаемые регионы API
+    url: https://platform.claude.com/docs/en/api/supported-regions
+    kind: manual
+    max_age_days: 30
+    model_ids: []
+  - id: openai-access
+    title: OpenAI — поддерживаемые страны API
+    url: https://developers.openai.com/api/docs/supported-countries
+    kind: manual
+    max_age_days: 30
+    model_ids: []
   - id: openrouter-models
     title: OpenRouter — тарифы агрегатора (не прямые тарифы разработчиков)
     url: https://openrouter.ai/api/v1/models

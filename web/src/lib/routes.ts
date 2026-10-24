@@ -1,6 +1,7 @@
 import type { IconName } from "../components/ui/icons";
 
 export const ROUTES = [
+  { id: "models", label: "Зарубежные модели", icon: "cpu" },
   { id: "assessment", label: "Оценка процессов", icon: "chart" },
   { id: "advisor", label: "Подбор моделей", icon: "cpu" },
   { id: "safety", label: "Безопасность данных", icon: "shield" },
@@ -11,7 +12,7 @@ export const ROUTES = [
 
 export type RouteId = (typeof ROUTES)[number]["id"];
 
-export const DEFAULT_ROUTE: RouteId = "assessment";
+export const DEFAULT_ROUTE: RouteId = "models";
 
 export function hrefFor(id: RouteId): string {
   return `#/${id}`;

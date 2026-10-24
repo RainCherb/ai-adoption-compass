@@ -2,11 +2,79 @@
   "version": 1,
   "snapshots": [
     {
+      "source_id": "anthropic-direct-pricing",
+      "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "fetched_at": "2026-10-24T18:04:30.416871Z",
+      "content_sha256": "b14d213aaa998529a509296a93712897c14d9ccc77bd5d737cba86433a28a8c5",
+      "status": "reviewed",
+      "reviewed_at": "2026-10-24T18:05:12.019880Z",
+      "reviewed_by": "Codex — сверка официальной документации",
+      "offers": [],
+      "review_note": "Codex сверил официальные тарифы Sonnet 5.5: input $2, output $10, cache read $0.10, write 5m $2.50 / 1h $4; Standard global routing, 1M без надбавки. Качество не измерялось."
+    },
+    {
+      "source_id": "anthropic-models",
+      "url": "https://platform.claude.com/docs/en/models/overview",
+      "fetched_at": "2026-10-24T18:04:31.374358Z",
+      "content_sha256": "5f2494e0c8b94c11d9b951c7e46f1947235adc7ad5966466a94b700ee27de133",
+      "status": "reviewed",
+      "reviewed_at": "2026-10-24T18:05:12.019880Z",
+      "reviewed_by": "Codex — сверка официальной документации",
+      "offers": [],
+      "review_note": "Codex сверил официальную таблицу: claude-sonnet-5-5, контекст 1M, максимальный выход 128K. Консервативный предел калькулятора 1 000 000 суммарных токенов."
+    },
+    {
+      "source_id": "openai-sol-model",
+      "url": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+      "fetched_at": "2026-10-24T18:04:32.123944Z",
+      "content_sha256": "6fd7494f924d9d9cb6999c86794d1d09f0f64ec36c4fc8770425919861bceb6d",
+      "status": "reviewed",
+      "reviewed_at": "2026-10-24T18:05:12.019880Z",
+      "reviewed_by": "Codex — сверка официальной документации",
+      "offers": [],
+      "review_note": "Codex сверил GPT-6.1 Sol: gpt-6.1-sol, контекст 1 050 000, выход 128 000; $2/$10, cache read $0.10. При входе >272K весь запрос input x2, output x1.5. Качество не измерялось."
+    },
+    {
+      "source_id": "deepseek-direct-pricing",
+      "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "fetched_at": "2026-10-24T18:04:32.660438Z",
+      "content_sha256": "b856a6e93fa4793ecc8f3fd03a01bb7d8f7572f78a4739da8ce6dbdb09328d66",
+      "status": "reviewed",
+      "reviewed_at": "2026-10-24T18:05:12.019880Z",
+      "reviewed_by": "Codex — сверка официальной документации",
+      "offers": [],
+      "review_note": "Codex сверил DeepSeek-V4.1-Flash-1017, API deepseek-flash: peak $0.30/$1.20, off-peak $0.15/$0.60, cache $0.006/$0.003; контекст 1M, выход 384K. Peak пн-пт 01-04 и 06-10 UTC кроме праздников КНР. Качество и доступ из РФ не измерялись."
+    },
+    {
+      "source_id": "anthropic-access",
+      "url": "https://platform.claude.com/docs/en/api/supported-regions",
+      "fetched_at": "2026-10-24T18:04:33.564799Z",
+      "content_sha256": "8a83f198a865a350ea46c9bb60b927d34519402cb265a998eff75a808a8d1f00",
+      "status": "review_required",
+      "reviewed_at": null,
+      "reviewed_by": null,
+      "offers": [],
+      "review_note": "Страница получена. Содержание и доступность из региона требуют ручного ревью; получение HTTP 200 не подтверждает доступ из РФ."
+    },
+    {
+      "source_id": "openai-access",
+      "url": "https://developers.openai.com/api/docs/supported-countries",
+      "fetched_at": "2026-10-24T18:04:33.691268Z",
+      "content_sha256": "7abc61e88716eab016af09dc545c261a546a8e27eebc1ea79285c848b541a8e2",
+      "status": "review_required",
+      "reviewed_at": null,
+      "reviewed_by": null,
+      "offers": [],
+      "review_note": "Страница получена. Содержание и доступность из региона требуют ручного ревью; получение HTTP 200 не подтверждает доступ из РФ."
+    },
+    {
       "source_id": "openrouter-models",
       "url": "https://openrouter.ai/api/v1/models",
       "fetched_at": "2026-10-24T17:04:17.060751Z",
       "content_sha256": "73a0e24eeffee220f87e26ae68b6e758a65623bd567b05a7e8fa05263cb4997b",
       "status": "machine_checked",
+      "reviewed_at": null,
+      "reviewed_by": null,
       "offers": [
         {
           "model_id": "openai/gpt-5-mini",
@@ -41,6 +109,8 @@
       "fetched_at": "2026-10-24T17:04:18.074179Z",
       "content_sha256": "a9f84bc24a77b41e378f1454fda6f77b1565140fd9ce251bee21d8befb846a1d",
       "status": "review_required",
+      "reviewed_at": null,
+      "reviewed_by": null,
       "offers": [],
       "review_note": "Страница получена. Содержание и доступность из региона требуют ручного ревью; получение HTTP 200 не подтверждает доступ из РФ."
     },
@@ -50,6 +120,8 @@
       "fetched_at": "2026-10-24T17:04:18.626656Z",
       "content_sha256": "addef5b28c26db94b8f81d30b1577ba26f53db5b7620f9b7a346830d80534d2a",
       "status": "review_required",
+      "reviewed_at": null,
+      "reviewed_by": null,
       "offers": [],
       "review_note": "Страница получена. Содержание и доступность из региона требуют ручного ревью; получение HTTP 200 не подтверждает доступ из РФ."
     },
@@ -59,6 +131,8 @@
       "fetched_at": "2026-10-24T17:04:18.800349Z",
       "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "status": "unavailable",
+      "reviewed_at": null,
+      "reviewed_by": null,
       "offers": [],
       "review_note": "Источник недоступен или формат изменился. Не использовать для решений; требуется ручная проверка."
     }

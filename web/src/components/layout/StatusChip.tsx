@@ -6,7 +6,7 @@ import { Icon } from "../ui/Icon";
 import { Skeleton } from "../ui/Skeleton";
 
 /** Чип статуса каталога из /api/health: демо-данные видно в шапке на любой странице. */
-export function StatusChip({ health }: { health: AsyncState<Health> }) {
+export function StatusChip({ health, label = "Каталог" }: { health: AsyncState<Health>; label?: string }) {
   if (health.error) {
     return (
       <span className="status-chip status-chip--danger" title={health.error.message}>
@@ -24,7 +24,7 @@ export function StatusChip({ health }: { health: AsyncState<Health> }) {
     <span className={`status-chip status-chip--${tone}`} data-testid="catalog-status">
       <Icon name="database" size={14} />
       <span>
-        <span className="status-chip__prefix">Каталог: </span>
+        <span className="status-chip__prefix">{label}: </span>
         {status}
         <span className="status-chip__date"> · {formatDate(catalog.as_of)}</span>
         {catalog.stale > 0 ? <span> · устарело: {catalog.stale}</span> : null}

@@ -1,6 +1,8 @@
 import type { components } from "./schema";
 
 type S = components["schemas"];
+export type ModelComparisonRequest = S["ModelComparisonRequest"];
+export type ModelComparison = S["ModelComparison"];
 
 export type Sensitivity = S["Sensitivity"];
 export type Deployment = S["Deployment"];

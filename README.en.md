@@ -24,7 +24,13 @@ dashboard, a CLI, a REST API and an MCP server for coding agents.
 > The product UI, templates, policy and documentation are in Russian (the target audience is Russian-speaking
 > companies); code identifiers and API fields are in English. The methodology itself is language-independent.
 
-## New in 1.1
+## Featured international models
+
+The demo opens with **Claude Sonnet 5.5 → GPT-6.1 Sol → DeepSeek V4.1 Flash**. Compare direct API costs on the same workload, with DeepSeek peak/off-peak and GPT long-context pricing. Provider facts and limits are linked to official sources, pinned to reviewed snapshots and hidden from cost calculations after expiry. This is a cost comparison; these three models have not been evaluated in this project. [Method and checked numbers](docs/FEATURED_MODELS.md).
+
+![Featured international models and one shared workload](docs/assets/screenshots/models.png)
+
+## New in 1.2
 
 **[Try the public demo →](https://ai-adoption-compass-demo.onrender.com)** ·
 [Measured LLM results](https://ai-adoption-compass-demo.onrender.com/#/evals)
