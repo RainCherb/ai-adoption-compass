@@ -42,6 +42,13 @@ from ..domain import (
 )
 from ..evals import reports_markdown, run_demo
 from ..evals.benchmark import load_benchmark
+from ..featured_models import (
+    FeaturedCatalog,
+    ModelComparison,
+    ModelComparisonRequest,
+    compare_models,
+    load_featured,
+)
 from ..prompts import LintResult, PromptRenderError, PromptTemplate, RenderedPrompt, scaffold_prompt
 from ..reports import assessment_csv, assessment_markdown
 from ..resources import read_data_text
@@ -196,6 +203,16 @@ def catalog(svc: ServicesDep) -> dict[str, Any]:
 
 
 # --- подбор моделей ------------------------------------------------------------------------
+
+
+@router.get("/models/featured", response_model=FeaturedCatalog, tags=["catalog"])
+def featured_models(svc: ServicesDep) -> FeaturedCatalog:
+    return load_featured(svc.settings.data_dir)
+
+
+@router.post("/models/compare", response_model=ModelComparison, tags=["catalog"])
+def compare_featured(body: ModelComparisonRequest, svc: ServicesDep) -> ModelComparison:
+    return compare_models(body, svc.settings.current_date, svc.settings.data_dir)
 
 
 @router.get("/catalog/sources", tags=["catalog"])

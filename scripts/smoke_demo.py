@@ -63,6 +63,30 @@ def main() -> None:
         raise RuntimeError("Wrong version or unsafe demo configuration")
     if '<div id="root"' not in request("/"):
         raise RuntimeError("Frontend not packaged")
+    profiles = request("/api/models/featured")
+    if [m["api_model"] for m in profiles["models"]] != [
+        "claude-sonnet-5-5",
+        "gpt-6.1-sol",
+        "deepseek-flash",
+    ]:
+        raise RuntimeError("Primary model order or API IDs changed")
+    comparison = request("/api/models/compare", {})
+    if [row["monthly_usd"] for row in comparison["models"]] != [50, 50, 6.6]:
+        raise RuntimeError("Incorrect or stale direct prices")
+    off_peak = request("/api/models/compare", {"deepseek_period": "off_peak"})
+    if off_peak["models"][2]["monthly_usd"] != 3.3:
+        raise RuntimeError("Off-peak price incorrect")
+    long_context = request(
+        "/api/models/compare",
+        {
+            "requests_per_month": 1,
+            "tokens_in": 272001,
+            "tokens_out": 1000,
+        },
+    )
+    if long_context["models"][1]["monthly_usd"] != 1.103004:
+        raise RuntimeError("Long context surcharge incorrect")
+    request("/api/models/compare", {"tokens_in": 1e308}, expected=422)
     assessment = request("/api/assessments/demo")
     if len(assessment["processes"]) != 18:
         raise RuntimeError("Synthetic assessment not preloaded")

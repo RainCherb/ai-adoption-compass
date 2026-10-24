@@ -29,6 +29,11 @@ export function EvalsPage({ initialMode = "measured" }: { initialMode?: "measure
         lead="Сравнение моделей на размеченном наборе: точность, задержка и стоимость. Решение о модели принимают по цифрам на своих данных, а не по рекламе."
       />
 
+      <Banner tone="warning" title="Sonnet 5.5, GPT‑6.1 Sol и DeepSeek V4.1 Flash здесь не тестировались">
+        Ниже показан прежний эксперимент с компактными локальными LLM. Он не измеряет качество основных моделей демо.
+        <a href="#/models"> Прямые тарифы основных моделей и калькулятор стоимости →</a>
+      </Banner>
+
       <div className="button-row" aria-label="Тип сравнения">
         <Button variant={mode === "measured" ? "primary" : "secondary"} aria-pressed={mode === "measured"} onClick={() => { setSelected(null); setMode("measured"); }}>Реальные измерения</Button>
         <Button variant={mode === "simulated" ? "primary" : "secondary"} aria-pressed={mode === "simulated"} onClick={() => { setSelected(null); setMode("simulated"); }}>Симуляция для обучения</Button>

@@ -613,6 +613,93 @@
         "title": "Deployment",
         "type": "string"
       },
+      "DirectPricing": {
+        "additionalProperties": false,
+        "properties": {
+          "cached_input_per_mtok": {
+            "minimum": 0.0,
+            "title": "Cached Input Per Mtok",
+            "type": "number"
+          },
+          "input_per_mtok": {
+            "minimum": 0.0,
+            "title": "Input Per Mtok",
+            "type": "number"
+          },
+          "long_context_threshold": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Long Context Threshold"
+          },
+          "long_input_multiplier": {
+            "default": 1,
+            "minimum": 1.0,
+            "title": "Long Input Multiplier",
+            "type": "number"
+          },
+          "long_output_multiplier": {
+            "default": 1,
+            "minimum": 1.0,
+            "title": "Long Output Multiplier",
+            "type": "number"
+          },
+          "off_peak_cached_input_per_mtok": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Off Peak Cached Input Per Mtok"
+          },
+          "off_peak_input_per_mtok": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Off Peak Input Per Mtok"
+          },
+          "off_peak_output_per_mtok": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Off Peak Output Per Mtok"
+          },
+          "output_per_mtok": {
+            "minimum": 0.0,
+            "title": "Output Per Mtok",
+            "type": "number"
+          }
+        },
+        "required": [
+          "input_per_mtok",
+          "output_per_mtok",
+          "cached_input_per_mtok"
+        ],
+        "title": "DirectPricing",
+        "type": "object"
+      },
       "EvalDemoResponse": {
         "properties": {
           "kind": {
@@ -935,6 +1022,163 @@
           "text"
         ],
         "title": "Failure",
+        "type": "object"
+      },
+      "FeaturedCatalog": {
+        "properties": {
+          "currency": {
+            "const": "USD",
+            "default": "USD",
+            "title": "Currency",
+            "type": "string"
+          },
+          "disclaimer": {
+            "title": "Disclaimer",
+            "type": "string"
+          },
+          "models": {
+            "items": {
+              "$ref": "#/components/schemas/FeaturedModel"
+            },
+            "minItems": 1,
+            "title": "Models",
+            "type": "array"
+          },
+          "version": {
+            "const": 1,
+            "default": 1,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "disclaimer",
+          "models"
+        ],
+        "title": "FeaturedCatalog",
+        "type": "object"
+      },
+      "FeaturedModel": {
+        "additionalProperties": false,
+        "properties": {
+          "access_note": {
+            "title": "Access Note",
+            "type": "string"
+          },
+          "access_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Access Url"
+          },
+          "api_model": {
+            "title": "Api Model",
+            "type": "string"
+          },
+          "conditions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Conditions",
+            "type": "array"
+          },
+          "context_label": {
+            "title": "Context Label",
+            "type": "string"
+          },
+          "context_tokens": {
+            "exclusiveMinimum": 0.0,
+            "title": "Context Tokens",
+            "type": "integer"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "max_output_tokens": {
+            "exclusiveMinimum": 0.0,
+            "title": "Max Output Tokens",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "pricing": {
+            "$ref": "#/components/schemas/DirectPricing"
+          },
+          "pricing_source_id": {
+            "title": "Pricing Source Id",
+            "type": "string"
+          },
+          "pricing_url": {
+            "title": "Pricing Url",
+            "type": "string"
+          },
+          "quality_status": {
+            "const": "not_measured",
+            "default": "not_measured",
+            "title": "Quality Status",
+            "type": "string"
+          },
+          "reviewed_at": {
+            "format": "date",
+            "title": "Reviewed At",
+            "type": "string"
+          },
+          "source_hashes": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Source Hashes",
+            "type": "object"
+          },
+          "specs_source_id": {
+            "title": "Specs Source Id",
+            "type": "string"
+          },
+          "specs_url": {
+            "title": "Specs Url",
+            "type": "string"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "vendor": {
+            "title": "Vendor",
+            "type": "string"
+          },
+          "version_note": {
+            "title": "Version Note",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "vendor",
+          "api_model",
+          "version_note",
+          "summary",
+          "context_label",
+          "context_tokens",
+          "max_output_tokens",
+          "pricing",
+          "pricing_source_id",
+          "specs_source_id",
+          "pricing_url",
+          "specs_url",
+          "access_note",
+          "conditions",
+          "reviewed_at"
+        ],
+        "title": "FeaturedModel",
         "type": "object"
       },
       "FindingOut": {
@@ -1369,6 +1613,173 @@
           "confusion"
         ],
         "title": "Metrics",
+        "type": "object"
+      },
+      "ModelComparison": {
+        "properties": {
+          "currency": {
+            "const": "USD",
+            "default": "USD",
+            "title": "Currency",
+            "type": "string"
+          },
+          "disclaimer": {
+            "title": "Disclaimer",
+            "type": "string"
+          },
+          "models": {
+            "items": {
+              "$ref": "#/components/schemas/ModelCostLine"
+            },
+            "title": "Models",
+            "type": "array"
+          },
+          "workload": {
+            "$ref": "#/components/schemas/ModelComparisonRequest"
+          }
+        },
+        "required": [
+          "workload",
+          "disclaimer",
+          "models"
+        ],
+        "title": "ModelComparison",
+        "type": "object"
+      },
+      "ModelComparisonRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "deepseek_period": {
+            "default": "peak",
+            "enum": [
+              "peak",
+              "off_peak"
+            ],
+            "title": "Deepseek Period",
+            "type": "string"
+          },
+          "requests_per_month": {
+            "default": 10000,
+            "maximum": 1000000000.0,
+            "minimum": 1.0,
+            "title": "Requests Per Month",
+            "type": "integer"
+          },
+          "tokens_in": {
+            "default": 1000,
+            "maximum": 2000000.0,
+            "minimum": 1.0,
+            "title": "Tokens In",
+            "type": "integer"
+          },
+          "tokens_out": {
+            "default": 300,
+            "maximum": 384000.0,
+            "minimum": 0.0,
+            "title": "Tokens Out",
+            "type": "integer"
+          }
+        },
+        "title": "ModelComparisonRequest",
+        "type": "object"
+      },
+      "ModelCostLine": {
+        "properties": {
+          "available": {
+            "title": "Available",
+            "type": "boolean"
+          },
+          "input_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Rate"
+          },
+          "input_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Usd"
+          },
+          "model": {
+            "$ref": "#/components/schemas/FeaturedModel"
+          },
+          "monthly_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Monthly Usd"
+          },
+          "output_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Output Rate"
+          },
+          "output_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Output Usd"
+          },
+          "per_request_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Per Request Usd"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "tariff": {
+            "title": "Tariff",
+            "type": "string"
+          }
+        },
+        "required": [
+          "model",
+          "available",
+          "tariff"
+        ],
+        "title": "ModelCostLine",
         "type": "object"
       },
       "ModelPick": {
@@ -2792,7 +3203,7 @@
   "info": {
     "summary": "Оценка процессов и ROI, подбор моделей, защита данных, шаблоны промптов.",
     "title": "AI Adoption Compass API",
-    "version": "1.1.0"
+    "version": "1.2.0"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -3391,6 +3802,68 @@
         "summary": "Meta",
         "tags": [
           "service"
+        ]
+      }
+    },
+    "/api/models/compare": {
+      "post": {
+        "operationId": "compare_featured_api_models_compare_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModelComparisonRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelComparison"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Compare Featured",
+        "tags": [
+          "catalog"
+        ]
+      }
+    },
+    "/api/models/featured": {
+      "get": {
+        "operationId": "featured_models_api_models_featured_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeaturedCatalog"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Featured Models",
+        "tags": [
+          "catalog"
         ]
       }
     },

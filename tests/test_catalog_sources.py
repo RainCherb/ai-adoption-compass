@@ -112,7 +112,7 @@ def test_api_sources_uses_snapshot_only(client, monkeypatch):
 
     monkeypatch.setattr(httpx.Client, "stream", blocked)
     body = client.get("/api/catalog/sources").json()
-    assert body["sources"][0]["snapshot"]["offers"]
+    assert next(s for s in body["sources"] if s["id"] == "openrouter-models")["snapshot"]["offers"]
 
 
 def test_review_requires_exact_hash_and_available_source():

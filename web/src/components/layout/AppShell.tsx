@@ -76,7 +76,7 @@ export function AppShell({ route, theme, onToggleTheme, health, children }: AppS
             <Logo />
           </div>
           <div className="topbar__spacer" />
-          <StatusChip health={health} />
+          <StatusChip health={health} label={route === "models" ? "Экспертный каталог" : "Каталог"} />
           <ThemeToggle theme={theme} onToggle={onToggleTheme} />
         </header>
 
@@ -89,9 +89,11 @@ export function AppShell({ route, theme, onToggleTheme, health, children }: AppS
         <main id="main" ref={mainRef} className="content" tabIndex={-1}>
           {health.data?.demo_mode ? (
             <Banner tone="info" title="Публичное интерактивное демо">
-              Начните с готовой оценки 18 процессов, измените допущения и сравните результат. Подбор моделей,
+              {route === "models" ? <>Без установки и API-ключей. Калькулятор не вызывает модели и не сохраняет ввод.</> : <>
+              Сравните Sonnet 5.5, GPT‑6.1 Sol и DeepSeek V4.1 Flash на одной нагрузке или откройте оценку 18 процессов. Подбор моделей,
               обезличивание и промпты работают на сервере демо. Используйте вымышленные данные: ввод передаётся
               этому серверу, но не сохраняется. Загрузка CSV и сохранение оценок отключены.
+              </>}
             </Banner>
           ) : null}
           {children}

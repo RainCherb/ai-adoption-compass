@@ -1,4 +1,5 @@
 import { ApiError, NETWORK_MESSAGE, isAbortError, normalizeErrorBody } from "./errors";
+import type { ModelComparison, ModelComparisonRequest } from "./types";
 import type {
   AdviceResult,
   AnalyzeRequest,
@@ -86,6 +87,8 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
 export const getHealth = (signal?: AbortSignal) => request<Health>("/api/health", { signal });
 export const getMeta = (signal?: AbortSignal) => request<Meta>("/api/meta", { signal });
 export const getCatalog = (signal?: AbortSignal) => request<Catalog>("/api/catalog", { signal });
+export const compareFeaturedModels = (body: ModelComparisonRequest, signal?: AbortSignal) =>
+  request<ModelComparison>("/api/models/compare", { method: "POST", json: body, signal });
 
 export const getAudit = (limit = 100, kind?: string, signal?: AbortSignal) =>
   request<{ events: AuditEvent[] }>("/api/audit", { query: { limit, kind }, signal }).then((r) => r.events);
