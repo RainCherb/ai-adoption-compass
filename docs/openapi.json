@@ -353,7 +353,7 @@
             "type": "boolean"
           },
           "usd_rub": {
-            "default": 90.0,
+            "default": 80.54,
             "exclusiveMinimum": 0.0,
             "maximum": 1000000.0,
             "title": "Usd Rub",
@@ -635,9 +635,37 @@
       },
       "CostBreakdown": {
         "properties": {
+          "currency": {
+            "anyOf": [
+              {
+                "enum": [
+                  "USD",
+                  "RUB"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Валюта прямого тарифа провайдера",
+            "title": "Currency"
+          },
           "fixed_rub": {
             "title": "Fixed Rub",
             "type": "number"
+          },
+          "input_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "За 1 млн входных токенов, в валюте тарифа",
+            "title": "Input Rate"
           },
           "input_rate_usd": {
             "anyOf": [
@@ -650,6 +678,17 @@
             ],
             "title": "Input Rate Usd"
           },
+          "input_rub": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Rub"
+          },
           "input_usd": {
             "anyOf": [
               {
@@ -660,6 +699,18 @@
               }
             ],
             "title": "Input Usd"
+          },
+          "output_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "За 1 млн выходных токенов, в валюте тарифа",
+            "title": "Output Rate"
           },
           "output_rate_usd": {
             "anyOf": [
@@ -672,6 +723,17 @@
             ],
             "title": "Output Rate Usd"
           },
+          "output_rub": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Output Rub"
+          },
           "output_usd": {
             "anyOf": [
               {
@@ -682,6 +744,17 @@
               }
             ],
             "title": "Output Usd"
+          },
+          "price_warning": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price Warning"
           },
           "requests_per_month": {
             "anyOf": [
@@ -728,6 +801,18 @@
           "variable_rub": {
             "title": "Variable Rub",
             "type": "number"
+          },
+          "vat_included": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Тариф провайдера уже включает НДС",
+            "title": "Vat Included"
           }
         },
         "required": [
@@ -1185,12 +1270,6 @@
       },
       "FeaturedCatalog": {
         "properties": {
-          "currency": {
-            "const": "USD",
-            "default": "USD",
-            "title": "Currency",
-            "type": "string"
-          },
           "disclaimer": {
             "title": "Disclaimer",
             "type": "string"
@@ -1274,14 +1353,31 @@
             "title": "Context Tokens",
             "type": "integer"
           },
+          "currency": {
+            "default": "USD",
+            "enum": [
+              "USD",
+              "RUB"
+            ],
+            "title": "Currency",
+            "type": "string"
+          },
           "id": {
             "title": "Id",
             "type": "string"
           },
           "max_output_tokens": {
-            "exclusiveMinimum": 0.0,
-            "title": "Max Output Tokens",
-            "type": "integer"
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "None — провайдер не публикует отдельный предел выхода",
+            "title": "Max Output Tokens"
           },
           "name": {
             "title": "Name",
@@ -1343,6 +1439,12 @@
             "title": "Summary",
             "type": "string"
           },
+          "vat_included": {
+            "default": false,
+            "description": "Цена провайдера уже включает НДС (российские тарифы в рублях)",
+            "title": "Vat Included",
+            "type": "boolean"
+          },
           "vendor": {
             "title": "Vendor",
             "type": "string"
@@ -1361,7 +1463,6 @@
           "summary",
           "context_label",
           "context_tokens",
-          "max_output_tokens",
           "pricing",
           "pricing_source_id",
           "specs_source_id",
@@ -1810,12 +1911,6 @@
       },
       "ModelComparison": {
         "properties": {
-          "currency": {
-            "const": "USD",
-            "default": "USD",
-            "title": "Currency",
-            "type": "string"
-          },
           "disclaimer": {
             "title": "Disclaimer",
             "type": "string"
@@ -1827,12 +1922,17 @@
             "title": "Models",
             "type": "array"
           },
+          "usd_rub": {
+            "title": "Usd Rub",
+            "type": "number"
+          },
           "workload": {
             "$ref": "#/components/schemas/ModelComparisonRequest"
           }
         },
         "required": [
           "workload",
+          "usd_rub",
           "disclaimer",
           "models"
         ],
@@ -1882,6 +1982,14 @@
             "title": "Available",
             "type": "boolean"
           },
+          "currency": {
+            "enum": [
+              "USD",
+              "RUB"
+            ],
+            "title": "Currency",
+            "type": "string"
+          },
           "input_rate": {
             "anyOf": [
               {
@@ -1906,6 +2014,17 @@
           },
           "model": {
             "$ref": "#/components/schemas/FeaturedModel"
+          },
+          "monthly_rub": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Monthly Rub"
           },
           "monthly_usd": {
             "anyOf": [
@@ -1940,6 +2059,17 @@
             ],
             "title": "Output Usd"
           },
+          "per_request_rub": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Per Request Rub"
+          },
           "per_request_usd": {
             "anyOf": [
               {
@@ -1965,12 +2095,24 @@
           "tariff": {
             "title": "Tariff",
             "type": "string"
+          },
+          "warning": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warning"
           }
         },
         "required": [
           "model",
           "available",
-          "tariff"
+          "tariff",
+          "currency"
         ],
         "title": "ModelCostLine",
         "type": "object"
@@ -1990,6 +2132,14 @@
           "eligible": {
             "title": "Eligible",
             "type": "boolean"
+          },
+          "kinds": {
+            "description": "Коды причин исключения",
+            "items": {
+              "type": "string"
+            },
+            "title": "Kinds",
+            "type": "array"
           },
           "model_id": {
             "title": "Model Id",
@@ -3523,7 +3673,7 @@
   "info": {
     "summary": "Оценка процессов и ROI, подбор моделей, защита данных, шаблоны промптов.",
     "title": "AI Adoption Compass API",
-    "version": "1.4.0"
+    "version": "1.5.0"
   },
   "openapi": "3.1.0",
   "paths": {

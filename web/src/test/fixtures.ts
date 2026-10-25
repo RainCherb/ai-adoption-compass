@@ -6,7 +6,6 @@ import type {
   Assumptions,
   AuditEvent,
   Catalog,
-  EvalDemo,
   Health,
   LintResult,
   Meta,
@@ -27,7 +26,7 @@ export const defaultAssumptions: Assumptions = {
   support_share_per_month: 0.02,
   llm_overhead: 1.3,
   error_reduction: 0.25,
-  usd_rub: 90,
+  usd_rub: 80.54,
   default_hourly_cost_rub: 800,
   impact_scale_rub: 500000,
   allow_workarounds: false,
@@ -78,9 +77,9 @@ export const meta: Meta = {
   thresholds: { impact: 50, ease: 50 },
   limits: { max_text_chars: 200000, max_upload_bytes: 2000000 },
   catalog: {
-    as_of: "2026-10-24",
+    as_of: "2026-10-25",
     data_status: "illustrative",
-    disclaimer: "Каталог содержит ДЕМОНСТРАЦИОННЫЕ значения: это не прайс-лист.",
+    disclaimer: "11 моделей с проверенными тарифами: 5 российских (YandexGPT Pro 5.1, Alice AI LLM, GigaChat 2 Max, Pro и Lite) и 6 зарубежных (Claude Sonnet 5.5 и Haiku 5.5, GPT-6.1 Sol и GPT-6 Luna, DeepSeek V4.1 Flash и V4 Pro). Цены и лимиты сверены с официальными страницами провайдеров 25.10.2026: рублёвые тарифы включают НДС 22 %, долларовые — без налогов и пересчитываются по курсу из допущений. Оценки качества 1–5, доля автоматизации, экономия и ROI — экспертные допущения, а не измеренные гарантии.",
   },
 };
 
@@ -89,7 +88,7 @@ export const health: Health = {
   status: "ok",
   version: "1.0.0",
   database: true,
-  catalog: { as_of: "2026-10-24", data_status: "illustrative", stale: 0 },
+  catalog: { as_of: "2026-10-25", data_status: "illustrative", stale: 0 },
 };
 
 // --- оценка процессов ------------------------------------------------------------------------
@@ -204,7 +203,7 @@ export const processResults: ProcessResult[] = [
 
 export const assessmentResult: AssessmentResult = {
   assumptions: defaultAssumptions,
-  catalog_as_of: "2026-10-24",
+  catalog_as_of: "2026-10-25",
   data_status: "illustrative",
   processes: processResults,
   roadmap: [
@@ -292,9 +291,9 @@ function recommendation(overrides: Partial<Recommendation>): Recommendation {
 }
 
 export const advice: AdviceResult = {
-  catalog_as_of: "2026-10-24",
+  catalog_as_of: "2026-10-25",
   data_status: "illustrative",
-  usd_rub: 90,
+  usd_rub: 80.54,
   notes: ["Данные каталога демонстрационные: сверьте тарифы с официальными страницами."],
   workload: {
     task_type: "classification",
@@ -348,11 +347,12 @@ export const advice: AdviceResult = {
   ],
 };
 
+/** Обобщённый каталог без прямых тарифов; каталог с 11 проверенными моделями — `primaryCatalog`. */
 export const catalog: Catalog = {
-  as_of: "2026-10-24",
+  as_of: "2026-10-25",
   data_status: "illustrative",
-  disclaimer: "Каталог содержит ДЕМОНСТРАЦИОННЫЕ значения: это не прайс-лист.",
-  usd_rub: 90,
+  disclaimer: "11 моделей с проверенными тарифами: 5 российских (YandexGPT Pro 5.1, Alice AI LLM, GigaChat 2 Max, Pro и Lite) и 6 зарубежных (Claude Sonnet 5.5 и Haiku 5.5, GPT-6.1 Sol и GPT-6 Luna, DeepSeek V4.1 Flash и V4 Pro). Цены и лимиты сверены с официальными страницами провайдеров 25.10.2026: рублёвые тарифы включают НДС 22 %, долларовые — без налогов и пересчитываются по курсу из допущений. Оценки качества 1–5, доля автоматизации, экономия и ROI — экспертные допущения, а не измеренные гарантии.",
+  usd_rub: 80.54,
   stale: [],
   models: [
     {
@@ -493,57 +493,7 @@ export const lint: LintResult = {
   suggestions: ["В запросе есть персональные данные: обезличьте их.", "Начните с роли."],
 };
 
-// --- качество моделей и журнал ---------------------------------------------------------------
-
-function evalReport(provider: string, accuracy: number, cost: number | null, baseline = false): EvalDemo["reports"][number] {
-  return {
-    provider,
-    task_id: "ticket-routing",
-    n: 8,
-    errors: 0,
-    is_baseline: baseline,
-    cost_rub: cost,
-    cost_per_1k_rub: cost === null ? null : cost * 10,
-    cost_per_correct_rub: cost === null ? null : cost / 8,
-    accuracy_lift: baseline ? 0 : accuracy - 0.75,
-    latency: { mean_ms: 440, p50_ms: 442.6, p95_ms: 503.6 },
-    tokens_in: 1000,
-    tokens_out: 50,
-    metrics: {
-      accuracy,
-      macro_f1: accuracy - 0.01,
-      invalid: baseline ? 0 : 1,
-      n: 8,
-      labels: ["billing", "delivery"],
-      confusion: provider === "sim:flagship" ? [[4, 0], [0, 4]] : [[3, 1], [2, 2]],
-      per_class: [
-        { label: "billing", precision: 0.75, recall: 0.8, f1: 0.77, support: 4 },
-        { label: "delivery", precision: 1, recall: 0.5, f1: 0.67, support: 4 },
-      ],
-    },
-    failures: [{ id: "f1", expected: "billing", got: null, text: "Оплатил картой, но заказ не оплачен" }],
-  };
-}
-
-export const evalDemo: EvalDemo = {
-  kind: "simulated",
-  task: {
-    id: "ticket-routing",
-    title: "Маршрутизация обращений клиентов",
-    description: "Отнесите обращение клиента к одной из категорий.",
-    items: 8,
-    labels: [
-      { name: "billing", title: "Оплата и счета" },
-      { name: "delivery", title: "Доставка" },
-    ],
-  },
-  markdown: "# Оценка качества\n",
-  reports: [
-    evalReport("baseline:keywords", 0.75, 0, true),
-    evalReport("sim:economy", 0.8, 0.79),
-    evalReport("sim:flagship", 0.97, 28.4),
-  ],
-};
+// --- журнал ----------------------------------------------------------------------------------
 
 export const auditEvents: AuditEvent[] = [
   { id: 3, ts: "2026-10-24T03:14:12+00:00", kind: "prompt.lint", payload: { chars: 58, score: 20, sensitive: { PHONE_RU: 1 } } },

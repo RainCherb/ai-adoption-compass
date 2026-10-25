@@ -4,46 +4,145 @@
     {
       "source_id": "anthropic-direct-pricing",
       "url": "https://platform.claude.com/docs/en/about-claude/pricing",
-      "fetched_at": "2026-10-24T18:04:30.416871Z",
-      "content_sha256": "b14d213aaa998529a509296a93712897c14d9ccc77bd5d737cba86433a28a8c5",
+      "fetched_at": "2026-10-25T03:39:21.874697Z",
+      "content_sha256": "0a94bd85775eb70f743332324c35f7cae8fc41810b253c217514cbdb6218fefc",
       "status": "reviewed",
-      "reviewed_at": "2026-10-24T18:05:12.019880Z",
-      "reviewed_by": "Codex — сверка официальной документации",
+      "reviewed_at": "2026-10-25T03:39:21.874697Z",
+      "reviewed_by": "Hoplite (ИИ-агент) — сверка официальной документации",
       "offers": [],
-      "review_note": "Codex сверил официальные тарифы Sonnet 5.5: input $2, output $10, cache read $0.10, write 5m $2.50 / 1h $4; Standard global routing, 1M без надбавки. Качество не измерялось."
+      "review_note": "Сверено: Claude Sonnet 5.5 — $2 вход / $10 выход, кэш $0,10; Claude Haiku 5.5 — $0,10 / $0,50 до 100 000 токенов входа, $0,50 / $2,50 свыше, кэш $0,01. Глобальная маршрутизация. Качество не измерялось."
     },
     {
       "source_id": "anthropic-models",
       "url": "https://platform.claude.com/docs/en/models/overview",
-      "fetched_at": "2026-10-24T18:04:31.374358Z",
-      "content_sha256": "5f2494e0c8b94c11d9b951c7e46f1947235adc7ad5966466a94b700ee27de133",
+      "fetched_at": "2026-10-25T03:39:21.874697Z",
+      "content_sha256": "3e123db274db9070f4d56f6dee3d0c759361bd18edd01adbd8781835f6eacc7d",
       "status": "reviewed",
-      "reviewed_at": "2026-10-24T18:05:12.019880Z",
-      "reviewed_by": "Codex — сверка официальной документации",
+      "reviewed_at": "2026-10-25T03:39:21.874697Z",
+      "reviewed_by": "Hoplite (ИИ-агент) — сверка официальной документации",
       "offers": [],
-      "review_note": "Codex сверил официальную таблицу: claude-sonnet-5-5, контекст 1M, максимальный выход 128K. Консервативный предел калькулятора 1 000 000 суммарных токенов."
+      "review_note": "Сверено: claude-sonnet-5-5 и claude-haiku-5-5 — контекст 1M, максимальный выход 128K."
     },
     {
       "source_id": "openai-sol-model",
       "url": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
-      "fetched_at": "2026-10-24T18:04:32.123944Z",
-      "content_sha256": "6fd7494f924d9d9cb6999c86794d1d09f0f64ec36c4fc8770425919861bceb6d",
+      "fetched_at": "2026-10-25T03:39:21.874697Z",
+      "content_sha256": "d7288bc2e1a5d2be1c7c425aeebaf9e540b80b4d9b5f31395c7ab55e259746a5",
       "status": "reviewed",
-      "reviewed_at": "2026-10-24T18:05:12.019880Z",
-      "reviewed_by": "Codex — сверка официальной документации",
+      "reviewed_at": "2026-10-25T03:39:21.874697Z",
+      "reviewed_by": "Hoplite (ИИ-агент) — сверка официальной документации",
       "offers": [],
-      "review_note": "Codex сверил GPT-6.1 Sol: gpt-6.1-sol, контекст 1 050 000, выход 128 000; $2/$10, cache read $0.10. При входе >272K весь запрос input x2, output x1.5. Качество не измерялось."
+      "review_note": "Сверено: GPT-6.1 Sol — $2 / $10, кэш $0,10; контекст 1 050 000, выход 128 000; вход >272K — весь запрос ×2 вход и ×1,5 выход."
+    },
+    {
+      "source_id": "openai-luna-model",
+      "url": "https://developers.openai.com/api/docs/models/gpt-6-luna",
+      "fetched_at": "2026-10-25T03:39:21.874697Z",
+      "content_sha256": "6f89ae20a868c1c3af5a3f600856a9719ef862112b2c6317891188312a665263",
+      "status": "reviewed",
+      "reviewed_at": "2026-10-25T03:39:21.874697Z",
+      "reviewed_by": "Hoplite (ИИ-агент) — сверка официальной документации",
+      "offers": [],
+      "review_note": "Сверено: GPT-6 Luna — $0,10 / $0,50, кэш $0,01; контекст 1 050 000, выход 128 000; вход >272K — ×2 вход и ×1,5 выход."
     },
     {
       "source_id": "deepseek-direct-pricing",
       "url": "https://api-docs.deepseek.com/quick_start/pricing/",
-      "fetched_at": "2026-10-24T18:04:32.660438Z",
+      "fetched_at": "2026-10-25T03:39:21.874697Z",
       "content_sha256": "b856a6e93fa4793ecc8f3fd03a01bb7d8f7572f78a4739da8ce6dbdb09328d66",
       "status": "reviewed",
-      "reviewed_at": "2026-10-24T18:05:12.019880Z",
-      "reviewed_by": "Codex — сверка официальной документации",
+      "reviewed_at": "2026-10-25T03:39:21.874697Z",
+      "reviewed_by": "Hoplite (ИИ-агент) — сверка официальной документации",
       "offers": [],
-      "review_note": "Codex сверил DeepSeek-V4.1-Flash-1017, API deepseek-flash: peak $0.30/$1.20, off-peak $0.15/$0.60, cache $0.006/$0.003; контекст 1M, выход 384K. Peak пн-пт 01-04 и 06-10 UTC кроме праздников КНР. Качество и доступ из РФ не измерялись."
+      "review_note": "Сверено: deepseek-flash (V4.1-Flash-1017) — пик $0,30 / $1,20, вне пика $0,15 / $0,60; deepseek-v4-pro (V4-Pro-0813) — пик $1,32 / $3,96, вне пика $0,66 / $1,98; контекст 1M, выход до 384K."
+    },
+    {
+      "source_id": "yandex-pricing",
+      "url": "https://aistudio.yandex.ru/docs/ru/ai-studio/pricing",
+      "fetched_at": "2026-10-25T03:39:21.874697Z",
+      "content_sha256": "6cc93be95fcbac59f84adf6a320a53ce6ea2241d9c734991b280b6516992c0e2",
+      "status": "reviewed",
+      "reviewed_at": "2026-10-25T03:39:21.874697Z",
+      "reviewed_by": "Hoplite (ИИ-агент) — сверка официальной документации",
+      "offers": [],
+      "review_note": "Живая страница отдаёт CAPTCHA; сверка по копии Wayback Machine от 16.10.2026 (19:21 UTC), хеш — этой копии. Синхронный режим, ₽ за 1 000 токенов с НДС: YandexGPT Pro 5.1 — 0,8 / 0,8; Alice AI LLM — 0,5 / 1,2. Долларовые цены страницы = рубли / 1,22 / 100, что подтверждает НДС 22 %."
+    },
+    {
+      "source_id": "sber-gigachat-pricing",
+      "url": "https://developers.sber.ru/docs/ru/gigachat/tariffs/legal-tariffs",
+      "fetched_at": "2026-10-25T03:39:21.874697Z",
+      "content_sha256": "ab82ca93a53dbb48afe85eca8853d48435c58d7c7ea52ea0ea097d22846f2ae7",
+      "status": "reviewed",
+      "reviewed_at": "2026-10-25T03:39:21.874697Z",
+      "reviewed_by": "Hoplite (ИИ-агент) — сверка официальной документации",
+      "offers": [],
+      "review_note": "Сверено (страница обновлена 07.10.2026): pay-as-you-go с НДС за 1 000 токенов — Lite 0,065 ₽, Pro 0,5 ₽, Max 0,65 ₽; асинхронно вдвое дешевле; минимальный платёж 600 ₽/мес."
+    },
+    {
+      "source_id": "sber-gigachat-2-max",
+      "url": "https://developers.sber.ru/docs/ru/gigachat/models/gigachat-2-max",
+      "fetched_at": "2026-10-25T03:39:21.874697Z",
+      "content_sha256": "29c40f94f11d6e4b20679357c47035166cea18766efca5e450474d56dd37e3d0",
+      "status": "reviewed",
+      "reviewed_at": "2026-10-25T03:39:21.874697Z",
+      "reviewed_by": "Hoplite (ИИ-агент) — сверка официальной документации",
+      "offers": [],
+      "review_note": "Сверено: GigaChat 2 Max — контекст 128 000 токенов; вход текст, изображение, аудио; поддержка функций."
+    },
+    {
+      "source_id": "sber-gigachat-2-pro",
+      "url": "https://developers.sber.ru/docs/ru/gigachat/models/gigachat-2-pro",
+      "fetched_at": "2026-10-25T03:39:21.874697Z",
+      "content_sha256": "262d05e2d302b00c03fb319c9795e5cc89ba73a92aa69414d185de2dc8bcf451",
+      "status": "reviewed",
+      "reviewed_at": "2026-10-25T03:39:21.874697Z",
+      "reviewed_by": "Hoplite (ИИ-агент) — сверка официальной документации",
+      "offers": [],
+      "review_note": "Сверено: GigaChat 2 Pro — контекст 128 000 токенов; поддержка функций."
+    },
+    {
+      "source_id": "sber-gigachat-2-lite",
+      "url": "https://developers.sber.ru/docs/ru/gigachat/models/gigachat-2-lite",
+      "fetched_at": "2026-10-25T03:39:21.874697Z",
+      "content_sha256": "3f3b7211e0e9791a09ec248cd97130284a727b1f715ab181eca552646423e8bb",
+      "status": "reviewed",
+      "reviewed_at": "2026-10-25T03:39:21.874697Z",
+      "reviewed_by": "Hoplite (ИИ-агент) — сверка официальной документации",
+      "offers": [],
+      "review_note": "Сверено: GigaChat 2 Lite — контекст 128 000 токенов; вход только текст; поддержка функций."
+    },
+    {
+      "source_id": "anthropic-access",
+      "url": "https://platform.claude.com/docs/en/api/supported-regions",
+      "fetched_at": "2026-10-24T22:05:23.803624Z",
+      "content_sha256": "e17fe02b7ec8f2043e6075bd509cfea4d0e3e6ced7d630113bb3178a2a068d16",
+      "status": "reviewed",
+      "reviewed_at": "2026-10-24T22:05:24.463334Z",
+      "reviewed_by": "Codex — сверка официальных источников",
+      "offers": [],
+      "review_note": "Codex сверил официальный список регионов Claude API: Россия отсутствует. Официальный API в РФ не поддерживается."
+    },
+    {
+      "source_id": "openai-access",
+      "url": "https://developers.openai.com/api/docs/supported-countries",
+      "fetched_at": "2026-10-24T22:05:24.329183Z",
+      "content_sha256": "7abc61e88716eab016af09dc545c261a546a8e27eebc1ea79285c848b541a8e2",
+      "status": "reviewed",
+      "reviewed_at": "2026-10-24T22:05:24.463843Z",
+      "reviewed_by": "Codex — сверка официальных источников",
+      "offers": [],
+      "review_note": "Codex сверил официальный список поддерживаемых стран API: Россия отсутствует. Это подтверждает отсутствие официальной поддержки API в РФ, а не успешный обход ограничений."
+    },
+    {
+      "source_id": "deepseek-access",
+      "url": "https://cdn.deepseek.com/policies/en-US/deepseek-terms-of-use.html",
+      "fetched_at": "2026-10-24T22:05:24.463334Z",
+      "content_sha256": "e5c52c238ff59a6d274cd66c449f939ba6bd3183fe7927397b595df02887a76d",
+      "status": "reviewed",
+      "reviewed_at": "2026-10-24T22:05:24.463843Z",
+      "reviewed_by": "Codex — сверка официальных источников",
+      "offers": [],
+      "review_note": "Codex сверил п. 1.5 официальных условий: DeepSeek не гарантирует доступность по юрисдикциям. Публичного списка поддерживаемых стран и подтверждения API-доступа из РФ нет. Статус — не подтверждён, не обещание доступности."
     },
     {
       "source_id": "openrouter-models",
@@ -80,72 +179,6 @@
         }
       ],
       "review_note": "Тарифы за 1 млн токенов, USD, стандартный вход/выход без кеша, налогов и дополнительных услуг."
-    },
-    {
-      "source_id": "google-access",
-      "url": "https://ai.google.dev/gemini-api/docs/available-regions",
-      "fetched_at": "2026-10-24T17:04:18.074179Z",
-      "content_sha256": "a9f84bc24a77b41e378f1454fda6f77b1565140fd9ce251bee21d8befb846a1d",
-      "status": "review_required",
-      "reviewed_at": null,
-      "reviewed_by": null,
-      "offers": [],
-      "review_note": "Страница получена. Содержание и доступность из региона требуют ручного ревью; получение HTTP 200 не подтверждает доступ из РФ."
-    },
-    {
-      "source_id": "google-pricing",
-      "url": "https://ai.google.dev/gemini-api/docs/pricing",
-      "fetched_at": "2026-10-24T17:04:18.626656Z",
-      "content_sha256": "addef5b28c26db94b8f81d30b1577ba26f53db5b7620f9b7a346830d80534d2a",
-      "status": "review_required",
-      "reviewed_at": null,
-      "reviewed_by": null,
-      "offers": [],
-      "review_note": "Страница получена. Содержание и доступность из региона требуют ручного ревью; получение HTTP 200 не подтверждает доступ из РФ."
-    },
-    {
-      "source_id": "yandex-pricing",
-      "url": "https://aistudio.yandex.ru/ru/docs/ai-studio/pricing",
-      "fetched_at": "2026-10-24T17:04:18.800349Z",
-      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "status": "unavailable",
-      "reviewed_at": null,
-      "reviewed_by": null,
-      "offers": [],
-      "review_note": "Источник недоступен или формат изменился. Не использовать для решений; требуется ручная проверка."
-    },
-    {
-      "source_id": "anthropic-access",
-      "url": "https://platform.claude.com/docs/en/api/supported-regions",
-      "fetched_at": "2026-10-24T22:05:23.803624Z",
-      "content_sha256": "e17fe02b7ec8f2043e6075bd509cfea4d0e3e6ced7d630113bb3178a2a068d16",
-      "status": "reviewed",
-      "reviewed_at": "2026-10-24T22:05:24.463334Z",
-      "reviewed_by": "Codex — сверка официальных источников",
-      "offers": [],
-      "review_note": "Codex сверил официальный список регионов Claude API: Россия отсутствует. Официальный API в РФ не поддерживается."
-    },
-    {
-      "source_id": "openai-access",
-      "url": "https://developers.openai.com/api/docs/supported-countries",
-      "fetched_at": "2026-10-24T22:05:24.329183Z",
-      "content_sha256": "7abc61e88716eab016af09dc545c261a546a8e27eebc1ea79285c848b541a8e2",
-      "status": "reviewed",
-      "reviewed_at": "2026-10-24T22:05:24.463843Z",
-      "reviewed_by": "Codex — сверка официальных источников",
-      "offers": [],
-      "review_note": "Codex сверил официальный список поддерживаемых стран API: Россия отсутствует. Это подтверждает отсутствие официальной поддержки API в РФ, а не успешный обход ограничений."
-    },
-    {
-      "source_id": "deepseek-access",
-      "url": "https://cdn.deepseek.com/policies/en-US/deepseek-terms-of-use.html",
-      "fetched_at": "2026-10-24T22:05:24.463334Z",
-      "content_sha256": "e5c52c238ff59a6d274cd66c449f939ba6bd3183fe7927397b595df02887a76d",
-      "status": "reviewed",
-      "reviewed_at": "2026-10-24T22:05:24.463843Z",
-      "reviewed_by": "Codex — сверка официальных источников",
-      "offers": [],
-      "review_note": "Codex сверил п. 1.5 официальных условий: DeepSeek не гарантирует доступность по юрисдикциям. Публичного списка поддерживаемых стран и подтверждения API-доступа из РФ нет. Статус — не подтверждён, не обещание доступности."
     }
   ]
 }

@@ -9,7 +9,7 @@ from adoption_compass.api import create_app
 from adoption_compass.config import Settings
 from adoption_compass.services import Services, build_services
 
-TODAY = date(2026, 10, 24)
+TODAY = date(2026, 10, 25)
 
 
 @pytest.fixture

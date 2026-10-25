@@ -6,6 +6,34 @@ from datetime import date
 
 from .assessment import AssessmentResult, ProcessResult
 from .domain import DEPLOYMENT_LABELS, QUADRANT_LABELS, TASK_LABELS, Severity, format_rub
+from .featured_models import FeaturedModel
+
+PREFERENCE_LABELS = {
+    "balanced": "баланс",
+    "cost": "минимальная цена",
+    "quality": "максимальное качество",
+    "safety": "максимальная безопасность",
+}
+
+
+def _tariff_line(profile: FeaturedModel) -> str:
+    prices = profile.pricing
+    if profile.currency == "RUB":
+        price = f"{prices.input_per_mtok:g} / {prices.output_per_mtok:g} ₽ за 1 млн токенов с НДС"
+    else:
+        price = (
+            f"${prices.input_per_mtok:g} / ${prices.output_per_mtok:g} за 1 млн токенов без налогов"
+        )
+    output = (
+        f"выход до {profile.max_output_tokens:,}".replace(",", "\u00a0")
+        if profile.max_output_tokens
+        else "предел выхода не публикуется"
+    )
+    return (
+        f"[{profile.name}]({profile.pricing_url}) — {price.replace('.', ',')} (вход / выход); "
+        f"контекст {profile.context_label}, {output}; сверено {profile.reviewed_at:%d.%m.%Y}. "
+        f"{profile.access_note}"
+    )
 
 
 def _months(value: float | None) -> str:
@@ -91,32 +119,31 @@ def assessment_markdown(
 
     if any(p.model_options for p in result.processes):
         lines += [
-            "## Три базовые модели: сравнение по каждому процессу",
+            "## Модели по процессам: выбранная и самая дешёвая подходящая",
             "",
-            "Качество 1–5 и итоговый балл — экспертные допущения, не измерения LLM. "
-            "USD/RUB — сценарный курс; налоги, комиссии, кэш и инструменты не включены. "
-            "Вход и весь оплачиваемый выход умножены на запас токенов из допущений.",
+            "Качество 1–5 и итоговый балл — экспертные допущения, не измерения LLM. Рублёвые тарифы "
+            "российских провайдеров — с НДС, долларовые — без налогов, пересчёт по курсу из допущений. "
+            "Кэш, асинхронный режим и скидки не учтены; токены умножены на запас из допущений.",
             "",
-            "| Процесс | Модель / API ID | Качество, экспертно | USD/мес | ₽/мес | Допустимость |",
+            "| Процесс | Выбранная модель | ₽/мес | Самая дешёвая подходящая | ₽/мес | Подходят |",
             "| --- | --- | --- | --- | --- | --- |",
         ]
         for process in result.processes:
-            for option in process.model_options:
-                usd = f"{option.cost.total_usd:.8f}" if option.cost else "—"
-                rub = f"{option.cost.total_rub:.2f}" if option.cost else "—"
-                reason = "проходит ограничения" if option.eligible else "; ".join(option.reasons)
-                lines.append(
-                    f"| {_escape(process.name)} | {option.name} / `{option.profile.api_model}` | "
-                    f"{option.quality}/5 | {usd} | {rub} | {_escape(reason)} |"
-                )
-        lines += ["", "### Источники тарифов и лимитов", ""]
+            eligible = [o for o in process.model_options if o.eligible and o.cost]
+            cheapest = min(eligible, key=lambda o: o.cost.total_rub if o.cost else 0, default=None)
+            chosen = f"{process.model.name} (`{process.model.model_id}`)" if process.model else "—"
+            chosen_rub = format_rub(process.model.cost.total_rub) if process.model else "—"
+            alternative = cheapest.name if cheapest else "—"
+            alternative_rub = (
+                format_rub(cheapest.cost.total_rub) if cheapest and cheapest.cost else "—"
+            )
+            lines.append(
+                f"| {_escape(process.name)} | {chosen} | {chosen_rub} | {alternative} | "
+                f"{alternative_rub} | {len(eligible)} из {len(process.model_options)} |"
+            )
+        lines += ["", "### Тарифы и источники", ""]
         profiles = {o.model_id: o.profile for p in result.processes for o in p.model_options}
-        lines += [
-            f"- [{profile.name}]({profile.pricing_url}): сверено {profile.reviewed_at}; "
-            f"контекст {profile.context_label}, максимальный выход {profile.max_output_tokens}. "
-            f"{profile.access_note}"
-            for profile in profiles.values()
-        ]
+        lines += [f"- {_tariff_line(profile)}" for profile in profiles.values()]
         lines.append("")
 
     if result.portfolio_scenarios:
@@ -180,10 +207,10 @@ def assessment_markdown(
         f"| Сопровождение | {a.support_share_per_month:.0%} от стоимости внедрения в месяц |",
         f"| Запас токенов (повторы, контекст) | ×{a.llm_overhead:.2f} |",
         f"| Снижение ошибок | {a.error_reduction:.0%} |",
-        f"| Курс USD/RUB | {a.usd_rub:.0f} |",
-        f"| Приоритет модели | {a.model_preference} |",
-        f"| Тариф DeepSeek | {a.deepseek_period} |",
-        f"| Доступный аккаунт и оплата в поддерживаемом регионе | {'предполагаются; доступ из РФ не гарантируется' if a.supported_region else 'не предполагаются'} |",
+        f"| Курс USD/RUB | {a.usd_rub:.2f} ₽ |".replace(".", ","),
+        f"| Приоритет модели | {PREFERENCE_LABELS.get(a.model_preference, a.model_preference)} |",
+        f"| Время запросов к DeepSeek | {'вне пика' if a.deepseek_period == 'off_peak' else 'пиковые часы'} |",
+        f"| Доступ к зарубежным API (аккаунт и оплата в поддерживаемой стране) | {'предполагается' if a.supported_region else 'нет — только российские облака'} |",
         f"| Обходные пути доступа к зарубежным моделям | {'разрешены' if a.allow_workarounds else 'не используются'} |",
         "",
         "> Расчёт — оценка на основе допущений, а не гарантия результата. "

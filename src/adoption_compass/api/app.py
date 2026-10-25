@@ -214,7 +214,9 @@ def featured_models(svc: ServicesDep) -> FeaturedCatalog:
 
 @router.post("/models/compare", response_model=ModelComparison, tags=["catalog"])
 def compare_featured(body: ModelComparisonRequest, svc: ServicesDep) -> ModelComparison:
-    return compare_models(body, svc.settings.current_date, svc.settings.data_dir)
+    return compare_models(
+        body, svc.settings.current_date, svc.settings.data_dir, usd_rub=svc.advisor.usd_rub
+    )
 
 
 @router.get("/catalog/sources", tags=["catalog"])
@@ -349,7 +351,7 @@ def demo_assessment(svc: ServicesDep) -> UploadResponse:
     if svc.settings.demo_mode:
         stored, _ = _stored_result(svc, "demo")
         return UploadResponse(assessment=stored, parse_errors=[])
-    parsed = parse_processes_csv(read_data_text("samples/demo-processes.csv"))
+    parsed = parse_processes_csv(read_data_text("samples/processes.csv"))
     stored = _persist(svc, "Демо: ООО «Ромашка-Сервис»", parsed.processes, None)
     return UploadResponse(assessment=stored, parse_errors=parsed.errors)
 
@@ -422,7 +424,7 @@ def assessment_export(assessment_id: str, svc: ServicesDep) -> Response:
 def sample_processes(svc: ServicesDep) -> Response:
     return Response(
         read_data_text(
-            "samples/demo-processes.csv",
+            "samples/processes.csv",
             svc.settings.data_dir,
         ),
         media_type="text/csv; charset=utf-8",

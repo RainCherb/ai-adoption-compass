@@ -17,7 +17,7 @@ class Assumptions(BaseModel):
     support_share_per_month: float = Field(0.02, ge=0, le=0.5)
     llm_overhead: float = Field(1.3, ge=1, le=5)
     error_reduction: float = Field(0.25, ge=0, le=1)
-    usd_rub: float = Field(90.0, gt=0, le=1_000_000)
+    usd_rub: float = Field(80.54, gt=0, le=1_000_000)
     default_hourly_cost_rub: float = Field(800, gt=0, le=1_000_000_000)
     impact_scale_rub: float = Field(500_000, gt=0)
     allow_workarounds: bool = False

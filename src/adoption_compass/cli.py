@@ -628,7 +628,13 @@ def eval_run(
                 raise typer.BadParameter("Для provider=api нужны --base-url и --model")
             pricing = None
             if catalog_id:
-                entry = svc.catalog.get(catalog_id)
+                try:
+                    entry = svc.catalog.get(catalog_id)
+                except KeyError as exc:
+                    known = ", ".join(m.id for m in svc.catalog.models)
+                    raise typer.BadParameter(
+                        f"Модели {catalog_id} нет в каталоге. Доступно: {known}"
+                    ) from exc
                 fx = svc.advisor.usd_rub if entry.pricing.currency == "USD" else 1.0
                 pricing = Pricing(
                     entry.pricing.input_per_mtok * fx, entry.pricing.output_per_mtok * fx

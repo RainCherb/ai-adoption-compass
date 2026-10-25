@@ -6,7 +6,7 @@ from pathlib import Path
 
 from rich.console import Console
 
-os.environ.setdefault("COMPASS_TODAY", "2026-10-24")
+os.environ.setdefault("COMPASS_TODAY", "2026-10-25")
 
 from adoption_compass import cli
 

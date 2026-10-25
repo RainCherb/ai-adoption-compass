@@ -23,7 +23,12 @@ from .domain import (
     Tier,
     format_rub,
 )
-from .featured_models import FeaturedModel, pricing_rates, profile_is_reviewed
+from .featured_models import (
+    FeaturedModel,
+    pricing_rates,
+    profile_age_warning,
+    profile_is_reviewed,
+)
 from .safety.policy import Policy
 
 
@@ -93,10 +98,21 @@ class CostBreakdown(BaseModel):
     total_usd: float | None = None
     input_usd: float | None = None
     output_usd: float | None = None
+    input_rub: float | None = None
+    output_rub: float | None = None
     requests_per_month: int | None = None
+    currency: Literal["USD", "RUB"] | None = Field(
+        None, description="Валюта прямого тарифа провайдера"
+    )
+    vat_included: bool | None = Field(None, description="Тариф провайдера уже включает НДС")
+    input_rate: float | None = Field(None, description="За 1 млн входных токенов, в валюте тарифа")
+    output_rate: float | None = Field(
+        None, description="За 1 млн выходных токенов, в валюте тарифа"
+    )
     input_rate_usd: float | None = None
     output_rate_usd: float | None = None
     tariff: str | None = None
+    price_warning: str | None = None
 
 
 class ScoreBreakdown(BaseModel):
@@ -131,6 +147,7 @@ class ModelOption(BaseModel):
     cost: CostBreakdown | None
     eligible: bool
     reasons: list[str]
+    kinds: list[str] = Field(default_factory=list, description="Коды причин исключения")
     profile: FeaturedModel
 
 
@@ -173,7 +190,7 @@ class Advisor:
         catalog: Catalog,
         policy: Policy,
         *,
-        usd_rub: float = 90.0,
+        usd_rub: float = 80.54,
         today: date | None = None,
         data_dir: Path | None = None,
     ) -> None:
@@ -187,6 +204,11 @@ class Advisor:
             m.id
             for m in catalog.models
             if m.profile and not profile_is_reviewed(m.profile, sources)
+        }
+        self.price_warnings = {
+            m.id: warning
+            for m in catalog.models
+            if m.profile and (warning := profile_age_warning(m.profile, sources))
         }
 
     def to_rub(self, amount: float, currency: str) -> float:
@@ -210,42 +232,35 @@ class Advisor:
         if model.id in self.invalid_prices:
             raise ValueError("Прямой тариф требует повторной сверки источника")
         if model.profile:
+            profile = model.profile
             input_rate, output_rate, tariff = pricing_rates(
-                model.profile.pricing, math.ceil(tokens_in * overhead), period
+                profile.pricing, math.ceil(tokens_in * overhead), period
             )
-            usd = (
-                (
-                    Decimal(tokens_in) * Decimal(str(input_rate))
-                    + Decimal(tokens_out) * Decimal(str(output_rate))
-                )
-                * Decimal(requests)
-                * Decimal(str(overhead))
-                / 1_000_000
-            )
-            rub = float(usd * Decimal(str(self.usd_rub)))
+            volume = Decimal(requests) * Decimal(str(overhead)) / 1_000_000
+            input_native = Decimal(tokens_in) * Decimal(str(input_rate)) * volume
+            output_native = Decimal(tokens_out) * Decimal(str(output_rate)) * volume
+            fx = Decimal(str(self.usd_rub))
+            to_rub = fx if profile.currency == "USD" else Decimal(1)
+            to_usd = Decimal(1) if profile.currency == "USD" else 1 / fx
+            total_rub = float((input_native + output_native) * to_rub)
             return CostBreakdown(
-                variable_rub=round(rub, 2),
+                variable_rub=round(total_rub, 2),
                 fixed_rub=0,
-                total_rub=round(rub, 2),
-                total_usd=float(usd),
-                input_usd=float(
-                    Decimal(tokens_in)
-                    * Decimal(str(input_rate))
-                    * Decimal(requests)
-                    * Decimal(str(overhead))
-                    / 1_000_000
-                ),
-                output_usd=float(
-                    Decimal(tokens_out)
-                    * Decimal(str(output_rate))
-                    * Decimal(requests)
-                    * Decimal(str(overhead))
-                    / 1_000_000
-                ),
+                total_rub=round(total_rub, 2),
+                total_usd=float((input_native + output_native) * to_usd),
+                input_usd=float(input_native * to_usd),
+                output_usd=float(output_native * to_usd),
+                input_rub=float(input_native * to_rub),
+                output_rub=float(output_native * to_rub),
                 requests_per_month=requests,
-                input_rate_usd=input_rate,
-                output_rate_usd=output_rate,
+                currency=profile.currency,
+                vat_included=profile.vat_included,
+                input_rate=input_rate,
+                output_rate=output_rate,
+                input_rate_usd=input_rate if profile.currency == "USD" else None,
+                output_rate_usd=output_rate if profile.currency == "USD" else None,
                 tariff=tariff,
+                price_warning=self.price_warnings.get(model.id),
             )
         variable = self.to_rub(
             mtok_in * pricing.input_per_mtok + mtok_out * pricing.output_per_mtok,
@@ -310,8 +325,9 @@ class Advisor:
         quality = model.quality[w.task_type]
         if model.id in self.invalid_prices:
             reasons.append(("pricing", "Источник тарифа требует повторного ревью"))
+        max_output = model.profile.max_output_tokens if model.profile else None
         if model.profile and (
-            w.tokens_out > model.profile.max_output_tokens
+            (max_output is not None and w.tokens_out > max_output)
             or w.tokens_in + w.tokens_out > model.context_window
         ):
             reasons.append(("context", "Нагрузка превышает лимит контекста или выхода модели"))
@@ -365,14 +381,17 @@ class Advisor:
         if quality == w.min_quality:
             cons.append("Качество на пороге требований — проверьте на своих данных (compass eval)")
         if model.profile:
-            pros.append(f"Прямой API: {model.profile.api_model}; {cost.tariff}")
+            vat = "цена с НДС" if model.profile.vat_included else "цена без налогов"
+            pros.append(f"Прямой API: {model.profile.api_model}; {cost.tariff}; {vat}")
             cons.append(
                 "Качество 1–5 и итоговая оценка — экспертные допущения, не измеренные метрики"
             )
-            if w.supported_region:
+            if w.supported_region and model.ru_access is RuAccess.WORKAROUND:
                 cons.append(
-                    "Расчёт предполагает аккаунт и оплату в поддерживаемом регионе; доступ из РФ не подтверждается"
+                    "Расчёт предполагает аккаунт и оплату в поддерживаемой стране; из РФ напрямую API недоступен"
                 )
+            if cost.price_warning:
+                cons.append(cost.price_warning)
         return pros, cons
 
     def model_options(self, workload: Workload) -> list[ModelOption]:
@@ -408,6 +427,7 @@ class Advisor:
                     cost=cost,
                     eligible=not reasons,
                     reasons=[r for _, r in reasons],
+                    kinds=list(dict.fromkeys(k for k, _ in reasons)),
                     profile=model.profile,
                 )
             )
@@ -519,8 +539,14 @@ class Advisor:
         notes: list[str] = []
         if self.catalog.data_status == "illustrative":
             notes.append(
-                "Качество — экспертное допущение, не результат замеров. Тарифы основных трёх моделей взяты из официальных источников; перед решением сверьте их и условия "
-                "с официальными страницами провайдеров."
+                "Оценки качества 1–5 — экспертные допущения, а не результаты замеров: перед "
+                "внедрением проверьте модели на своих примерах. Тарифы взяты с официальных страниц "
+                "провайдеров; рублёвые цены российских облаков включают НДС, долларовые — без налогов."
+            )
+        if self.price_warnings:
+            notes.append(
+                f"Тарифы давно не сверялись: {len(self.price_warnings)} шт. — расчёт показан, "
+                "но перед решением проверьте цены у провайдеров (compass catalog sources)."
             )
         stale = self.catalog.stale_entries(self.today)
         if stale:

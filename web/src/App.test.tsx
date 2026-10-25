@@ -128,7 +128,8 @@ describe("App: шапка и подвал", () => {
     setup();
     render(<App />);
     const chip = await screen.findByTestId("catalog-status");
-    expect(chip).toHaveTextContent("Каталог: демо-данные · 24.10.2026");
+    expect(chip).toHaveTextContent("Тарифы сверены 25.10.2026 · качество — экспертно");
+    expect(chip).not.toHaveTextContent("демо-данные");
     expect(screen.getByRole("contentinfo")).toHaveTextContent("AI Adoption Compass v1.0.0");
   });
 

@@ -48,18 +48,28 @@ def test_cost_chart_components_conserve_official_quote(settings, period):
                 "deepseek_period": period,
             },
         ).json()
-        costs = [row["cost"] for row in result["model_options"]]
-        assert [c["input_usd"] for c in costs] == [20, 20, 3 if period == "peak" else 1.5]
-        assert [c["output_usd"] for c in costs] == [30, 30, 3.6 if period == "peak" else 1.8]
-        for cost in costs:
+        costs = {row["model_id"]: row["cost"] for row in result["model_options"]}
+        assert len(costs) == 11
+        for model_id in ("claude-sonnet-5-5", "gpt-6-1-sol"):
+            assert (costs[model_id]["input_usd"], costs[model_id]["output_usd"]) == (20, 30)
+        flash = costs["deepseek-v4-1-flash"]
+        expected = (3, 3.6) if period == "peak" else (1.5, 1.8)
+        assert (flash["input_usd"], flash["output_usd"]) == pytest.approx(expected)
+        # Рублёвый тариф с НДС: 10 млн × 500 ₽ + 3 млн × 1 200 ₽ за 1 млн токенов.
+        alice = costs["alice-ai-llm"]
+        assert (alice["input_rub"], alice["output_rub"]) == pytest.approx((5_000, 3_600))
+        for cost in costs.values():
             assert cost["input_usd"] + cost["output_usd"] == pytest.approx(cost["total_usd"])
+            assert cost["input_rub"] + cost["output_rub"] == pytest.approx(
+                cost["total_rub"], abs=0.01
+            )
             assert cost["requests_per_month"] == 10000
 
 
 @pytest.mark.parametrize("horizon", [1, 12, 24, 60])
 def test_portfolio_curves_match_summary_and_sensitivity_formulas(settings, horizon):
     svc = build_services(replace(settings, demo_mode=True), with_storage=False)
-    processes = parse_processes_csv(read_data_text("samples/demo-processes.csv")).processes
+    processes = parse_processes_csv(read_data_text("samples/processes.csv")).processes
     result = svc.engine.assess(processes, {"horizon_months": horizon})
     base = next(row for row in result.portfolio_scenarios if row.key == "base")
     assert base.implementation_rub == result.summary.implementation_rub
@@ -87,8 +97,11 @@ def test_portfolio_curves_match_summary_and_sensitivity_formulas(settings, horiz
 
 def test_unavailable_models_produce_no_investment_or_fake_profit(settings):
     svc = build_services(replace(settings, demo_mode=True), with_storage=False)
-    processes = parse_processes_csv(read_data_text("samples/demo-processes.csv")).processes
-    result = svc.engine.assess(processes, {"supported_region": False})
+    processes = parse_processes_csv(read_data_text("samples/processes.csv")).processes
+    # Требование своего контура не выполняет ни одна модель продукта: всё заблокировано.
+    blocked = [p.model_copy(update={"must_self_host": True}) for p in processes]
+    result = svc.engine.assess(blocked)
+    assert result.summary.processes_blocked == len(blocked)
     assert all(
         row.implementation_rub == 0 and row.net_horizon_rub == 0
         for row in result.portfolio_scenarios
@@ -98,8 +111,13 @@ def test_unavailable_models_produce_no_investment_or_fake_profit(settings):
 def test_russian_access_is_explicit_but_unknown_is_not_invented(settings):
     svc = build_services(settings, with_storage=False)
     profiles = [svc.catalog.get(model_id).profile for model_id in svc.catalog.primary_model_ids]
-    assert [p.russia_api_status for p in profiles] == ["unavailable", "unavailable", "unverified"]
-    assert all(p.access_url and p.access_reviewed_at and len(p.best_for) >= 3 for p in profiles)
+    statuses = {p.id: p.russia_api_status for p in profiles}
+    assert [statuses[i] for i in svc.catalog.primary_model_ids] == ["available"] * 5 + [
+        "unavailable"
+    ] * 4 + ["unverified"] * 2
+    # Недоступность или неопределённость подкреплена ссылкой на официальный источник.
+    assert all(p.access_url for p in profiles if p.russia_api_status != "available")
+    assert all(p.access_reviewed_at and len(p.best_for) >= 2 for p in profiles)
 
 
 def test_local_measurements_are_archived_outside_public_api_demo(settings):

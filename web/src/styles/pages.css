@@ -763,6 +763,18 @@
   line-height: 1.15;
 }
 
+.rec__warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  color: var(--warning-ink);
+}
+
+.rec__warning svg {
+  flex: none;
+  margin-top: 2px;
+}
+
 .rec__breakdown {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -846,7 +858,12 @@
 .catalog-table thead th { white-space: normal; }
 .catalog-table th:first-child { min-width: 210px; max-width: 250px; }
 .catalog-table code, .model-options-table code { overflow-wrap: anywhere; }
-.model-options-table { min-width: 680px; }
+.model-options-table { min-width: 640px; }
+.model-options-table th[scope="row"] .badge { margin-top: 4px; }
+.model-options-table td.num { white-space: nowrap; }
+.model-options__reasons { margin: 6px 0 0; padding-left: var(--sp-4); color: var(--muted); }
+.cost-warning { display: flex; align-items: flex-start; gap: 4px; max-width: 18rem; margin-top: 4px; color: var(--warning-ink); white-space: normal; }
+.cost-warning svg { flex: none; margin-top: 2px; }
 .model-options-table th:first-child { min-width: 170px; }
 .model-options-table thead th { white-space: normal; }
 .model-disclaimer { margin-bottom: var(--sp-5); color: var(--muted); font-size: var(--text-sm); }
@@ -1305,142 +1322,53 @@
 
 /* ===== Качество моделей ===== */
 
-.provider-line {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px;
+.quality-matrix {
+  min-width: 720px;
 }
 
-.provider-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
+.quality-matrix thead th {
+  padding-inline: var(--sp-2);
+  letter-spacing: 0;
+  text-align: center;
+  text-transform: none;
+  white-space: nowrap;
 }
 
-.provider-badges:not(:empty) {
-  margin-top: 4px;
+.quality-matrix thead th:first-child {
+  padding-left: var(--sp-3);
+  text-align: left;
 }
 
-.eval-detail-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-  gap: var(--sp-4);
-  align-items: start;
+.quality-matrix thead abbr {
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  cursor: help;
 }
 
-.confusion-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-3);
-  overflow-x: auto;
+.quality-matrix tbody td {
+  text-align: center;
 }
 
-.confusion {
-  border-collapse: separate;
-  border-spacing: 3px;
-  font-size: var(--text-sm);
+.quality-matrix .quality-cell {
+  min-width: 2.25rem;
+  padding: 0.3rem 0.5rem;
 }
 
-.confusion th,
-.confusion td {
-  padding: 0;
-}
-
-.confusion__axis {
-  padding: 0 0 var(--sp-1);
+.quality-matrix__group {
+  background: var(--surface-2);
   color: var(--muted);
   font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.05em;
-  text-align: center;
+  text-align: left;
   text-transform: uppercase;
 }
 
-.confusion__col {
-  height: 128px;
-  min-width: 36px;
-  vertical-align: bottom;
+.quality-matrix__vendor {
+  display: block;
   color: var(--muted);
   font-size: var(--text-xs);
-  font-weight: 600;
-}
-
-.confusion__col span {
-  display: inline-block;
-  max-height: 124px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-}
-
-.confusion__row {
-  padding-right: var(--sp-2) !important;
-  max-width: 150px;
-  font-weight: 600;
-  text-align: right;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.confusion__cell {
-  min-width: 36px;
-  height: 38px;
-  border-radius: 6px;
-  background: var(--surface-2);
-  font-variant-numeric: tabular-nums;
-  font-weight: 650;
-  text-align: center;
-}
-
-.confusion__cell--hit {
-  background: color-mix(in srgb, var(--success) calc(var(--v) * 72%), var(--surface-2));
-}
-
-.confusion__cell--miss {
-  background: color-mix(in srgb, var(--danger) calc(var(--v) * 78%), var(--surface-2));
-}
-
-.confusion__cell[data-value="0"] {
-  color: var(--muted);
   font-weight: 400;
-  opacity: 0.55;
-}
-
-.confusion__legend {
-  color: var(--muted);
-  font-size: var(--text-sm);
-}
-
-.failures {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-3);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.failure {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-1);
-  padding: var(--sp-3);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--surface-2);
-}
-
-.failure__verdict {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px;
-  color: var(--muted);
-  font-size: var(--text-sm);
 }
 
 /* ===== Журнал ===== */
@@ -1486,8 +1414,7 @@
 @media (max-width: 1100px) {
   .advisor-layout,
   .prompts-layout,
-  .tpl-detail__grid,
-  .eval-detail-grid {
+  .tpl-detail__grid {
     grid-template-columns: minmax(0, 1fr);
   }
 

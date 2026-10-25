@@ -4,14 +4,13 @@ import {
   formatCount,
   formatDate,
   formatDateTime,
+  formatDollars,
   formatFte,
   formatHours,
-  formatLatency,
   formatMonths,
   formatNumber,
   formatPercent,
   formatPercentValue,
-  formatPointsDelta,
   formatRub,
   formatRubCompact,
   formatRubPrecise,
@@ -50,6 +49,23 @@ describe("краткие и точные суммы", () => {
     expect(formatRubPrecise(0.01367)).toBe(`0,014${NBSP}₽`);
     expect(formatRubPrecise(11.0158)).toBe(`11,02${NBSP}₽`);
     expect(formatRubPrecise(1500)).toBe(`1${NBSP}500${NBSP}₽`);
+    expect(formatRubPrecise(0)).toBe(`0${NBSP}₽`);
+  });
+
+  it("formatRubPrecise не округляет ненулевую сумму до нуля", () => {
+    expect(formatRubPrecise(0.000162)).toBe(`0,000162${NBSP}₽`);
+    expect(formatRubPrecise(0.0004)).toBe(`0,0004${NBSP}₽`);
+  });
+
+  it("formatDollars: два знака от доллара, больше — у малых сумм, знак доллара впереди", () => {
+    expect(formatDollars(50)).toBe("$50");
+    expect(formatDollars(6.6)).toBe("$6,6");
+    expect(formatDollars(1234.567)).toBe(`$1${NBSP}234,57`);
+    expect(formatDollars(0.5)).toBe("$0,5");
+    expect(formatDollars(0.044)).toBe("$0,044");
+    expect(formatDollars(0.000002)).toBe("$0,000002");
+    expect(formatDollars(0)).toBe("$0");
+    expect(formatDollars(null)).toBe("—");
   });
 });
 
@@ -61,17 +77,13 @@ describe("единицы измерения", () => {
     expect(formatFte(5.94)).toBe(`5,9${NBSP}FTE`);
   });
 
-  it("проценты: доли, готовые проценты и разница в п.п.", () => {
+  it("проценты: доли и готовые проценты", () => {
     expect(formatPercent(0.25)).toBe(`25${NBSP}%`);
     expect(formatPercent(0.8472, 1)).toBe(`84,7${NBSP}%`);
     expect(formatPercentValue(155.4)).toBe(`155${NBSP}%`);
-    expect(formatPointsDelta(0.125)).toBe(`+12,5${NBSP}п.п.`);
-    expect(formatPointsDelta(-0.0416)).toBe(`\u22124,2${NBSP}п.п.`);
   });
 
-  it("задержка переключается с мс на секунды, размер — на КБ/МБ", () => {
-    expect(formatLatency(442.6)).toBe(`443${NBSP}мс`);
-    expect(formatLatency(1240.9)).toBe(`1,24${NBSP}с`);
+  it("размер переключается на КБ/МБ", () => {
     expect(formatBytes(2_000_000)).toBe(`2${NBSP}МБ`);
     expect(formatBytes(1500)).toBe(`2${NBSP}КБ`);
   });

@@ -10,6 +10,12 @@ describe("Публичное демо", () => {
     mockFetch([{ path: "/api/assessments", reply: [savedSummary] }, { path: `/api/assessments/${savedSummary.id}`, reply: stored }]);
     render(<MetaContext.Provider value={{ ...meta, demo_mode: true }}><AssessmentPage /></MetaContext.Provider>);
     expect(await screen.findByRole("heading", { name: stored.name })).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "18 процессов вымышленной компании «Ромашка-Сервис». Модель для каждого подбирается из 11 — российских и зарубежных — с учётом категории данных, доступа из РФ, качества и цены.",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/Sonnet|DeepSeek V4\.1 Flash/)).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Загрузить CSV" })).toBeDisabled();
     expect(screen.queryByRole("heading", { name: "Сохранённые оценки" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Удалить" })).not.toBeInTheDocument();

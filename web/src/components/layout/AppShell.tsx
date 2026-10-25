@@ -89,7 +89,8 @@ export function AppShell({ route, theme, onToggleTheme, health, children }: AppS
         <main id="main" ref={mainRef} className="content" tabIndex={-1}>
           {health.data?.demo_mode ? (
             <Banner tone="info" title="Публичное интерактивное демо">
-              Только вымышленные данные. Ввод не сохраняется, LLM не вызываются. Качество и ROI — экспертные допущения.
+              Компания и процессы вымышленные, тарифы моделей реальные — сверены с официальными страницами провайдеров. Ввод не
+              сохраняется, LLM не вызываются. Качество и ROI — экспертные допущения.
             </Banner>
           ) : null}
           {children}

@@ -8,14 +8,18 @@ import { useAsync } from "../../hooks/useAsync";
 import { labelOf, useMeta } from "../../hooks/useMeta";
 import { formatDate, formatNumber, formatRub, formatUsd } from "../../lib/format";
 import { TIER_LABELS } from "../../lib/labels";
+import { formatRatePair, taxNote } from "../../lib/pricing";
 import { CatalogSources } from "./CatalogSources";
 import { RussiaAccess } from "./RussiaAccess";
 import { Disclosure } from "../../components/ui/Disclosure";
 
 function price(model: CatalogModel): string {
   const { currency, input_per_mtok: input, output_per_mtok: output } = model.pricing;
-  const fmt = currency === "USD" ? formatUsd : formatRub;
-  return `${fmt(input)} / ${fmt(output)}`;
+  return formatRatePair(input, output, currency);
+}
+
+function taxLabel(model: CatalogModel): string {
+  return taxNote({ currency: model.pricing.currency, vatIncluded: model.profile?.vat_included ?? false });
 }
 
 function contextWindow(tokens: number): string {
@@ -38,11 +42,13 @@ export function CatalogTable({ taskType }: { taskType: TaskType }) {
 
   const { models, stale } = catalog.data;
   const staleIds = new Set(stale.map((entry) => entry.id));
+  // Колонка нужна только каталогам с арендой инфраструктуры; у API-моделей она пустая.
+  const showFixed = models.some((model) => model.pricing.fixed_monthly > 0);
 
   return (
     <div className="stack">
       {catalog.data.data_status === "illustrative" && !meta.demo_mode ? (
-        <Banner tone="warning" title="Демонстрационные данные">
+        <Banner tone="warning" title="Каталог справочный: оценки качества — экспертные допущения">
           {catalog.data.disclaimer}
         </Banner>
       ) : null}
@@ -55,13 +61,15 @@ export function CatalogTable({ taskType }: { taskType: TaskType }) {
             <tr>
               <th scope="col">Модель</th>
               <th scope="col">Размещение</th>
-              <th scope="col">Условия доступа</th>
+              <th scope="col">Доступ из РФ</th>
               <th scope="col" className="num-col">
                 Цена вход / выход за 1 млн токенов
               </th>
-              <th scope="col" className="num-col">
-                Фикс. в месяц
-              </th>
+              {showFixed ? (
+                <th scope="col" className="num-col">
+                  Фикс. в месяц
+                </th>
+              ) : null}
               <th scope="col" className="num-col">
                 Контекст
               </th>
@@ -88,14 +96,25 @@ export function CatalogTable({ taskType }: { taskType: TaskType }) {
                 <td>
                   <RussiaAccess profile={model.profile} direct={model.ru_access === "direct"} />
                 </td>
-                <td className="num-col num">{model.pricing.input_per_mtok === 0 && model.pricing.output_per_mtok === 0 ? "—" : price(model)}</td>
                 <td className="num-col num">
-                  {model.pricing.fixed_monthly > 0
-                    ? model.pricing.currency === "USD"
-                      ? formatUsd(model.pricing.fixed_monthly)
-                      : formatRub(model.pricing.fixed_monthly)
-                    : "—"}
+                  {model.pricing.input_per_mtok === 0 && model.pricing.output_per_mtok === 0 ? (
+                    "—"
+                  ) : (
+                    <>
+                      {price(model)}
+                      <div className="small muted">{taxLabel(model)}</div>
+                    </>
+                  )}
                 </td>
+                {showFixed ? (
+                  <td className="num-col num">
+                    {model.pricing.fixed_monthly > 0
+                      ? model.pricing.currency === "USD"
+                        ? formatUsd(model.pricing.fixed_monthly)
+                        : formatRub(model.pricing.fixed_monthly)
+                      : "—"}
+                  </td>
+                ) : null}
                 <td className="num-col num">{contextWindow(model.context_window)}</td>
                 <td>
                   <span className="caps">
@@ -135,8 +154,10 @@ export function CatalogTable({ taskType }: { taskType: TaskType }) {
       </div>
       <Disclosure title="Источники тарифов, лимитов и условий доступа"><CatalogSources /></Disclosure>
       <p className="muted small">
-        <Icon name="info" size={14} /> Курс для пересчёта в рубли: {formatNumber(catalog.data.usd_rub, 2)} ₽ за $1 · каталог на{" "}
-        {formatDate(catalog.data.as_of)}. Базовые тарифы — Standard без кэша; DeepSeek Peak. Курс и качество — допущения, условия прямых тарифов указаны в карточках.
+        <Icon name="info" size={14} /> Российские тарифы — в рублях с НДС 22&nbsp;%, зарубежные — в долларах без налогов;
+        курс для пересчёта — {formatNumber(catalog.data.usd_rub, 2)}&nbsp;₽ за $1. Тарифы стандартные, без кэша,
+        асинхронного режима и скидок; DeepSeek — в пиковые часы. Каталог на {formatDate(catalog.data.as_of)}; курс и
+        качество — допущения, условия тарифов указаны в карточках моделей.
       </p>
     </div>
   );

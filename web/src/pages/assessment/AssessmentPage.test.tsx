@@ -263,7 +263,7 @@ describe("AssessmentPage: пересчёт «что-если»", () => {
     const errorField = screen.getByLabelText(/Снижение ошибок/);
     await user.clear(errorField);
     await user.type(errorField, "40");
-    await user.click(screen.getByRole("checkbox", { name: /обходные пути доступа/ }));
+    await user.click(screen.getByRole("checkbox", { name: /Допускать обходные пути/ }));
     await user.click(screen.getByRole("button", { name: "Пересчитать" }));
 
     expect(await screen.findByText("что-если, не сохранено", { selector: ".banner__title .badge" })).toBeInTheDocument();
@@ -275,7 +275,7 @@ describe("AssessmentPage: пересчёт «что-если»", () => {
       horizon_months: 24,
       error_reduction: 0.4,
       allow_workarounds: true,
-      usd_rub: 90,
+      usd_rub: 80.54,
       support_share_per_month: 0.02,
     });
     expect(kpiList().getByText("Эффект за 24 мес.")).toBeInTheDocument();
@@ -334,6 +334,6 @@ describe("AssessmentPage: пересчёт «что-если»", () => {
     await user.clear(rate);
     await user.type(rate, "120");
     await user.click(screen.getByRole("button", { name: "Значения по умолчанию" }));
-    expect(screen.getByLabelText(/Курс USD\/RUB/)).toHaveValue("90");
+    expect(screen.getByLabelText(/Курс USD\/RUB/)).toHaveValue("80.54");
   });
 });

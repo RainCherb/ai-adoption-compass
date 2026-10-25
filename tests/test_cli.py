@@ -13,7 +13,7 @@ from adoption_compass.resources import read_data_text
 from adoption_compass.safety import Policy
 
 runner = CliRunner()
-ENV = {"COMPASS_TODAY": "2026-10-24", "COLUMNS": "200"}
+ENV = {"COMPASS_TODAY": "2026-10-25", "COLUMNS": "200"}
 PHONE = "+7 912 345-67-89"
 
 
@@ -306,7 +306,7 @@ class TestEval:
             "--model",
             "m1",
             "--catalog-id",
-            "openai-mini",
+            "gpt-6-luna",
             "-f",
             "json",
             env={"OPENAI_API_KEY": "secret-for-test"},
@@ -328,7 +328,7 @@ class TestCatalogAndPolicy:
         assert run("catalog", "check", env={"COMPASS_TODAY": "2027-08-01"}).exit_code == 0
 
     def test_list(self):
-        assert "gigachat-max" in run("catalog", "list").stdout
+        assert "gigachat-2-max" in run("catalog", "list").stdout
 
     def test_handout_to_file_and_stdout(self, tmp_path):
         target = tmp_path / "docs" / "handout.md"
@@ -391,11 +391,12 @@ class TestDataExport:
 
         catalog = (target / "catalog.yaml").read_text(encoding="utf-8")
         (target / "catalog.yaml").write_text(
-            catalog.replace("id: gigachat-max", "id: my-custom-model"), encoding="utf-8"
+            catalog.replace("  - id: gigachat-2-max\n", "  - id: my-custom-model\n"),
+            encoding="utf-8",
         )
         listing = run("catalog", "list", env={"COMPASS_DATA_DIR": str(target)})
         assert "my-custom-model" in listing.stdout
-        assert "gigachat-max" not in listing.stdout
+        assert "gigachat-2-max" not in listing.stdout
 
     def test_existing_files_are_protected_unless_forced(self, tmp_path):
         target = tmp_path / "d"

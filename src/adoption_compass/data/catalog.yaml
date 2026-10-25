@@ -1,16 +1,118 @@
 version: 1
-as_of: 2026-10-24
+as_of: 2026-10-25
 data_status: illustrative
 disclaimer: >-
-  Основные модели: Claude Sonnet 5.5, GPT-6.1 Sol и DeepSeek V4.1 Flash. Их тарифы и лимиты взяты из
-  датированных официальных источников. Качество 1–5, автоматизация, экономия и ROI — экспертные
-  допущения, а не измеренные гарантии. Курс USD/RUB задаётся пользователем. Дополнительные модели вне
-  публичного демо содержат условные значения. Доступ и политику данных проверяйте отдельно.
+  11 моделей с проверенными тарифами: 5 российских (YandexGPT Pro 5.1, Alice AI LLM, GigaChat 2 Max,
+  Pro и Lite) и 6 зарубежных (Claude Sonnet 5.5 и Haiku 5.5, GPT-6.1 Sol и GPT-6 Luna, DeepSeek V4.1
+  Flash и V4 Pro). Цены и лимиты сверены с официальными страницами провайдеров 25.10.2026: рублёвые
+  тарифы включают НДС 22 %, долларовые — без налогов и пересчитываются по курсу из допущений. Оценки
+  качества 1–5, доля автоматизации, экономия и ROI — экспертные допущения, а не измеренные гарантии.
 
-primary_model_ids: [claude-sonnet-5-5, gpt-6-1-sol, deepseek-v4-1-flash]
+# Порядок моделей в сравнении стоимости: сначала российские облака, затем зарубежные API.
+primary_model_ids:
+  - yandexgpt-pro-5-1
+  - alice-ai-llm
+  - gigachat-2-max
+  - gigachat-2-pro
+  - gigachat-2-lite
+  - claude-sonnet-5-5
+  - claude-haiku-5-5
+  - gpt-6-1-sol
+  - gpt-6-luna
+  - deepseek-v4-1-flash
+  - deepseek-v4-pro
 
-# Оценки 1–5 — экспертные допущения, не результаты собственных замеров.
+# Название, вендор, цена, контекст и дата сверки берутся из тарифного профиля (featured-models.yaml).
+# Оценки 1–5 — экспертные допущения для бизнес-задач на русском языке, не результаты собственных замеров.
+# Порядок оценок: классификация, извлечение, резюме, тексты, база знаний, перевод, анализ, код, решения.
 models:
+  - id: yandexgpt-pro-5-1
+    profile_id: yandexgpt-pro-5-1
+    family: YandexGPT
+    tier: balanced
+    deployment: ru_cloud
+    origin: Россия
+    ru_access: direct
+    vision: false
+    tool_calling: true
+    quality: {classification: 4, extraction: 4, summarization: 5, drafting: 5, qa_search: 4, translation: 4, analysis: 3, code: 3, decision_support: 3}
+    strengths:
+      - Сильный русский язык и деловой стиль
+      - Оплата в рублях, обработка данных в РФ
+    limitations:
+      - Контекст 32K — длинные документы нужно делить на части
+      - Слабее зарубежных флагманов в коде и анализе
+      - Перед отправкой персональных и конфиденциальных данных их нужно обезличить (политика данных).
+
+  - id: alice-ai-llm
+    profile_id: alice-ai-llm
+    family: Alice AI
+    tier: flagship
+    deployment: ru_cloud
+    origin: Россия
+    ru_access: direct
+    vision: false
+    tool_calling: true
+    quality: {classification: 4, extraction: 4, summarization: 5, drafting: 5, qa_search: 4, translation: 4, analysis: 4, code: 3, decision_support: 4}
+    strengths:
+      - Флагман Яндекса для рассуждений и агентных сценариев на русском
+      - Вход дешевле YandexGPT Pro 5.1
+    limitations:
+      - Выход дороже входа — длинные ответы заметно повышают стоимость
+      - Контекст в расчёте — 32K (консервативно)
+      - Перед отправкой персональных и конфиденциальных данных их нужно обезличить (политика данных).
+
+  - id: gigachat-2-max
+    profile_id: gigachat-2-max
+    family: GigaChat
+    tier: flagship
+    deployment: ru_cloud
+    origin: Россия
+    ru_access: direct
+    vision: true
+    tool_calling: true
+    quality: {classification: 4, extraction: 4, summarization: 4, drafting: 5, qa_search: 4, translation: 5, analysis: 4, code: 3, decision_support: 4}
+    strengths:
+      - Сильный русский язык, работа с изображениями
+      - Контекст 128K, оплата в рублях
+    limitations:
+      - Слабее зарубежных флагманов в коде и сложных рассуждениях
+      - Перед отправкой персональных и конфиденциальных данных их нужно обезличить (политика данных).
+
+  - id: gigachat-2-pro
+    profile_id: gigachat-2-pro
+    family: GigaChat
+    tier: balanced
+    deployment: ru_cloud
+    origin: Россия
+    ru_access: direct
+    vision: true
+    tool_calling: true
+    quality: {classification: 4, extraction: 4, summarization: 4, drafting: 4, qa_search: 4, translation: 4, analysis: 3, code: 3, decision_support: 3}
+    strengths:
+      - Типовые тексты и резюме дешевле Max
+      - Контекст 128K, оплата в рублях
+    limitations:
+      - Сложный анализ и код — лучше старшие модели
+      - Перед отправкой персональных и конфиденциальных данных их нужно обезличить (политика данных).
+
+  - id: gigachat-2-lite
+    profile_id: gigachat-2-lite
+    family: GigaChat
+    tier: economy
+    deployment: ru_cloud
+    origin: Россия
+    ru_access: direct
+    vision: false
+    tool_calling: true
+    quality: {classification: 3, extraction: 3, summarization: 3, drafting: 4, qa_search: 3, translation: 4, analysis: 2, code: 2, decision_support: 2}
+    strengths:
+      - Самая низкая цена в сравнении
+      - Простая классификация и короткие ответы
+    limitations:
+      - Не подходит для анализа, кода и поддержки решений
+      - Перед отправкой персональных и конфиденциальных данных их нужно обезличить (политика данных).
+
   - id: claude-sonnet-5-5
     profile_id: claude-sonnet-5-5
     family: Claude
@@ -20,23 +122,33 @@ models:
     ru_access: workaround
     vision: true
     tool_calling: true
-    quality:
-      classification: 5
-      extraction: 5
-      summarization: 5
-      drafting: 5
-      qa_search: 5
-      translation: 5
-      analysis: 4
-      code: 5
-      decision_support: 4
+    quality: {classification: 5, extraction: 5, summarization: 5, drafting: 5, qa_search: 5, translation: 5, analysis: 4, code: 5, decision_support: 4}
     strengths:
-    - Документы, разработка и рабочие задачи с чёткими требованиями.
+      - Документы, тексты и разработка с чёткими требованиями
+      - Контекст 1M без надбавки
     limitations:
-    - РФ не входит в официальный список регионов API. Доступ требует поддерживаемого региона, аккаунта и
-      оплаты; в демо API не вызывается.
-    - Оценки качества 1–5 — экспертные допущения демонстрации, не результаты собственного теста.
-    notes: Стоимость и лимиты загружаются из единого проверяемого тарифного профиля.
+      - РФ нет в списке поддерживаемых регионов API — нужны аккаунт и оплата в поддерживаемой стране.
+      - Персональные данные и коммерческую тайну отправлять нельзя (политика данных)
+      - Оценки качества 1–5 — экспертные допущения, не результаты собственного теста.
+
+  - id: claude-haiku-5-5
+    profile_id: claude-haiku-5-5
+    family: Claude
+    tier: economy
+    deployment: foreign_cloud
+    origin: США
+    ru_access: workaround
+    vision: true
+    tool_calling: true
+    quality: {classification: 4, extraction: 4, summarization: 4, drafting: 4, qa_search: 4, translation: 4, analysis: 3, code: 4, decision_support: 3}
+    strengths:
+      - Очень низкая цена для массовых задач
+      - Контекст 1M
+    limitations:
+      - РФ нет в списке поддерживаемых регионов API — нужны аккаунт и оплата в поддерживаемой стране.
+      - Вход больше 100 000 токенов тарифицируется в 5 раз дороже
+      - Оценки качества 1–5 — экспертные допущения, не результаты собственного теста.
+
   - id: gpt-6-1-sol
     profile_id: gpt-6-1-sol
     family: GPT
@@ -46,23 +158,33 @@ models:
     ru_access: workaround
     vision: true
     tool_calling: true
-    quality:
-      classification: 5
-      extraction: 5
-      summarization: 4
-      drafting: 4
-      qa_search: 5
-      translation: 4
-      analysis: 5
-      code: 5
-      decision_support: 5
+    quality: {classification: 5, extraction: 5, summarization: 4, drafting: 4, qa_search: 5, translation: 4, analysis: 5, code: 5, decision_support: 5}
     strengths:
-    - Разработка, анализ и профессиональные задачи с управляемой глубиной рассуждений.
+      - Анализ, код и рассуждения с настраиваемой глубиной
+      - Контекст 1,05M
     limitations:
-    - РФ не входит в официальный список стран API. Подписка ChatGPT/Codex не заменяет оплату API; в демо
-      API не вызывается.
-    - Оценки качества 1–5 — экспертные допущения демонстрации, не результаты собственного теста.
-    notes: Стоимость и лимиты загружаются из единого проверяемого тарифного профиля.
+      - РФ нет в списке поддерживаемых регионов API — нужны аккаунт и оплата в поддерживаемой стране.
+      - Вход больше 272 000 токенов тарифицируется дороже (×2 вход, ×1,5 выход)
+      - Оценки качества 1–5 — экспертные допущения, не результаты собственного теста.
+
+  - id: gpt-6-luna
+    profile_id: gpt-6-luna
+    family: GPT
+    tier: economy
+    deployment: foreign_cloud
+    origin: США
+    ru_access: workaround
+    vision: true
+    tool_calling: true
+    quality: {classification: 4, extraction: 4, summarization: 4, drafting: 4, qa_search: 4, translation: 4, analysis: 3, code: 4, decision_support: 3}
+    strengths:
+      - Очень низкая цена для узких задач с большим потоком
+      - Контекст 1,05M
+    limitations:
+      - РФ нет в списке поддерживаемых регионов API — нужны аккаунт и оплата в поддерживаемой стране.
+      - Слабее флагманов в многошаговом анализе
+      - Оценки качества 1–5 — экспертные допущения, не результаты собственного теста.
+
   - id: deepseek-v4-1-flash
     profile_id: deepseek-v4-1-flash
     family: DeepSeek
@@ -72,204 +194,35 @@ models:
     ru_access: workaround
     vision: true
     tool_calling: true
-    quality:
-      classification: 4
-      extraction: 4
-      summarization: 4
-      drafting: 4
-      qa_search: 4
-      translation: 4
-      analysis: 4
-      code: 4
-      decision_support: 4
+    quality: {classification: 4, extraction: 4, summarization: 4, drafting: 4, qa_search: 4, translation: 4, analysis: 4, code: 4, decision_support: 4}
     strengths:
-    - Текстовые и мультимодальные задачи с отдельными пиковыми и внепиковыми тарифами.
+      - Низкая цена, вне пиковых часов — ещё в 2 раза дешевле
+      - Контекст 1M, изображения
     limitations:
-    - Доступ и оплату проверяйте для своего аккаунта и юрисдикции. Наличие страницы тарифов не подтверждает
-      доступность сервиса из РФ.
-    - Оценки качества 1–5 — экспертные допущения демонстрации, не результаты собственного теста.
-    notes: Стоимость и лимиты загружаются из единого проверяемого тарифного профиля.
+      - DeepSeek не подтверждает доступ и оплату из РФ; проверяйте для своего аккаунта и юрисдикции.
+      - Данные обрабатываются за рубежом
+      - Оценки качества 1–5 — экспертные допущения, не результаты собственного теста.
 
-  - id: openai-flagship
-    name: OpenAI GPT — флагманский класс
-    vendor: OpenAI
-    family: GPT
+  - id: deepseek-v4-pro
+    profile_id: deepseek-v4-pro
+    family: DeepSeek
     tier: flagship
     deployment: foreign_cloud
-    origin: США
+    origin: Китай
     ru_access: workaround
-    pricing: {currency: USD, input_per_mtok: 2.5, output_per_mtok: 10.0}
-    context_window: 128000
-    vision: true
-    tool_calling: true
-    quality: {classification: 5, extraction: 5, summarization: 5, drafting: 5, qa_search: 5, translation: 5, analysis: 5, code: 5, decision_support: 5}
-    strengths: [Сильные рассуждения и код, Зрелая экосистема и вызов функций]
-    limitations: [Регион РФ официально не поддерживается, Данные обрабатываются за рубежом — нельзя передавать ПДн и коммерческую тайну]
-    pricing_url: https://platform.openai.com/docs/pricing
-    reviewed_at: 2026-10-24
-
-  - id: openai-mini
-    name: OpenAI GPT — экономичный класс
-    vendor: OpenAI
-    family: GPT
-    tier: economy
-    deployment: foreign_cloud
-    origin: США
-    ru_access: workaround
-    pricing: {currency: USD, input_per_mtok: 0.25, output_per_mtok: 2.0}
-    context_window: 128000
-    vision: true
-    tool_calling: true
-    quality: {classification: 4, extraction: 4, summarization: 4, drafting: 4, qa_search: 4, translation: 4, analysis: 3, code: 4, decision_support: 3}
-    strengths: [Низкая цена за токен, Хорош для массовой классификации и извлечения]
-    limitations: [Регион РФ официально не поддерживается, Слабее флагмана на сложном анализе]
-    pricing_url: https://platform.openai.com/docs/pricing
-    reviewed_at: 2026-10-24
-
-  - id: anthropic-flagship
-    name: Anthropic Claude — флагманский класс
-    vendor: Anthropic
-    family: Claude
-    tier: flagship
-    deployment: foreign_cloud
-    origin: США
-    ru_access: workaround
-    pricing: {currency: USD, input_per_mtok: 3.0, output_per_mtok: 15.0}
-    context_window: 200000
-    vision: true
-    tool_calling: true
-    quality: {classification: 5, extraction: 5, summarization: 5, drafting: 5, qa_search: 5, translation: 5, analysis: 5, code: 5, decision_support: 5}
-    strengths: [Длинные документы и аккуратное следование инструкциям, Сильная работа с кодом и агентами]
-    limitations: [Регион РФ официально не поддерживается, Данные обрабатываются за рубежом]
-    pricing_url: https://docs.anthropic.com/en/docs/about-claude/pricing
-    reviewed_at: 2026-10-24
-
-  - id: anthropic-fast
-    name: Anthropic Claude — быстрый класс
-    vendor: Anthropic
-    family: Claude
-    tier: economy
-    deployment: foreign_cloud
-    origin: США
-    ru_access: workaround
-    pricing: {currency: USD, input_per_mtok: 0.8, output_per_mtok: 4.0}
-    context_window: 200000
-    vision: true
-    tool_calling: true
-    quality: {classification: 4, extraction: 4, summarization: 4, drafting: 4, qa_search: 4, translation: 4, analysis: 3, code: 4, decision_support: 3}
-    strengths: [Быстрые ответы, Большое контекстное окно за небольшую цену]
-    limitations: [Регион РФ официально не поддерживается, Слабее флагмана в многошаговом анализе]
-    pricing_url: https://docs.anthropic.com/en/docs/about-claude/pricing
-    reviewed_at: 2026-10-24
-
-  - id: google-pro
-    name: Google Gemini — Pro-класс
-    vendor: Google
-    family: Gemini
-    tier: flagship
-    deployment: foreign_cloud
-    origin: США
-    ru_access: workaround
-    pricing: {currency: USD, input_per_mtok: 1.25, output_per_mtok: 10.0}
-    context_window: 1000000
-    vision: true
-    tool_calling: true
-    quality: {classification: 5, extraction: 5, summarization: 5, drafting: 5, qa_search: 5, translation: 5, analysis: 5, code: 4, decision_support: 5}
-    strengths: [Контекст до миллиона токенов, Работа с изображениями, аудио и видео]
-    limitations: [Доступ из РФ ограничен, Данные обрабатываются за рубежом]
-    pricing_url: https://ai.google.dev/gemini-api/docs/pricing
-    reviewed_at: 2026-10-24
-
-  - id: google-flash
-    name: Google Gemini — Flash-класс
-    vendor: Google
-    family: Gemini
-    tier: economy
-    deployment: foreign_cloud
-    origin: США
-    ru_access: workaround
-    pricing: {currency: USD, input_per_mtok: 0.3, output_per_mtok: 2.5}
-    context_window: 1000000
-    vision: true
-    tool_calling: true
-    quality: {classification: 4, extraction: 4, summarization: 4, drafting: 4, qa_search: 4, translation: 4, analysis: 4, code: 3, decision_support: 3}
-    strengths: [Очень большой контекст за малые деньги, Быстрая массовая обработка]
-    limitations: [Доступ из РФ ограничен, Данные обрабатываются за рубежом]
-    pricing_url: https://ai.google.dev/gemini-api/docs/pricing
-    reviewed_at: 2026-10-24
-
-  - id: gigachat-max
-    name: Сбер GigaChat — старший класс
-    vendor: Сбер
-    family: GigaChat
-    tier: flagship
-    deployment: ru_cloud
-    origin: Россия
-    ru_access: direct
-    pricing: {currency: RUB, input_per_mtok: 650, output_per_mtok: 650}
-    context_window: 128000
-    vision: true
-    tool_calling: true
-    quality: {classification: 4, extraction: 4, summarization: 4, drafting: 5, qa_search: 4, translation: 5, analysis: 4, code: 3, decision_support: 4}
-    strengths: [Сильный русский язык, Оплата в рублях и обработка в РФ, Работа с изображениями]
-    limitations: [Слабее зарубежных флагманов в коде и сложных рассуждениях]
-    pricing_url: https://developers.sber.ru/docs/ru/gigachat/tariffs/legal-tariffs
-    reviewed_at: 2026-10-24
-
-  - id: gigachat-lite
-    name: Сбер GigaChat — лёгкий класс
-    vendor: Сбер
-    family: GigaChat
-    tier: economy
-    deployment: ru_cloud
-    origin: Россия
-    ru_access: direct
-    pricing: {currency: RUB, input_per_mtok: 65, output_per_mtok: 65}
-    context_window: 32000
-    vision: false
-    tool_calling: false
-    quality: {classification: 3, extraction: 3, summarization: 3, drafting: 4, qa_search: 3, translation: 4, analysis: 2, code: 2, decision_support: 2}
-    strengths: [Минимальная цена, Хорош для простой классификации и коротких ответов]
-    limitations: [Небольшое контекстное окно, Нет вызова функций, Не подходит для сложного анализа]
-    pricing_url: https://developers.sber.ru/docs/ru/gigachat/tariffs/legal-tariffs
-    reviewed_at: 2026-10-24
-
-  - id: yandexgpt-pro
-    name: Yandex Cloud YandexGPT — Pro-класс
-    vendor: Яндекс
-    family: YandexGPT
-    tier: balanced
-    deployment: ru_cloud
-    origin: Россия
-    ru_access: direct
-    pricing: {currency: RUB, input_per_mtok: 400, output_per_mtok: 400}
-    context_window: 32000
     vision: false
     tool_calling: true
-    quality: {classification: 4, extraction: 4, summarization: 4, drafting: 5, qa_search: 4, translation: 4, analysis: 3, code: 3, decision_support: 3}
-    strengths: [Сильный русский язык, Интеграция с Yandex Cloud и поиском, Оплата в рублях]
-    limitations: [Контекстное окно меньше, чем у лидеров, Слабее в коде и анализе]
-    pricing_url: https://yandex.cloud/ru/docs/foundation-models/pricing
-    reviewed_at: 2026-10-24
+    quality: {classification: 4, extraction: 5, summarization: 4, drafting: 4, qa_search: 5, translation: 4, analysis: 5, code: 5, decision_support: 4}
+    strengths:
+      - Анализ и код дешевле западных флагманов
+      - Контекст 1M
+    limitations:
+      - DeepSeek не подтверждает доступ и оплату из РФ; проверяйте для своего аккаунта и юрисдикции.
+      - Только текст — изображения не поддерживаются
+      - Оценки качества 1–5 — экспертные допущения, не результаты собственного теста.
 
-  - id: yandexgpt-lite
-    name: Yandex Cloud YandexGPT — Lite-класс
-    vendor: Яндекс
-    family: YandexGPT
-    tier: economy
-    deployment: ru_cloud
-    origin: Россия
-    ru_access: direct
-    pricing: {currency: RUB, input_per_mtok: 200, output_per_mtok: 200}
-    context_window: 32000
-    vision: false
-    tool_calling: false
-    quality: {classification: 3, extraction: 3, summarization: 3, drafting: 4, qa_search: 3, translation: 3, analysis: 2, code: 2, decision_support: 2}
-    strengths: [Низкая цена, Быстрые ответы на простых задачах]
-    limitations: [Нет вызова функций, Не подходит для сложных рассуждений]
-    pricing_url: https://yandex.cloud/ru/docs/foundation-models/pricing
-    reviewed_at: 2026-10-24
-
+# Свой контур (self-hosted). В продукте не предлагается — сервисы исключают эти записи;
+# они остаются как данные для движка распределения инфраструктуры и его тестов.
   - id: qwen-large-selfhost
     name: Qwen (крупная открытая модель) — свой контур
     vendor: Alibaba Qwen (open weights)

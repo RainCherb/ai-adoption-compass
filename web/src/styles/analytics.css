@@ -27,10 +27,16 @@
   flex-direction: column;
   gap: 2px;
 }
-.cost-chart__label span,
+.cost-chart__label > span:not(.cost-chart__name),
 .cost-chart__amount span {
   font-size: var(--text-xs);
   color: var(--muted);
+}
+.cost-chart__name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
 }
 .cost-chart__amount {
   text-align: right;
@@ -50,6 +56,21 @@
 .cost-chart__annotation {
   color: var(--muted);
   font-variant-numeric: tabular-nums;
+}
+.cost-chart__row--excluded .cost-chart__bar {
+  opacity: 0.45;
+}
+.cost-chart__warning {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 0;
+  color: var(--warning-ink);
+}
+.cost-chart__warning svg {
+  flex: none;
+  margin-top: 2px;
 }
 .cost-chart__track {
   fill: var(--surface-3);
@@ -184,6 +205,11 @@
   background: var(--surface-2);
   font-weight: 650;
   font-variant-numeric: tabular-nums;
+}
+.quality-cell[data-quality="1"],
+.quality-cell[data-quality="2"] {
+  background: var(--warning-soft);
+  color: var(--warning-ink);
 }
 .quality-cell[data-quality="5"] {
   background: var(--accent-soft);

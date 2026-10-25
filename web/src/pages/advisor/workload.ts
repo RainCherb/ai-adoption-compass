@@ -38,7 +38,7 @@ export function initialForm(meta: Meta): AdvisorFormState {
   const first = (meta.task_types[0]?.value ?? "classification") as TaskType;
   const base: AdvisorFormState = {
     task_type: first,
-    data_sensitivity: meta.demo_mode ? "public" : "internal",
+    data_sensitivity: "internal",
     requests_per_month: "10000",
     tokens_in: "1000",
     tokens_out: "300",
@@ -49,11 +49,11 @@ export function initialForm(meta: Meta): AdvisorFormState {
     must_self_host: false,
     allow_foreign_cloud: true,
     allow_workarounds: false,
-    prefer: meta.demo_mode ? "quality" : "balanced",
-    supported_region: Boolean(meta.demo_mode),
+    prefer: "balanced",
+    supported_region: false,
     deepseek_period: "peak",
   };
-  return meta.demo_mode ? base : applyTaskType(base, first, meta);
+  return applyTaskType(base, first, meta);
 }
 
 function parseInteger(text: string, min: number, max: number, label: string): { value: number } | { error: string } {

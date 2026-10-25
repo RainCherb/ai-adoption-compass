@@ -20,8 +20,8 @@ from .resources import load_yaml, read_data_text
 ALLOWED_HOSTS = frozenset(
     {
         "openrouter.ai",
-        "ai.google.dev",
         "aistudio.yandex.ru",
+        "developers.sber.ru",
         "platform.claude.com",
         "developers.openai.com",
         "api-docs.deepseek.com",

@@ -24,25 +24,35 @@ dashboard, a CLI, a REST API and an MCP server for coding agents.
 > The product UI, templates, policy and documentation are in Russian (the target audience is Russian-speaking
 > companies); code identifiers and API fields are in English. The methodology itself is language-independent.
 
-## Integrated international models
+## Russian and international models side by side
 
-The model advisor and all 18 public demo processes use **Claude Sonnet 5.5 → GPT-6.1 Sol → DeepSeek V4.1 Flash**. Compare direct API costs on the same workload, with DeepSeek peak/off-peak and GPT long-context pricing. Provider facts and limits are linked to official sources, pinned to reviewed snapshots and hidden from cost calculations after expiry. The same tariffs drive ROI, sensitivity scenarios and exports. Quality ratings are explicit expert assumptions; these three models have not been evaluated in this project. [Method and checked numbers](docs/FEATURED_MODELS.md).
+The model advisor, the cost calculator and all 18 demo processes use **11 models with verified prices**: five Russian
+cloud models — **YandexGPT Pro 5.1, Alice AI LLM, GigaChat 2 Max, Pro and Lite** (rubles, 22 % VAT included) — and
+six international APIs — **Claude Sonnet 5.5 and Haiku 5.5, GPT-6.1 Sol and GPT-6 Luna, DeepSeek V4.1 Flash and
+V4 Pro** (USD, taxes excluded). Prices were checked against the providers' official pages on 2026-10-25 and are
+pinned to reviewed source snapshots; everything is converted to rubles at the Bank of Russia rate (80.54 RUB/USD
+on 2026-10-24). Access from Russia is explicit: by default the company is assumed to have no account in a supported
+country, so personal data goes only to Russian clouds (after masking) and international models are excluded with a
+reason until you enable foreign API access. Quality ratings are expert assumptions, not measurements.
+[Prices, sources and formulas (in Russian)](docs/MODELS_AND_PRICES.md).
 
-![Integrated advisor with three primary models](docs/assets/screenshots/advisor.jpg)
+![Model costs for one workload, in rubles](docs/assets/screenshots/advisor.jpg)
 
-## New in 1.4
+## New in 1.5
 
 **[Try the public demo →](https://ai-adoption-compass-demo.onrender.com)** ·
-[API model quality](https://ai-adoption-compass-demo.onrender.com/#/evals)
+[Model advisor](https://ai-adoption-compass-demo.onrender.com/#/advisor)
 
 No installation or account needed. Render Free may take about a minute to wake up after being idle. Use synthetic data only.
 
-* A public demo mode with a preloaded 18-process assessment, what-if calculations and no shared visitor data storage.
-  Docker deployment on Render Free is described in [public demo operations](docs/PUBLIC_DEMO.md).
-* API-only model selection: input/output budget charts, monthly / 1,000 requests / annual estimates, and cumulative cashflow with a month slider. [Numbers and limitations](docs/API_COST_ANALYTICS.md).
-* Explicit Russian API availability, a shared expert quality matrix and an API pilot plan. Previous local measurements remain an [archived study](docs/REAL_EVALS.md), outside the product comparison.
-* Managed pricing/access sources with dated snapshots, SHA-256, expiry, manual review and a weekly review artifact.
-  [Source governance](docs/CATALOG_SOURCES.md) keeps aggregator offers separate from illustrative expert scores.
+* Russian models (YandexGPT, Alice AI, GigaChat) in every comparison next to Claude, GPT and DeepSeek; all costs in rubles.
+* A realistic demo portfolio with personal, confidential, internal and public data; foreign API access is an explicit
+  assumption instead of a hidden default.
+* Expired price snapshots now show a warning instead of hiding the estimate, so the public demo keeps working;
+  modified or unreviewed snapshots still block prices.
+* Clearer UI: costs sorted from cheapest to most expensive, one table for all models with access from Russia and VAT,
+  a compact quality matrix, and a per-process report of the selected model versus the cheapest suitable alternative.
+* Managed pricing sources with dated snapshots, SHA-256 and review — [source governance](docs/CATALOG_SOURCES.md).
 
 ## What it answers
 

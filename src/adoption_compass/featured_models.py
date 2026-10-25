@@ -1,4 +1,4 @@
-"""Прямые тарифы основных моделей и расчёт одной нагрузки без вызова LLM."""
+"""Проверенные тарифы моделей и расчёт одной нагрузки без вызова LLM."""
 
 from datetime import date
 from decimal import Decimal
@@ -11,6 +11,8 @@ from .catalog_sources import source_status
 from .resources import load_yaml
 
 Rate = Annotated[float, Field(ge=0, allow_inf_nan=False)]
+Currency = Literal["USD", "RUB"]
+RussiaStatus = Literal["available", "unavailable", "unverified"]
 
 
 class DirectPricing(BaseModel):
@@ -47,7 +49,13 @@ class FeaturedModel(BaseModel):
     summary: str
     context_label: str
     context_tokens: int = Field(gt=0)
-    max_output_tokens: int = Field(gt=0)
+    max_output_tokens: int | None = Field(
+        None, gt=0, description="None — провайдер не публикует отдельный предел выхода"
+    )
+    currency: Currency = "USD"
+    vat_included: bool = Field(
+        False, description="Цена провайдера уже включает НДС (российские тарифы в рублях)"
+    )
     pricing: DirectPricing
     pricing_source_id: str
     specs_source_id: str
@@ -56,7 +64,7 @@ class FeaturedModel(BaseModel):
     specs_url: str
     access_url: str | None = None
     access_note: str
-    russia_api_status: Literal["available", "unavailable", "unverified"] = "unverified"
+    russia_api_status: RussiaStatus = "unverified"
     russia_api_note: str = "Региональная доступность API не подтверждена"
     access_reviewed_at: date | None = None
     best_for: list[str] = Field(default_factory=list)
@@ -64,17 +72,22 @@ class FeaturedModel(BaseModel):
     reviewed_at: date
     quality_status: Literal["not_measured"] = "not_measured"
 
+    @model_validator(mode="after")
+    def _vat_only_for_rub(self) -> Self:
+        if self.vat_included and self.currency != "RUB":
+            raise ValueError("НДС включён только в рублёвые тарифы российских провайдеров")
+        return self
+
 
 class FeaturedCatalog(BaseModel):
     version: Literal[1] = 1
-    currency: Literal["USD"] = "USD"
     disclaimer: str
     models: list[FeaturedModel] = Field(min_length=1)
 
     @model_validator(mode="after")
     def _unique(self) -> Self:
         if len({m.id for m in self.models}) != len(self.models):
-            raise ValueError("повторяющаяся основная модель")
+            raise ValueError("повторяющаяся модель с тарифным профилем")
         return self
 
 
@@ -90,18 +103,22 @@ class ModelCostLine(BaseModel):
     model: FeaturedModel
     available: bool
     reason: str | None = None
+    warning: str | None = None
     tariff: str
+    currency: Currency
     input_rate: float | None = None
     output_rate: float | None = None
     input_usd: float | None = None
     output_usd: float | None = None
     monthly_usd: float | None = None
     per_request_usd: float | None = None
+    monthly_rub: float | None = None
+    per_request_rub: float | None = None
 
 
 class ModelComparison(BaseModel):
     workload: ModelComparisonRequest
-    currency: Literal["USD"] = "USD"
+    usd_rub: float
     disclaimer: str
     models: list[ModelCostLine]
 
@@ -113,10 +130,11 @@ def load_featured(data_dir: Path | None = None) -> FeaturedCatalog:
 def pricing_rates(
     prices: DirectPricing, tokens_in: int, period: str = "peak"
 ) -> tuple[float, float, str]:
+    """Ставки за 1 млн токенов в валюте провайдера с учётом периода и длинного контекста."""
     input_rate, output_rate = prices.input_per_mtok, prices.output_per_mtok
-    tariff = "Standard, без кэша"
+    tariff = "Стандартный тариф, без кэша"
     if prices.off_peak_input_per_mtok is not None:
-        tariff = "Off-peak, без кэша" if period == "off_peak" else "Peak, без кэша"
+        tariff = "Вне пика, без кэша" if period == "off_peak" else "Пиковые часы, без кэша"
         if period == "off_peak":
             input_rate = prices.off_peak_input_per_mtok
             output_rate = prices.off_peak_output_per_mtok or 0.0
@@ -127,16 +145,23 @@ def pricing_rates(
     return input_rate, output_rate, tariff
 
 
-def profile_is_reviewed(model: FeaturedModel, sources: dict[str, Any]) -> bool:
-    for source_id, expected_url in (
+def _profile_sources(model: FeaturedModel) -> tuple[tuple[str, str], ...]:
+    return (
         (model.pricing_source_id, model.pricing_url),
         (model.specs_source_id, model.specs_url),
-    ):
+    )
+
+
+def profile_is_reviewed(model: FeaturedModel, sources: dict[str, Any]) -> bool:
+    """Целостность: ревью привязано к точному снимку. Возраст снимка проверяет profile_age_warning."""
+    for source_id, expected_url in _profile_sources(model):
         source = sources.get(source_id)
         if (
             source is None
+            or source["snapshot"] is None
             or source["url"] != expected_url
-            or source["stale"]
+            or source["age_days"] is None
+            or source["age_days"] < 0
             or source["snapshot"]["status"] != "reviewed"
             or source["snapshot"]["reviewed_at"] is None
             or not source["snapshot"]["reviewed_by"]
@@ -147,8 +172,37 @@ def profile_is_reviewed(model: FeaturedModel, sources: dict[str, Any]) -> bool:
     return True
 
 
+def profile_age_warning(model: FeaturedModel, sources: dict[str, Any]) -> str | None:
+    """Устаревший снимок не скрывает расчёт, а требует перепроверки тарифа."""
+    ages = [
+        sources[source_id]["age_days"]
+        for source_id, _ in _profile_sources(model)
+        if source_id in sources
+        and sources[source_id]["stale"]
+        and (sources[source_id]["age_days"] or -1) > 0
+    ]
+    if not ages:
+        return None
+    return (
+        f"Тариф сверялся {model.reviewed_at:%d.%m.%Y} ({max(ages)} дн. назад) — "
+        "перед решением проверьте актуальную цену у провайдера"
+    )
+
+
+def to_usd(amount: float, currency: str, usd_rub: float) -> float:
+    return amount if currency == "USD" else amount / usd_rub
+
+
+def to_rub(amount: float, currency: str, usd_rub: float) -> float:
+    return amount * usd_rub if currency == "USD" else amount
+
+
 def compare_models(
-    workload: ModelComparisonRequest, today: date, data_dir: Path | None = None
+    workload: ModelComparisonRequest,
+    today: date,
+    data_dir: Path | None = None,
+    *,
+    usd_rub: float,
 ) -> ModelComparison:
     catalog = load_featured(data_dir)
     sources = {s["id"]: s for s in source_status(today, data_dir)["sources"]}
@@ -160,20 +214,37 @@ def compare_models(
         reason = (
             None
             if profile_is_reviewed(model, sources)
-            else "Источник требует повторного ревью; расчёт скрыт"
+            else "Снимок источника не прошёл проверку целостности; расчёт скрыт"
         )
-        if workload.tokens_out > model.max_output_tokens:
+        if model.max_output_tokens and workload.tokens_out > model.max_output_tokens:
             reason = "Превышен максимальный выход модели"
         if workload.tokens_in + workload.tokens_out > model.context_tokens:
-            reason = "Вход и выход превышают консервативный предел контекста"
-        line = ModelCostLine(model=model, available=reason is None, reason=reason, tariff=tariff)
+            reason = "Вход и выход превышают контекстное окно модели"
+        line = ModelCostLine(
+            model=model,
+            available=reason is None,
+            reason=reason,
+            warning=profile_age_warning(model, sources),
+            tariff=tariff,
+            currency=model.currency,
+        )
         if reason is None:
             input_cost = Decimal(workload.tokens_in) * Decimal(str(in_rate)) / 1_000_000
             output_cost = Decimal(workload.tokens_out) * Decimal(str(out_rate)) / 1_000_000
+            per_request = float(input_cost + output_cost)
+            monthly = per_request * workload.requests_per_month
             line.input_rate, line.output_rate = in_rate, out_rate
-            line.input_usd = float(input_cost * workload.requests_per_month)
-            line.output_usd = float(output_cost * workload.requests_per_month)
-            line.monthly_usd = float((input_cost + output_cost) * workload.requests_per_month)
-            line.per_request_usd = float(input_cost + output_cost)
+            line.input_usd = to_usd(
+                float(input_cost * workload.requests_per_month), model.currency, usd_rub
+            )
+            line.output_usd = to_usd(
+                float(output_cost * workload.requests_per_month), model.currency, usd_rub
+            )
+            line.monthly_usd = to_usd(monthly, model.currency, usd_rub)
+            line.per_request_usd = to_usd(per_request, model.currency, usd_rub)
+            line.monthly_rub = to_rub(monthly, model.currency, usd_rub)
+            line.per_request_rub = to_rub(per_request, model.currency, usd_rub)
         lines.append(line)
-    return ModelComparison(workload=workload, disclaimer=catalog.disclaimer, models=lines)
+    return ModelComparison(
+        workload=workload, usd_rub=usd_rub, disclaimer=catalog.disclaimer, models=lines
+    )

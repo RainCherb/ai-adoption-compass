@@ -1,7 +1,7 @@
 """Скриншоты веб-интерфейса для README: запускает API, открывает страницы в Chrome и сохраняет PNG.
 
 Нужен собранный фронтенд (`make web`) и Playwright (`pip install -e ".[docs]"`). Браузер — системный Chrome/Chromium
-(путь можно задать в CHROME_PATH), скачивать его отдельно не нужно.
+(путь можно задать в CHROME_PATH), иначе — Chromium из `playwright install chromium`.
 """
 
 import os
@@ -23,16 +23,13 @@ BASE = f"http://127.0.0.1:{PORT}"
 WIDTH = 1440
 
 
-def find_chrome() -> str:
+def find_chrome() -> str | None:
     candidates = [
         os.environ.get("CHROME_PATH"),
         shutil.which("google-chrome"),
         shutil.which("chromium"),
     ]
-    for candidate in candidates:
-        if candidate:
-            return candidate
-    raise SystemExit("Не найден Chrome/Chromium: задайте CHROME_PATH")
+    return next((candidate for candidate in candidates if candidate), None)
 
 
 def wait_for_api(timeout: float = 30.0) -> None:
@@ -94,12 +91,20 @@ def capture(page: Page) -> None:
     expect(page.get_by_test_id("rendered-prompt")).to_be_visible()
     shot(page, "prompts", height=1400)
 
-    # 6. Качество моделей
+    # 6. Качество моделей: экспертная матрица
     page.goto(f"{BASE}/#/evals")
-    expect(page.get_by_test_id("eval-table")).to_be_visible()
-    page.get_by_test_id("eval-row").nth(2).click()
-    expect(page.get_by_test_id("provider-detail")).to_be_visible()
-    shot(page, "evals", height=1500)
+    expect(page.locator(".quality-cell").first).to_be_visible()
+    shot(page, "evals", height=1300)
+
+    # 7. Накопленный эффект демо-портфеля
+    page.goto(f"{BASE}/#/assessment")
+    page.get_by_role("button", name="Загрузить демо-данные").first.click()
+    chart = page.locator("section", has_text="Когда инвестиции возвращаются").last
+    expect(chart).to_be_visible()
+    chart.scroll_into_view_if_needed()
+    settle(page)
+    chart.screenshot(path=str(OUT / "cashflow.jpg"))
+    print(f"Записано: {(OUT / 'cashflow.jpg').relative_to(ROOT)}")
 
 
 def main() -> None:
@@ -107,7 +112,7 @@ def main() -> None:
         raise SystemExit("Сначала соберите интерфейс: make web")
     OUT.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as tmp:
-        env = {**os.environ, "COMPASS_DB": f"{tmp}/shots.db", "COMPASS_TODAY": "2026-10-24"}
+        env = {**os.environ, "COMPASS_DB": f"{tmp}/shots.db", "COMPASS_TODAY": "2026-10-25"}
         server = subprocess.Popen(
             [sys.executable, "-m", "adoption_compass", "serve", "--port", str(PORT)],
             env=env,
