@@ -298,7 +298,8 @@
 
 @media (max-width: 640px) {
   .status-chip__prefix,
-  .status-chip__date {
+  .status-chip__date,
+  .status-chip__note {
     display: none;
   }
 

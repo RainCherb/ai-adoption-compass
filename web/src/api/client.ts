@@ -10,7 +10,6 @@ import type {
   AssumptionsOverride,
   AuditEvent,
   Catalog,
-  EvalDemo,
   Health,
   LintResult,
   Meta,
@@ -171,10 +170,7 @@ export const scaffoldPrompt = (task: string, role?: string, signal?: AbortSignal
     signal,
   }).then((r) => r.text);
 
-// --- качество моделей --------------------------------------------------------------------------
-
-export const getEvalDemo = (signal?: AbortSignal) => request<EvalDemo>("/api/evals/demo", { signal });
-export const getMeasuredEvals = (signal?: AbortSignal) => request<EvalDemo>("/api/evals/measured", { signal });
+// --- источники каталога ------------------------------------------------------------------------
 
 export interface CatalogSources {
   disclaimer: string;

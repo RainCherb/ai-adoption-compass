@@ -1,6 +1,6 @@
 import type { Recommendation } from "../../api/types";
 import { Badge } from "../../components/ui/Badge";
-import { formatDate } from "../../lib/format";
+import { formatDate, formatNumber } from "../../lib/format";
 
 type Profile = NonNullable<Recommendation["profile"]>;
 
@@ -24,6 +24,13 @@ export function RussiaAccess({
   );
 }
 
+/** null в `max_output_tokens` — провайдер не публикует отдельный предел выхода. */
+export function maxOutputNote(profile: Pick<Profile, "max_output_tokens">): string {
+  return profile.max_output_tokens == null
+    ? "Выход: предел не публикуется"
+    : `Выход: до ${formatNumber(profile.max_output_tokens)} токенов`;
+}
+
 export function ModelFacts({ profile }: { profile: Profile }) {
   return (
     <details className="model-facts">
@@ -38,8 +45,7 @@ export function ModelFacts({ profile }: { profile: Profile }) {
         </p>
       ) : null}
       <p>
-        Выход: до {profile.max_output_tokens.toLocaleString("ru-RU")} токенов.{" "}
-        {profile.version_note}
+        {maxOutputNote(profile)}. {profile.version_note}
       </p>
       {profile.best_for?.length ? (
         <>

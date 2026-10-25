@@ -10,7 +10,7 @@ from adoption_compass.domain import Action, Deployment, Sensitivity, TaskType
 from adoption_compass.resources import read_data_text
 from adoption_compass.safety import Policy, PolicyDocument
 
-TODAY = date(2026, 10, 24)
+TODAY = date(2026, 10, 25)
 
 
 def _model(**overrides):
@@ -50,7 +50,8 @@ class TestCatalog:
 
     def test_get_returns_model_and_raises_for_unknown(self):
         catalog = load_catalog()
-        assert catalog.get("gigachat-max").vendor == "Сбер"
+        assert catalog.get("gigachat-2-max").vendor == "Сбер"
+        assert catalog.get("gigachat-2-max").pricing.currency == "RUB"
         with pytest.raises(KeyError):
             catalog.get("nope")
 

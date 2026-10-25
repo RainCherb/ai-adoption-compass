@@ -1,7 +1,7 @@
 id,name,department,task_type,runs_per_month,minutes_per_run,hourly_cost_rub,error_rate,error_cost_rub,standardization,digital_readiness,risk_level,data_sensitivity,must_self_host,tokens_in,tokens_out
-P01,Маршрутизация обращений клиентов,Поддержка,classification,9500,3,700,0.08,150,4,5,2,personal,yes,700,60
+P01,Маршрутизация обращений клиентов,Поддержка,classification,9500,3,700,0.08,150,4,5,2,personal,no,700,60
 P02,Ответы на типовые вопросы по базе знаний,Поддержка,qa_search,4200,6,700,0.06,200,4,4,2,internal,no,3500,400
-P03,Резюмирование звонков и чатов для CRM,Продажи,summarization,2400,8,900,0.05,0,3,4,2,personal,yes,4000,500
+P03,Резюмирование звонков и чатов для CRM,Продажи,summarization,2400,8,900,0.05,0,3,4,2,personal,no,4000,500
 P04,Подготовка коммерческих предложений,Продажи,drafting,160,75,1100,0.10,2000,3,3,3,confidential,no,1500,1500
 P05,Разбор входящих счетов и актов,Бухгалтерия,extraction,3200,6,850,0.04,800,3,2,3,confidential,no,1800,300
 P06,Сверка платежей с заказами,Бухгалтерия,analysis,60,120,800,0.03,3000,4,4,3,confidential,no,3000,800

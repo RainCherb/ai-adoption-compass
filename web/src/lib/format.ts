@@ -1,4 +1,4 @@
-const NBSP = "\u00A0";
+export const NBSP = "\u00A0";
 const MINUS = "\u2212";
 export const DASH = "—";
 
@@ -35,11 +35,11 @@ export function formatRub(value: number | Nullish): string {
   return isMissing(value) ? DASH : `${formatNumber(value)}${NBSP}₽`;
 }
 
-/** Для малых сумм (цена одного запроса): больше знаков после запятой. */
+/** Для малых сумм (цена одного запроса): больше знаков после запятой, ненулевая сумма не округляется до нуля. */
 export function formatRubPrecise(value: number | Nullish): string {
   if (isMissing(value)) return DASH;
   const abs = Math.abs(value);
-  const digits = abs === 0 ? 0 : abs < 1 ? 3 : abs < 100 ? 2 : 0;
+  const digits = abs === 0 ? 0 : abs < 0.001 ? 8 : abs < 1 ? 3 : abs < 100 ? 2 : 0;
   return `${formatNumber(value, digits)}${NBSP}₽`;
 }
 
@@ -55,6 +55,14 @@ export function formatRubCompact(value: number | Nullish): string {
 
 export function formatUsd(value: number | Nullish): string {
   return isMissing(value) ? DASH : `${formatNumber(value, 2, 2)}${NBSP}$`;
+}
+
+/** «$6,6»: два знака для сумм от доллара, больше — для малых, чтобы они не превращались в ноль. */
+export function formatDollars(value: number | Nullish): string {
+  if (isMissing(value)) return DASH;
+  const abs = Math.abs(value);
+  const digits = abs >= 1 || abs === 0 ? 2 : abs >= 0.01 ? 4 : 8;
+  return `$${formatNumber(value, digits)}`;
 }
 
 export function formatMonths(value: number | Nullish): string {
@@ -81,19 +89,6 @@ export function formatPercent(fraction: number | Nullish, digits = 0): string {
 /** Уже проценты (например, ROI = 155,4) → «155 %». */
 export function formatPercentValue(percent: number | Nullish, digits = 0): string {
   return isMissing(percent) ? DASH : `${formatNumber(percent, digits)}${NBSP}%`;
-}
-
-/** Разница долей в процентных пунктах: 0,125 → «+12,5 п.п.». */
-export function formatPointsDelta(fraction: number | Nullish): string {
-  if (isMissing(fraction)) return DASH;
-  const points = fraction * 100;
-  const sign = points >= 0.05 ? "+" : "";
-  return `${sign}${formatNumber(points, 1, 1)}${NBSP}п.п.`;
-}
-
-export function formatLatency(ms: number | Nullish): string {
-  if (isMissing(ms)) return DASH;
-  return ms < 1000 ? `${formatNumber(ms, ms < 10 ? 1 : 0)}${NBSP}мс` : `${formatNumber(ms / 1000, 2)}${NBSP}с`;
 }
 
 export function formatBytes(bytes: number | Nullish): string {

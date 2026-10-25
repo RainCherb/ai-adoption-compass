@@ -4,8 +4,9 @@ import { ScoreRing } from "../../components/charts/ScoreRing";
 import { Badge } from "../../components/ui/Badge";
 import { Icon } from "../../components/ui/Icon";
 import { labelOf, useMeta } from "../../hooks/useMeta";
-import { formatPercent, formatRub, formatNumber } from "../../lib/format";
+import { formatDollars, formatPercent, formatRub, formatNumber } from "../../lib/format";
 import { TIER_LABELS } from "../../lib/labels";
+import { priceBasis, taxNote } from "../../lib/pricing";
 import { ModelFacts, RussiaAccess } from "./RussiaAccess";
 
 const BREAKDOWN: readonly {
@@ -16,24 +17,36 @@ const BREAKDOWN: readonly {
   {
     key: "quality",
     label: "Качество",
-    hint: "соответствие требуемому качеству для задачи",
+    hint: "экспертная оценка для типа задачи относительно требуемого минимума",
   },
   {
     key: "cost",
-    label: "Стоимость",
-    hint: "чем дешевле среди подходящих, тем выше",
+    label: "Цена",
+    hint: "100 % — самая дешёвая из подходящих моделей, 0 % — самая дорогая (шкала логарифмическая)",
   },
   {
     key: "safety",
     label: "Безопасность",
-    hint: "размещение данных и требования политики",
+    hint: "насколько размещение модели подходит для выбранной категории данных",
   },
   {
     key: "access",
-    label: "Условия доступа",
-    hint: "соответствие выбранным условиям аккаунта и оплаты; регион РФ указан отдельным статусом",
+    label: "Доступ",
+    hint: "100 % — модель доступна из РФ напрямую или у вас есть доступ к зарубежным API; ниже — только через обходные пути",
   },
 ];
+
+/** Цена в валюте тарифа: у зарубежных моделей — доллары без налогов, у российских — рубли с НДС. */
+function nativePrice(item: Recommendation): string | null {
+  const basis = priceBasis(item.cost, item.profile);
+  if (!basis) return null;
+  const tariff = item.cost.tariff ? ` · ${item.cost.tariff}` : "";
+  if (basis.currency === "USD") {
+    const usd = item.cost.total_usd != null ? `≈ ${formatDollars(item.cost.total_usd)}/мес. ` : "";
+    return `${usd}${taxNote(basis)}${tariff}`;
+  }
+  return `тариф в рублях ${taxNote(basis)}${tariff}`;
+}
 
 export function RecommendationCard({ item }: { item: Recommendation }) {
   const meta = useMeta();
@@ -99,10 +112,13 @@ export function RecommendationCard({ item }: { item: Recommendation }) {
               <span className="muted small">
                 Экспертная оценка, не собственный benchmark
               </span>
-              <span className="small">
-                {formatNumber(item.cost.total_usd, 8)} $/мес. ·{" "}
-                {item.cost.tariff}
-              </span>
+              <span className="small">{nativePrice(item)}</span>
+              {item.cost.price_warning ? (
+                <span className="rec__warning small">
+                  <Icon name="alert" size={14} />
+                  {item.cost.price_warning}
+                </span>
+              ) : null}
               <span className="small">
                 Контекст {item.profile.context_label} ·{" "}
                 <code>{item.profile.api_model}</code>

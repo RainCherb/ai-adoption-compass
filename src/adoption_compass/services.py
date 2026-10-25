@@ -42,17 +42,6 @@ def build_services(settings: Settings | None = None, *, with_storage: bool = Tru
     )
     policy = Policy.load(data_dir)
     scoring = load_scoring(data_dir)
-    if settings.demo_mode:
-        catalog = catalog.model_copy(
-            update={"models": [catalog.get(i) for i in catalog.primary_model_ids]}
-        )
-        scoring = scoring.model_copy(
-            update={
-                "assumptions": scoring.assumptions.model_copy(
-                    update={"supported_region": True, "model_preference": "quality"}
-                )
-            }
-        )
     if settings.usd_rub:
         scoring = scoring.model_copy(
             update={
@@ -85,15 +74,13 @@ def build_services(settings: Settings | None = None, *, with_storage: bool = Tru
         storage=Storage(settings.db_path) if with_storage and not settings.demo_mode else None,
     )
     if with_storage and settings.demo_mode:
-        processes = parse_processes_csv(
-            read_data_text("samples/demo-processes.csv", data_dir)
-        ).processes
+        processes = parse_processes_csv(read_data_text("samples/processes.csv", data_dir)).processes
         result = services.engine.assess(processes)
         services.storage = DemoStorage(
             StoredAssessment(
                 id="demo",
                 name="Демо: ООО «Ромашка-Сервис»",
-                created_at="2026-10-24T00:00:00+00:00",
+                created_at="2026-10-25T00:00:00+00:00",
                 processes_count=len(processes),
                 recommended_count=result.summary.recommended_count,
                 hours_saved_month=result.summary.hours_saved_month,

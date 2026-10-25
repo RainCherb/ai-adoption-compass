@@ -18,7 +18,9 @@ def test_bundled_sample_parses_without_errors():
     assert parsed.errors == []
     assert parsed.delimiter == ","
     assert parsed.processes[0].id == "P01"
-    assert parsed.processes[0].must_self_host is True
+    # Свой контур продукт не предлагает: образец целиком считается на облачных API.
+    assert not any(p.must_self_host for p in parsed.processes)
+    assert parsed.processes[0].data_sensitivity.value == "personal"
 
 
 def test_minimal_file_gets_generated_ids_and_defaults():

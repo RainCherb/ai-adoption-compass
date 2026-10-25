@@ -6,11 +6,14 @@ import { labelOf, useMeta } from "../../hooks/useMeta";
 const KIND_LABELS: Record<string, string> = {
   policy: "политика данных",
   access: "доступ из РФ",
+  foreign: "зарубежное облако",
+  self_host: "только self-hosted",
   quality: "качество",
   budget: "бюджет",
   vision: "изображения",
   tools: "вызов функций",
   context: "контекст",
+  pricing: "тариф",
 };
 
 interface ExcludedListProps {

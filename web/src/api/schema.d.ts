@@ -630,7 +630,7 @@ export interface components {
             supported_region: boolean;
             /**
              * Usd Rub
-             * @default 90
+             * @default 80.54
              */
             usd_rub: number;
         };
@@ -708,16 +708,37 @@ export interface components {
         };
         /** CostBreakdown */
         CostBreakdown: {
+            /**
+             * Currency
+             * @description Валюта прямого тарифа провайдера
+             */
+            currency?: ("USD" | "RUB") | null;
             /** Fixed Rub */
             fixed_rub: number;
+            /**
+             * Input Rate
+             * @description За 1 млн входных токенов, в валюте тарифа
+             */
+            input_rate?: number | null;
             /** Input Rate Usd */
             input_rate_usd?: number | null;
+            /** Input Rub */
+            input_rub?: number | null;
             /** Input Usd */
             input_usd?: number | null;
+            /**
+             * Output Rate
+             * @description За 1 млн выходных токенов, в валюте тарифа
+             */
+            output_rate?: number | null;
             /** Output Rate Usd */
             output_rate_usd?: number | null;
+            /** Output Rub */
+            output_rub?: number | null;
             /** Output Usd */
             output_usd?: number | null;
+            /** Price Warning */
+            price_warning?: string | null;
             /** Requests Per Month */
             requests_per_month?: number | null;
             /** Tariff */
@@ -733,6 +754,11 @@ export interface components {
             units: number;
             /** Variable Rub */
             variable_rub: number;
+            /**
+             * Vat Included
+             * @description Тариф провайдера уже включает НДС
+             */
+            vat_included?: boolean | null;
         };
         /** Decision */
         Decision: {
@@ -884,12 +910,6 @@ export interface components {
         };
         /** FeaturedCatalog */
         FeaturedCatalog: {
-            /**
-             * Currency
-             * @default USD
-             * @constant
-             */
-            currency: "USD";
             /** Disclaimer */
             disclaimer: string;
             /** Models */
@@ -919,10 +939,19 @@ export interface components {
             context_label: string;
             /** Context Tokens */
             context_tokens: number;
+            /**
+             * Currency
+             * @default USD
+             * @enum {string}
+             */
+            currency: "USD" | "RUB";
             /** Id */
             id: string;
-            /** Max Output Tokens */
-            max_output_tokens: number;
+            /**
+             * Max Output Tokens
+             * @description None — провайдер не публикует отдельный предел выхода
+             */
+            max_output_tokens?: number | null;
             /** Name */
             name: string;
             pricing: components["schemas"]["DirectPricing"];
@@ -962,6 +991,12 @@ export interface components {
             specs_url: string;
             /** Summary */
             summary: string;
+            /**
+             * Vat Included
+             * @description Цена провайдера уже включает НДС (российские тарифы в рублях)
+             * @default false
+             */
+            vat_included: boolean;
             /** Vendor */
             vendor: string;
             /** Version Note */
@@ -1134,16 +1169,12 @@ export interface components {
         };
         /** ModelComparison */
         ModelComparison: {
-            /**
-             * Currency
-             * @default USD
-             * @constant
-             */
-            currency: "USD";
             /** Disclaimer */
             disclaimer: string;
             /** Models */
             models: components["schemas"]["ModelCostLine"][];
+            /** Usd Rub */
+            usd_rub: number;
             workload: components["schemas"]["ModelComparisonRequest"];
         };
         /** ModelComparisonRequest */
@@ -1174,29 +1205,45 @@ export interface components {
         ModelCostLine: {
             /** Available */
             available: boolean;
+            /**
+             * Currency
+             * @enum {string}
+             */
+            currency: "USD" | "RUB";
             /** Input Rate */
             input_rate?: number | null;
             /** Input Usd */
             input_usd?: number | null;
             model: components["schemas"]["FeaturedModel"];
+            /** Monthly Rub */
+            monthly_rub?: number | null;
             /** Monthly Usd */
             monthly_usd?: number | null;
             /** Output Rate */
             output_rate?: number | null;
             /** Output Usd */
             output_usd?: number | null;
+            /** Per Request Rub */
+            per_request_rub?: number | null;
             /** Per Request Usd */
             per_request_usd?: number | null;
             /** Reason */
             reason?: string | null;
             /** Tariff */
             tariff: string;
+            /** Warning */
+            warning?: string | null;
         };
         /** ModelOption */
         ModelOption: {
             cost: components["schemas"]["CostBreakdown"] | null;
             /** Eligible */
             eligible: boolean;
+            /**
+             * Kinds
+             * @description Коды причин исключения
+             */
+            kinds?: string[];
             /** Model Id */
             model_id: string;
             /** Name */

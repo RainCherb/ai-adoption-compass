@@ -70,7 +70,23 @@ export const AUDIT_KEY_LABELS: Record<string, string> = {
   score: "оценка",
 };
 
+/** «illustrative» чип показывает отдельной формулировкой (см. StatusChip), здесь — остальные статусы. */
 export const DATA_STATUS_LABELS: Record<string, string> = {
-  illustrative: "демо-данные",
   verified: "проверенные данные",
 };
+
+/** Короткие подписи причин исключения модели (коды из ответа подбора). */
+export const REASON_KIND_LABELS: Record<string, string> = {
+  policy: "запрещено политикой данных",
+  access: "нет прямого доступа из РФ",
+  foreign: "зарубежные облака исключены",
+  self_host: "нужен свой контур",
+  quality: "качество ниже порога",
+  budget: "дороже бюджета",
+  vision: "нет работы с изображениями",
+  tools: "нет вызова функций",
+  context: "не хватает контекста",
+  pricing: "тариф не подтверждён",
+};
+
+export const reasonKindLabel = (kind: string): string => REASON_KIND_LABELS[kind] ?? kind;

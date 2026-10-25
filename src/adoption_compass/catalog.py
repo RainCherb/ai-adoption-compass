@@ -122,7 +122,7 @@ def load_catalog(data_dir: Path | None = None) -> Catalog:
                 reviewed_at=p.reviewed_at,
                 profile=p.model_dump(),
                 pricing={
-                    "currency": "USD",
+                    "currency": p.currency,
                     "input_per_mtok": p.pricing.input_per_mtok,
                     "output_per_mtok": p.pricing.output_per_mtok,
                 },

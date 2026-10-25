@@ -170,14 +170,14 @@ export function AssumptionsPanel({ baseline, defaults, whatIfActive, busy, error
               <option value="quality">Качество</option><option value="cost">Стоимость</option><option value="balanced">Баланс</option><option value="safety">Безопасность</option>
             </select>}
           </Field>
-          <Field label="Тариф DeepSeek" hint="Период задаётся вручную. По умолчанию — более дорогой Peak.">
+          <Field label="Время запросов к DeepSeek" hint="Влияет только на цену моделей DeepSeek. По умолчанию — пиковые часы, они дороже.">
             {(control) => <select {...control} className="input" value={form.deepseek_period} onChange={(event) => setForm((previous) => ({ ...previous, deepseek_period: event.target.value as FormState["deepseek_period"] }))}>
-              <option value="peak">Peak</option><option value="off_peak">Off-peak</option>
+              <option value="peak">Пиковые часы — консервативно</option><option value="off_peak">Вне пика — в 2 раза дешевле</option>
             </select>}
           </Field>
           <label className="check">
             <input type="checkbox" checked={form.supported_region} onChange={(event) => setForm((previous) => ({ ...previous, supported_region: event.target.checked }))} />
-            <span>Предположить доступный аккаунт и оплату в поддерживаемом регионе API. Это допущение демо, доступ из РФ не гарантируется.</span>
+            <span>Есть доступ к зарубежным API (аккаунт и оплата в поддерживаемой стране)</span>
           </label>
           <label className="check">
             <input
@@ -185,7 +185,7 @@ export function AssumptionsPanel({ baseline, defaults, whatIfActive, busy, error
               checked={form.allow_workarounds}
               onChange={(event) => setForm((previous) => ({ ...previous, allow_workarounds: event.target.checked }))}
             />
-            <span>Допускать обходные пути доступа к зарубежным моделям</span>
+            <span>Допускать обходные пути (посредники, зарубежные карты) — риск блокировок</span>
           </label>
         </div>
 

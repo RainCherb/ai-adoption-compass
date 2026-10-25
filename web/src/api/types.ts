@@ -1,6 +1,7 @@
 import type { components } from "./schema";
 
 type S = components["schemas"];
+export type FeaturedModel = S["FeaturedModel"];
 export type ModelOption = S["ModelOption"];
 export type ModelComparisonRequest = S["ModelComparisonRequest"];
 export type ModelComparison = S["ModelComparison"];
@@ -55,12 +56,6 @@ export type RenderedPrompt = S["RenderedPrompt"];
 export type LintResult = S["LintResult"];
 export type LintCheck = S["LintCheck"];
 
-export type EvalDemo = S["EvalDemoResponse"];
-export type EvalReport = S["EvalReport"];
-export type EvalTask = S["EvalTaskOut"];
-export type ClassStats = S["ClassStats"];
-export type EvalFailure = S["Failure"];
-
 export type AuditEvent = S["EventOut"];
 
 /** В схеме эти ответы описаны как `object`, поэтому формы уточнены вручную по бэкенду. */
@@ -84,7 +79,7 @@ export interface CatalogPricing {
 }
 
 export interface CatalogModel {
-  profile?: S["FeaturedModel"] | null;
+  profile?: FeaturedModel | null;
   id: string;
   name: string;
   vendor: string;

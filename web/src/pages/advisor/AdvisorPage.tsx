@@ -9,7 +9,7 @@ import { TabPanel, Tabs, useTabs } from "../../components/ui/Tabs";
 import { useAsync } from "../../hooks/useAsync";
 import { useDebounced } from "../../hooks/useDebounced";
 import { useMeta } from "../../hooks/useMeta";
-import { formatCount } from "../../lib/format";
+import { formatCount, formatNumber, pluralRu } from "../../lib/format";
 import { ModelOptionsTable } from "./ModelOptionsTable";
 import { ModelCostChart } from "./ModelCostChart";
 import { Disclosure } from "../../components/ui/Disclosure";
@@ -37,18 +37,22 @@ export function AdvisorPage() {
   const advice = useAsync(workload ? (signal) => advise(workload, top, signal) : null, workload ? `${JSON.stringify(workload)}|${top}` : "invalid");
 
   const result = advice.data;
-  const eligible = result?.recommendations.length ?? 0;
+  const options = result?.model_options ?? [];
+  const shown = result?.recommendations.length ?? 0;
+  // recommendations обрезаны параметром top, поэтому число подходящих считаем по полному списку моделей.
+  const eligible = Math.max(shown, options.filter((option) => option.eligible).length);
+  const hasMore = top < TOP_ALL && (options.length > 0 ? eligible > shown : shown >= top);
   const showIllustrative = (result?.data_status ?? meta.catalog.data_status) === "illustrative";
 
   return (
     <>
       <PageHeader
         title="Подбор моделей"
-        lead={meta.demo_mode ? "Sonnet 5.5, GPT‑6.1 Sol и DeepSeek V4.1 Flash — единая база подбора, всех 18 процессов, ROI и отчётов. Меняйте нагрузку и приоритет, чтобы сравнить решения." : "Опишите задачу и данные — сервис отберёт подходящие модели по политике данных, качеству, цене и доступности из РФ и объяснит, почему остальные исключены."}
+        lead={meta.demo_mode ? "11 моделей с проверенными тарифами — YandexGPT и Alice AI, GigaChat, Claude, GPT и DeepSeek. Опишите задачу, данные и объём — сервис отберёт модели по политике данных, доступу из РФ, качеству и цене и покажет стоимость в рублях." : "Опишите задачу и данные — сервис отберёт подходящие модели по политике данных, качеству, цене и доступности из РФ и объяснит, почему остальные исключены."}
       />
 
       {showIllustrative ? (
-        meta.demo_mode ? <details className="model-disclaimer"><summary>Источники тарифов и ограничения экспертных оценок</summary><p>{meta.catalog.disclaimer}</p></details> : <Banner tone="warning" prominent title="Каталог моделей содержит демонстрационные данные">
+        meta.demo_mode ? <details className="model-disclaimer"><summary>Источники тарифов и ограничения экспертных оценок</summary><p>{meta.catalog.disclaimer}</p></details> : <Banner tone="warning" prominent title="Каталог справочный: оценки качества — экспертные допущения">
           {meta.catalog.disclaimer}
         </Banner>
       ) : null}
@@ -87,12 +91,12 @@ export function AdvisorPage() {
               <div className={advice.loading ? "is-refreshing" : undefined}>
                 <p className="results-summary" role="status">
                   {eligible > 0
-                    ? `Подходит ${formatCount(eligible, "модель", "модели", "моделей")}, исключено: ${result.excluded.length}`
+                    ? `${pluralRu(eligible, "Подходит", "Подходят", "Подходят")} ${formatCount(eligible, "модель", "модели", "моделей")}, исключено: ${result.excluded.length}`
                     : "Подходящих моделей нет"}
-                  {" · "}курс {result.usd_rub} ₽/$
+                  {" · "}курс {formatNumber(result.usd_rub, 2)} ₽/$
                 </p>
 
-                <ModelCostChart items={result.model_options ?? []} />
+                <ModelCostChart items={options} usdRub={result.usd_rub} />
                 {result.notes.length > 0 ? (
                   meta.demo_mode ? <Disclosure title="Как читать оценки и стоимость"><ul>{result.notes.map((note) => <li key={note}>{note}</li>)}</ul></Disclosure> : <Banner tone="info" title="Примечания">
                     <ul className="banner__list">
@@ -116,13 +120,13 @@ export function AdvisorPage() {
                   </div>
                 )}
 
-                {eligible >= top && top < TOP_ALL ? (
+                {hasMore ? (
                   <div className="more">
                     <Button onClick={() => setTop(TOP_ALL)}>Показать все подходящие</Button>
                   </div>
                 ) : null}
 
-                <ModelOptionsTable items={result.model_options ?? []} />
+                <ModelOptionsTable items={options} />
                 <ExcludedList items={result.excluded} defaultOpen={eligible === 0} />
               </div>
             ) : null}

@@ -156,7 +156,7 @@ export function AdvisorForm({ form, errors, onChange }: AdvisorFormProps) {
         <legend className="field__label">Требования и ограничения</legend>
         <div className="checks">
           <Check checked={form.supported_region} onChange={(value) => patch({ supported_region: value })}>
-            Предполагается аккаунт и оплата в поддерживаемом регионе API
+            Есть доступ к зарубежным API (аккаунт и оплата в поддерживаемой стране)
           </Check>
           <Check checked={form.needs_vision} onChange={(value) => patch({ needs_vision: value })}>
             Работа с изображениями
@@ -168,9 +168,10 @@ export function AdvisorForm({ form, errors, onChange }: AdvisorFormProps) {
             Допускать зарубежное облако
           </Check>
           <Check checked={form.allow_workarounds} onChange={(value) => patch({ allow_workarounds: value })}>
-            Допускать обходные пути доступа
+            Допускать обходные пути (посредники, зарубежные карты) — риск блокировок
           </Check>
         </div>
+        <p className="field__hint">Без доступа к зарубежным API и обходных путей в подборе остаются российские модели.</p>
       </fieldset>
 
       <Field label="Что важнее">
@@ -189,8 +190,18 @@ export function AdvisorForm({ form, errors, onChange }: AdvisorFormProps) {
           </select>
         )}
       </Field>
-      <Field label="Тариф DeepSeek">
-        {(control) => <select {...control} className="select" value={form.deepseek_period} onChange={(e) => patch({ deepseek_period: e.target.value as "peak" | "off_peak" })}><option value="peak">Peak — консервативный расчёт</option><option value="off_peak">Off-peak — внепиковая нагрузка</option></select>}
+      <Field label="Время запросов к DeepSeek" hint="Влияет только на цену моделей DeepSeek: в пиковые часы тариф выше">
+        {(control) => (
+          <select
+            {...control}
+            className="select"
+            value={form.deepseek_period}
+            onChange={(event) => patch({ deepseek_period: event.target.value as "peak" | "off_peak" })}
+          >
+            <option value="peak">Пиковые часы — консервативно</option>
+            <option value="off_peak">Вне пика — в 2 раза дешевле</option>
+          </select>
+        )}
       </Field>
     </form>
   );

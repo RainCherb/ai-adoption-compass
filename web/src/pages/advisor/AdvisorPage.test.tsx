@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import type { Workload } from "../../api/types";
 import { advice, catalog, meta } from "../../test/fixtures";
+import { primaryAdvice, primaryCatalog } from "../../test/primaryAdvice";
 import { mockFetch, reply } from "../../test/mockFetch";
 import { renderWithMeta } from "../../test/render";
 import { AdvisorPage } from "./AdvisorPage";
@@ -50,9 +51,9 @@ describe("AdvisorPage: результаты", () => {
     expect(card.getByText(/переменная 469 ₽ \+ фиксированная 0 ₽/)).toBeInTheDocument();
     expect(card.getAllByRole("meter").map((meter) => meter.getAttribute("aria-label"))).toEqual([
       "Качество",
-      "Стоимость",
+      "Цена",
       "Безопасность",
-      "Условия доступа",
+      "Доступ",
     ]);
     expect(card.getByText("нужно обезличивание")).toBeInTheDocument();
     expect(card.getByText("Обработка в РФ")).toBeInTheDocument();
@@ -62,7 +63,7 @@ describe("AdvisorPage: результаты", () => {
   it("показывает заметный баннер про демонстрационные данные с текстом из meta.catalog.disclaimer", async () => {
     setup();
     await screen.findAllByTestId("recommendation");
-    const banner = screen.getByText("Каталог моделей содержит демонстрационные данные").closest(".banner");
+    const banner = screen.getByText("Каталог справочный: оценки качества — экспертные допущения").closest(".banner");
     expect(banner).toHaveClass("banner--prominent");
     expect(banner).toHaveTextContent(meta.catalog.disclaimer);
   });
@@ -111,6 +112,54 @@ describe("AdvisorPage: результаты", () => {
   });
 });
 
+describe("AdvisorPage: сводка", () => {
+  const recommendations = (count: number) =>
+    Array.from({ length: count }, (_, i) => ({
+      ...advice.recommendations[0]!,
+      rank: i + 1,
+      model_id: `m${i}`,
+      name: `Модель ${i + 1}`,
+    }));
+
+  it.each([
+    [1, "Подходит 1 модель"],
+    [2, "Подходят 2 модели"],
+    [4, "Подходят 4 модели"],
+    [5, "Подходят 5 моделей"],
+    [11, "Подходят 11 моделей"],
+    [21, "Подходит 21 модель"],
+    [22, "Подходят 22 модели"],
+  ])("при %i подходящих моделях сводка согласует глагол: «%s»", async (count, text) => {
+    setup({ ...advice, excluded: [], recommendations: recommendations(count) });
+    expect(await screen.findByText(new RegExp(`^${text},`))).toBeInTheDocument();
+  });
+
+  it("сводка показывает исключённые и курс с двумя знаками", async () => {
+    setup();
+    expect(await screen.findByText(/Подходят 2 модели, исключено: 2 · курс 80,54 ₽\/\$/)).toBeInTheDocument();
+  });
+
+  it("если подходящих нет, сводка так и говорит", async () => {
+    setup({ ...advice, recommendations: [] });
+    expect(await screen.findByText(/^Подходящих моделей нет · курс/)).toBeInTheDocument();
+  });
+
+  it("кнопка «Показать все подходящие» не нужна, когда в списке уже все подходящие модели", async () => {
+    const options = primaryAdvice.model_options!;
+    setup({ ...primaryAdvice, model_options: options, recommendations: primaryAdvice.recommendations });
+    await screen.findAllByTestId("recommendation");
+    expect(screen.queryByRole("button", { name: "Показать все подходящие" })).not.toBeInTheDocument();
+  });
+
+  it("подходящие считаются по всем моделям, а не только по показанным карточкам", async () => {
+    const everyone = primaryAdvice.model_options!.map((option) => ({ ...option, eligible: true, reasons: [] }));
+    setup({ ...primaryAdvice, excluded: [], model_options: everyone });
+    expect(await screen.findByText(/Подходят 11 моделей, исключено: 0/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Показать все подходящие" })).toBeInTheDocument();
+    expect(screen.getAllByTestId("recommendation")).toHaveLength(5);
+  });
+});
+
 describe("AdvisorPage: форма", () => {
   it("серия быстрых изменений поля даёт один новый запрос после паузы 300 мс, а не запрос на каждый символ", async () => {
     const { adviceCalls } = setup();
@@ -149,7 +198,7 @@ describe("AdvisorPage: форма", () => {
 
     await user.click(screen.getByRole("radio", { name: /Персональные/ }));
     expect(screen.queryByRole("checkbox", { name: "Только self-hosted" })).not.toBeInTheDocument();
-    await user.click(screen.getByRole("checkbox", { name: "Допускать обходные пути доступа" }));
+    await user.click(screen.getByRole("checkbox", { name: "Допускать обходные пути (посредники, зарубежные карты) — риск блокировок" }));
     await user.type(screen.getByLabelText(/Бюджет в месяц/), "50000");
     await user.selectOptions(screen.getByLabelText("Что важнее"), "safety");
 
@@ -189,6 +238,29 @@ describe("AdvisorPage: форма", () => {
 });
 
 describe("AdvisorPage: каталог", () => {
+  it("российские тарифы показаны в рублях с НДС, зарубежные — в долларах без налогов", async () => {
+    const user = userEvent.setup();
+    mockFetch([
+      { method: "POST", path: "/api/advice", reply: advice },
+      { path: "/api/catalog", reply: primaryCatalog },
+      { path: "/api/catalog/sources", reply: { sources: [], disclaimer: "Проверяемые источники" } },
+    ]);
+    renderWithMeta(<AdvisorPage />);
+    await screen.findAllByTestId("recommendation");
+    await user.click(screen.getByRole("tab", { name: "Каталог" }));
+    const table = await screen.findByTestId("catalog-table");
+    expect(within(table).getAllByRole("row")).toHaveLength(12);
+    const yandex = within(within(table).getByText("YandexGPT Pro 5.1").closest("tr") as HTMLElement);
+    expect(yandex.getByText("800 / 800 ₽")).toBeInTheDocument();
+    expect(yandex.getByText("с НДС")).toBeInTheDocument();
+    expect(yandex.getByText("В России: да")).toBeInTheDocument();
+    const claude = within(within(table).getByText("Claude Sonnet 5.5").closest("tr") as HTMLElement);
+    expect(claude.getByText("$2 / $10")).toBeInTheDocument();
+    expect(claude.getByText("без налогов")).toBeInTheDocument();
+    expect(within(table).queryByText("Фикс. в месяц")).not.toBeInTheDocument();
+    expect(screen.getByText(/курс для пересчёта — 80,54 ₽ за \$1/)).toBeInTheDocument();
+  });
+
   it("вкладка «Каталог» загружает таблицу моделей и берёт качество для выбранной задачи", async () => {
     const user = userEvent.setup();
     const { api } = setup();

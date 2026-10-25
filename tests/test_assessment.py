@@ -14,7 +14,7 @@ from adoption_compass.resources import read_data_text
 from adoption_compass.safety import Policy
 from adoption_compass.scoring import load_scoring
 
-TODAY = date(2026, 10, 24)
+TODAY = date(2026, 10, 25)
 RECOMMENDED = {Quadrant.QUICK_WIN, Quadrant.STRATEGIC, Quadrant.FILL_IN}
 
 
@@ -177,9 +177,13 @@ class TestPortfolio:
         expected_net = sum(p.net_horizon_rub for p in recommended)
         assert s.net_horizon_rub == pytest.approx(expected_net, rel=1e-3)
 
-    def test_shared_server_cost_is_split_by_token_volume(self, demo):
-        line = next(i for i in demo.summary.infrastructure if i.process_ids)
-        members = [p for p in demo.processes if p.id in line.process_ids]
+    def test_shared_server_cost_is_split_by_token_volume(self, engine):
+        # Сервисы продукта исключают свой контур; движок распределения проверяется на полном каталоге.
+        parsed = parse_processes_csv(read_data_text("samples/processes.csv")).processes
+        local = [p.model_copy(update={"must_self_host": True}) for p in parsed[:3]]
+        result = engine.assess(local)
+        line = next(i for i in result.summary.infrastructure if i.process_ids)
+        members = [p for p in result.processes if p.id in line.process_ids]
         assert len(members) >= 2
         shares = [p.model.cost.fixed_rub for p in members if p.model]
         assert sum(shares) == pytest.approx(line.fixed_rub_month, abs=0.05 * len(shares))

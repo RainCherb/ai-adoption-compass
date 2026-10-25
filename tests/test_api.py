@@ -10,7 +10,7 @@ from adoption_compass.resources import read_data_text
 
 from .conftest import TODAY
 
-SAMPLE_CSV = read_data_text("samples/demo-processes.csv").encode()
+SAMPLE_CSV = read_data_text("samples/processes.csv").encode()
 PROCESS = {
     "id": "X1",
     "name": "Ответы клиентам",
@@ -33,11 +33,11 @@ class TestService:
         body = client.get("/api/health").json()
         assert body["status"] == "ok"
         assert body["database"] is True
-        assert body["catalog"] == {"as_of": "2026-10-24", "data_status": "illustrative", "stale": 0}
+        assert body["catalog"] == {"as_of": "2026-10-25", "data_status": "illustrative", "stale": 0}
 
     def test_health_reports_stale_catalog(self, settings):
         late = TestClient(create_app(replace(settings, today=TODAY + timedelta(days=200))))
-        assert late.get("/api/health").json()["catalog"]["stale"] == 13
+        assert late.get("/api/health").json()["catalog"]["stale"] == 11
 
     def test_meta_exposes_enums_defaults_and_limits(self, client):
         meta = client.get("/api/meta").json()
@@ -51,9 +51,10 @@ class TestService:
 
     def test_catalog_lists_all_models(self, client):
         body = client.get("/api/catalog").json()
-        assert len(body["models"]) == 13
+        assert len(body["models"]) == 11
         assert body["stale"] == []
-        assert body["usd_rub"] == 90.0
+        assert body["usd_rub"] == 80.54
+        assert {m["deployment"] for m in body["models"]} == {"ru_cloud", "foreign_cloud"}
 
     def test_openapi_and_docs_are_available(self, client):
         assert client.get("/api/openapi.json").status_code == 200

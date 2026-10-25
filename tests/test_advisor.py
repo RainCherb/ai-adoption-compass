@@ -9,7 +9,7 @@ from adoption_compass.catalog import load_catalog
 from adoption_compass.domain import Deployment, RuAccess, Sensitivity, TaskType
 from adoption_compass.safety import Policy
 
-TODAY = date(2026, 10, 24)
+TODAY = date(2026, 10, 25)
 
 
 @pytest.fixture(scope="module")
@@ -30,17 +30,27 @@ def workload(**overrides) -> Workload:
 
 class TestCost:
     def test_per_token_cost_in_rubles(self, advisor):
-        model = advisor.catalog.get("gigachat-max")
+        model = advisor.catalog.get("gigachat-2-max")  # 650 ₽ за 1 млн токенов с НДС
         cost = advisor.estimate_cost(model, 20_000, 700, 60)
         assert cost.variable_rub == pytest.approx(9_880)
         assert cost.fixed_rub == 0
         assert cost.total_rub == pytest.approx(9_880)
 
     def test_usd_prices_are_converted_with_exchange_rate(self, advisor):
-        model = advisor.catalog.get("openai-flagship")
-        # 1 млн входных × $2.5 + 0.5 млн выходных × $10 = $7.5
+        model = advisor.catalog.get("claude-sonnet-5-5")
+        # 1 млн входных × $2 + 0.5 млн выходных × $10 = $7
         cost = advisor.estimate_cost(model, 1_000, 1_000, 500)
-        assert cost.total_rub == pytest.approx(7.5 * 90)
+        assert cost.total_rub == pytest.approx(7 * 90)
+        assert (cost.currency, cost.input_rate_usd, cost.vat_included) == ("USD", 2, False)
+
+    def test_rub_tariffs_keep_their_currency_and_vat(self, advisor):
+        model = advisor.catalog.get("alice-ai-llm")  # 500 ₽ вход и 1 200 ₽ выход за 1 млн, с НДС
+        cost = advisor.estimate_cost(model, 1_000, 1_000, 500)
+        assert cost.total_rub == pytest.approx(500 + 600)
+        assert cost.total_usd == pytest.approx(1_100 / 90)
+        assert (cost.currency, cost.input_rate, cost.output_rate) == ("RUB", 500, 1200)
+        assert cost.vat_included is True
+        assert cost.input_rate_usd is None
 
     def test_self_hosted_cost_scales_in_capacity_blocks(self, advisor):
         model = advisor.catalog.get("qwen-small-selfhost")  # 70 000 ₽, 300 млн токенов на блок
@@ -50,7 +60,7 @@ class TestCost:
         assert (large.units, large.total_rub) == (4, 280_000)
 
     def test_overhead_multiplies_token_volume(self, advisor):
-        model = advisor.catalog.get("gigachat-lite")
+        model = advisor.catalog.get("gigachat-2-lite")
         base = advisor.estimate_cost(model, 1_000, 1_000, 100)
         padded = advisor.estimate_cost(model, 1_000, 1_000, 100, overhead=1.5)
         assert padded.variable_rub == pytest.approx(base.variable_rub * 1.5, rel=1e-3)
@@ -68,7 +78,7 @@ class TestConstraints:
         assert all("policy" in e.kinds and "Политика данных" in e.reasons[0] for e in foreign)
 
     def test_ru_cloud_for_personal_data_requires_masking(self, advisor):
-        result = advisor.recommend(workload(data_sensitivity=Sensitivity.PERSONAL))
+        result = advisor.recommend(workload(data_sensitivity=Sensitivity.PERSONAL), top=20)
         by_deployment = {r.deployment: r for r in result.recommendations}
         assert by_deployment[Deployment.RU_CLOUD].requires_masking
         assert not by_deployment[Deployment.SELF_HOSTED].requires_masking
@@ -107,7 +117,6 @@ class TestConstraints:
         ("field", "value", "kind"),
         [
             ("needs_vision", True, "vision"),
-            ("needs_tool_calling", True, "tools"),
             ("min_context_tokens", 150_000, "context"),
         ],
     )
@@ -117,10 +126,17 @@ class TestConstraints:
         assert excluded_by_kind
         assert not excluded_by_kind & {r.model_id for r in result.recommendations}
 
+    def test_tool_calling_requirement_excludes_models_without_tools(self, advisor):
+        catalog = advisor.catalog.model_copy(deep=True)
+        catalog.models[0] = catalog.models[0].model_copy(update={"tool_calling": False})
+        strict = Advisor(catalog, advisor.policy, usd_rub=90.0, today=TODAY)
+        result = strict.recommend(workload(needs_tool_calling=True), top=20)
+        assert {e.model_id for e in result.excluded if "tools" in e.kinds} == {catalog.models[0].id}
+
     def test_quality_threshold_excludes_weaker_models(self, advisor):
         result = advisor.recommend(workload(task_type=TaskType.CODE, min_quality=4), top=20)
         ids = {r.model_id for r in result.recommendations}
-        assert "gigachat-lite" not in ids
+        assert "gigachat-2-lite" not in ids
         assert all(r.quality >= 4 for r in result.recommendations)
 
     def test_impossible_requirements_yield_actionable_relaxation_hints(self, advisor):

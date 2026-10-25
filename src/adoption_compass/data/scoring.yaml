@@ -7,7 +7,7 @@ assumptions:
   support_share_per_month: 0.02
   llm_overhead: 1.3
   error_reduction: 0.25
-  usd_rub: 90.0
+  usd_rub: 80.54  # официальный курс ЦБ РФ на 24.10.2026 — 80,5381 ₽ за $1
   default_hourly_cost_rub: 800
   impact_scale_rub: 500000
   allow_workarounds: false
